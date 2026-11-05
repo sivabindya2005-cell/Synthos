@@ -1,0 +1,8 @@
+{
+  "name": "SYNTHOS ",
+  "description": "Where Biology Meets Its Other Self.\n",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

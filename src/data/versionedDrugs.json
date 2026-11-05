@@ -1,0 +1,357 @@
+{
+  "version": "2.4.0",
+  "lastUpdated": "2026-11-03",
+  "standardCitation": "Goodman & Gilman's Pharmacological Basis of Therapeutics (14th Ed) / Rowland & Tozer Clinical Pharmacokinetics (4th Ed)",
+  "drugs": [
+    {
+      "id": "gentamicin",
+      "name": "Gentamicin Sulfate",
+      "brandName": "Garamycin",
+      "drugClass": "Aminoglycoside Antibiotic",
+      "standardRoute": "IV Bolus",
+      "supportedRoutes": ["IV Bolus", "IV Infusion"],
+      "bioavailability": 1.0,
+      "absorptionRateKa": 0.0,
+      "volumeOfDistributionLperKg": 0.25,
+      "clearanceLperHperKg": 0.065,
+      "fractionExcretedUnchanged": 0.95,
+      "eliminationHalfLifeHours": 2.5,
+      "narrowTherapeuticIndex": true,
+      "therapeuticRange": {
+        "min": 5.0,
+        "max": 10.0,
+        "unit": "mg/L",
+        "troughMax": 1.5,
+        "description": "Conventional peak 5–10 mg/L, extended-interval peak 16–24 mg/L; trough < 1.5 mg/L to prevent nephrotoxicity and ototoxicity."
+      },
+      "saturable": false,
+      "twoCompartment": false,
+      "renalRules": {
+        "crclThresholds": [
+          { "minCrcl": 60, "adjustment": "100% of standard dose every 8 hours", "factor": 1.0 },
+          { "minCrcl": 40, "adjustment": "100% of standard dose every 12 hours", "factor": 0.67 },
+          { "minCrcl": 20, "adjustment": "100% of standard dose every 24 hours", "factor": 0.33 },
+          { "minCrcl": 0, "adjustment": "Dose by monitored serum levels, extend interval to 48h or post-hemodialysis", "factor": 0.15 }
+        ],
+        "nephrotoxicRisk": "High",
+        "guideline": "IDSA Aminoglycoside Dosing Guidelines & Hartford Nomogram"
+      },
+      "hepaticRules": {
+        "childPughAdjustment": "No primary dose reduction required; monitor for fluid accumulation/ascites which expands Vd.",
+        "hepatotoxicRisk": "Low"
+      },
+      "majorInteractions": [
+        { "agent": "Vancomycin", "mechanism": "Synergistic tubular nephrotoxicity", "severity": "Major" },
+        { "agent": "Furosemide", "mechanism": "Additive cochlear ototoxicity and acute tubular necrosis", "severity": "Major" },
+        { "agent": "Neuromuscular Blockers", "mechanism": "Potentiation of neuromuscular blockade", "severity": "Moderate" }
+      ],
+      "citation": "Hartford Nomogram / Nicolau DP, et al. Antimicrob Agents Chemother 1995;39(3):650-655."
+    },
+    {
+      "id": "vancomycin",
+      "name": "Vancomycin Hydrochloride",
+      "brandName": "Vancocin",
+      "drugClass": "Glycopeptide Antibiotic",
+      "standardRoute": "IV Infusion",
+      "supportedRoutes": ["IV Infusion", "IV Bolus"],
+      "bioavailability": 1.0,
+      "absorptionRateKa": 0.0,
+      "volumeOfDistributionLperKg": 0.70,
+      "clearanceLperHperKg": 0.055,
+      "fractionExcretedUnchanged": 0.85,
+      "eliminationHalfLifeHours": 6.5,
+      "narrowTherapeuticIndex": true,
+      "therapeuticRange": {
+        "min": 10.0,
+        "max": 20.0,
+        "unit": "mcg/mL",
+        "aucMicTarget": "400 - 600 mg·h/L",
+        "description": "AUC24/MIC target 400–600 mg·h/L (assuming MIC 1 mg/L); trough 15–20 mcg/mL for severe MRSA bacteremia/pneumonia, 10–15 mcg/mL for mild/moderate infections."
+      },
+      "saturable": false,
+      "twoCompartment": true,
+      "renalRules": {
+        "crclThresholds": [
+          { "minCrcl": 50, "adjustment": "15-20 mg/kg actual body weight every 8-12 hours", "factor": 1.0 },
+          { "minCrcl": 30, "adjustment": "15-20 mg/kg every 24 hours", "factor": 0.5 },
+          { "minCrcl": 15, "adjustment": "15-20 mg/kg every 48 hours with level before redosing", "factor": 0.25 },
+          { "minCrcl": 0, "adjustment": "15-20 mg/kg load, then redose when level < 15 mcg/mL", "factor": 0.12 }
+        ],
+        "nephrotoxicRisk": "High",
+        "guideline": "ASHP/IDSA/PIDS Vancomycin Consensus Guidelines (2020)"
+      },
+      "hepaticRules": {
+        "childPughAdjustment": "No hepatic metabolic clearance adjustment needed; evaluate protein binding in hypoalbuminemia.",
+        "hepatotoxicRisk": "Low"
+      },
+      "majorInteractions": [
+        { "agent": "Piperacillin-Tazobactam", "mechanism": "Synergistic nephrotoxicity / acute kidney injury risk enhancement", "severity": "Major" },
+        { "agent": "Gentamicin", "mechanism": "Additive proximal tubular necrosis", "severity": "Major" },
+        { "agent": "NSAIDs", "mechanism": "Reduced renal perfusion decreasing vancomycin clearance", "severity": "Moderate" }
+      ],
+      "citation": "Rybak MJ, et al. Therapeutic monitoring of vancomycin in adult patients. Am J Health-Syst Pharm 2020;77(11):835-864."
+    },
+    {
+      "id": "digoxin",
+      "name": "Digoxin",
+      "brandName": "Lanoxin",
+      "drugClass": "Cardiac Glycoside",
+      "standardRoute": "Oral",
+      "supportedRoutes": ["Oral", "IV Bolus"],
+      "bioavailability": 0.70,
+      "absorptionRateKa": 0.85,
+      "volumeOfDistributionLperKg": 7.0,
+      "clearanceLperHperKg": 0.09,
+      "fractionExcretedUnchanged": 0.75,
+      "eliminationHalfLifeHours": 38.0,
+      "narrowTherapeuticIndex": true,
+      "therapeuticRange": {
+        "min": 0.5,
+        "max": 0.9,
+        "unit": "ng/mL",
+        "toxicCeiling": 2.0,
+        "description": "Heart failure target: 0.5–0.9 ng/mL; atrial fibrillation rate control: 0.8–1.2 ng/mL. Toxicity and mortality increase sharply above 1.2 ng/mL."
+      },
+      "saturable": false,
+      "twoCompartment": true,
+      "renalRules": {
+        "crclThresholds": [
+          { "minCrcl": 50, "adjustment": "0.125 to 0.25 mg daily", "factor": 1.0 },
+          { "minCrcl": 30, "adjustment": "0.125 mg daily or 0.0625 mg daily", "factor": 0.6 },
+          { "minCrcl": 15, "adjustment": "0.0625 mg daily or 0.125 mg every other day", "factor": 0.35 },
+          { "minCrcl": 0, "adjustment": "0.0625 mg 2-3 times per week, monitor serum level weekly", "factor": 0.18 }
+        ],
+        "nephrotoxicRisk": "Low",
+        "guideline": "ACC/AHA Heart Failure Guidelines & AGS Beers Criteria"
+      },
+      "hepaticRules": {
+        "childPughAdjustment": "Minor metabolic impact (~25% non-renal clearance). Caution in severe hepatic congestion.",
+        "hepatotoxicRisk": "Low"
+      },
+      "majorInteractions": [
+        { "agent": "Amiodarone", "mechanism": "P-glycoprotein inhibition reduces digoxin clearance by ~50%; halve digoxin dose", "severity": "Major" },
+        { "agent": "Verapamil", "mechanism": "Inhibits renal tubular P-gp secretion, increasing digoxin levels by 60-90%", "severity": "Major" },
+        { "agent": "Clarithromycin", "mechanism": "Eradicates gut Eubacterium lentum that degrades digoxin, markedly raising bioavailability", "severity": "Major" },
+        { "agent": "Diuretics (Furosemide)", "mechanism": "Hypokalemia and hypomagnesemia sensitize myocardium to digoxin cardiotoxicity", "severity": "Major" }
+      ],
+      "citation": "Jelliffe RW. An improved method for digoxin therapy. Ann Intern Med 1972;77(6):891-906."
+    },
+    {
+      "id": "phenytoin",
+      "name": "Phenytoin Sodium",
+      "brandName": "Dilantin",
+      "drugClass": "Hydantoin Anticonvulsant",
+      "standardRoute": "Oral",
+      "supportedRoutes": ["Oral", "IV Bolus"],
+      "bioavailability": 0.90,
+      "absorptionRateKa": 0.50,
+      "volumeOfDistributionLperKg": 0.65,
+      "clearanceLperHperKg": 0.025,
+      "fractionExcretedUnchanged": 0.03,
+      "eliminationHalfLifeHours": 22.0,
+      "narrowTherapeuticIndex": true,
+      "therapeuticRange": {
+        "min": 10.0,
+        "max": 20.0,
+        "unit": "mcg/mL",
+        "freeRange": "1.0 - 2.0 mcg/mL",
+        "description": "Total serum level: 10–20 mcg/mL; Free unbound level: 1.0–2.0 mcg/mL. Sheiner-Tozer correction required for hypoalbuminemia or renal failure."
+      },
+      "saturable": true,
+      "saturableKinetics": {
+        "vmaxMgPerKgPerDay": 7.0,
+        "kmMcgPerMl": 4.2
+      },
+      "twoCompartment": false,
+      "renalRules": {
+        "crclThresholds": [
+          { "minCrcl": 30, "adjustment": "Standard dose, calculate corrected phenytoin if albumin < 3.5 g/dL", "factor": 1.0 },
+          { "minCrcl": 0, "adjustment": "Decreased protein binding in ESRD (CrCl < 15): Sheiner-Tozer formula: C_adj = C_meas / (0.1 * Alb + 0.1).", "factor": 1.0 }
+        ],
+        "nephrotoxicRisk": "Low",
+        "guideline": "AAN Antiepileptic Guidelines & Sheiner-Tozer Formula"
+      },
+      "hepaticRules": {
+        "childPughAdjustment": "Extensive CYP2C9/2C19 metabolism (>95%). Child-Pugh B: reduce dose 30-40%; Child-Pugh C: reduce dose 50% and monitor free phenytoin.",
+        "hepatotoxicRisk": "Moderate"
+      },
+      "majorInteractions": [
+        { "agent": "Fluconazole", "mechanism": "Potent CYP2C9 inhibition decreases phenytoin metabolism, causing acute ataxia/toxicity", "severity": "Major" },
+        { "agent": "Valproic Acid", "mechanism": "Displaces phenytoin from albumin and inhibits CYP2C9, dramatically elevating free phenytoin", "severity": "Major" },
+        { "agent": "Carbamazepine", "mechanism": "Induction of CYP3A4/2C9, fluctuating phenytoin levels and complex co-induction", "severity": "Moderate" }
+      ],
+      "citation": "Winter ME. Basic Clinical Pharmacokinetics (5th Ed). Lippincott Williams & Wilkins, 2010."
+    },
+    {
+      "id": "theophylline",
+      "name": "Theophylline",
+      "brandName": "Theo-24",
+      "drugClass": "Methylxanthine Bronchodilator",
+      "standardRoute": "Oral",
+      "supportedRoutes": ["Oral", "IV Infusion"],
+      "bioavailability": 1.0,
+      "absorptionRateKa": 1.2,
+      "volumeOfDistributionLperKg": 0.50,
+      "clearanceLperHperKg": 0.040,
+      "fractionExcretedUnchanged": 0.10,
+      "eliminationHalfLifeHours": 8.0,
+      "narrowTherapeuticIndex": true,
+      "therapeuticRange": {
+        "min": 10.0,
+        "max": 20.0,
+        "unit": "mcg/mL",
+        "safetyCeiling": 20.0,
+        "description": "Therapeutic target: 10–20 mcg/mL (5–15 mcg/mL in some modern protocols); levels > 20 mcg/mL cause arrhythmias, seizures, and hypokalemia."
+      },
+      "saturable": false,
+      "twoCompartment": false,
+      "renalRules": {
+        "crclThresholds": [
+          { "minCrcl": 0, "adjustment": "Primarily hepatic metabolism (~90%); no formal renal dose reduction, but monitor closely in severe renal failure.", "factor": 1.0 }
+        ],
+        "nephrotoxicRisk": "Low",
+        "guideline": "GOLD COPD & GINA Asthma Guidelines"
+      },
+      "hepaticRules": {
+        "childPughAdjustment": "Extensive CYP1A2 and CYP2E1 metabolism. Cirrhosis or severe acute hepatitis can double or triple half-life; reduce maintenance dose by 50%.",
+        "hepatotoxicRisk": "Low"
+      },
+      "majorInteractions": [
+        { "agent": "Ciprofloxacin", "mechanism": "CYP1A2 inhibition reduces theophylline clearance by 30-50%, risking severe neurotoxicity", "severity": "Major" },
+        { "agent": "Fluvoxamine", "mechanism": "Ultra-potent CYP1A2 inhibition increases theophylline AUC by up to 300%", "severity": "Contraindicated" },
+        { "agent": "Smoking (Tobacco)", "mechanism": "Polycyclic aromatic hydrocarbons induce CYP1A2, increasing clearance by 50-80%", "severity": "Moderate" }
+      ],
+      "citation": "Hendeles L, Weinberger M. Theophylline: a 'state of the art' review. Pharmacotherapy 1983;3(1):2-44."
+    },
+    {
+      "id": "lithium",
+      "name": "Lithium Carbonate",
+      "brandName": "Eskalith / Lithobid",
+      "drugClass": "Mood Stabilizer",
+      "standardRoute": "Oral",
+      "supportedRoutes": ["Oral"],
+      "bioavailability": 1.0,
+      "absorptionRateKa": 1.1,
+      "volumeOfDistributionLperKg": 0.80,
+      "clearanceLperHperKg": 0.025,
+      "fractionExcretedUnchanged": 0.95,
+      "eliminationHalfLifeHours": 24.0,
+      "narrowTherapeuticIndex": true,
+      "therapeuticRange": {
+        "min": 0.6,
+        "max": 1.2,
+        "unit": "mEq/L",
+        "toxicityCeiling": 1.5,
+        "description": "Acute mania: 0.8–1.2 mEq/L; maintenance: 0.6–0.8 mEq/L (0.8–1.0 in robust responders); toxicity at ≥ 1.5 mEq/L (tremor, ataxia, encephalopathy, nephrogenic diabetes insipidus)."
+      },
+      "saturable": false,
+      "twoCompartment": false,
+      "renalRules": {
+        "crclThresholds": [
+          { "minCrcl": 50, "adjustment": "Standard dose (e.g. 300 mg TID or 600 mg BID)", "factor": 1.0 },
+          { "minCrcl": 30, "adjustment": "Reduce dose by 25-50%, monitor levels twice weekly", "factor": 0.6 },
+          { "minCrcl": 10, "adjustment": "Reduce dose by 50-75%, risk of severe neurotoxicity and irreversible kidney injury", "factor": 0.35 },
+          { "minCrcl": 0, "adjustment": "Contraindicated or strictly dialysis-monitored single dosing", "factor": 0.15 }
+        ],
+        "nephrotoxicRisk": "High",
+        "guideline": "CANMAT Bipolar Guidelines & National Institute for Health and Care Excellence (NICE)"
+      },
+      "hepaticRules": {
+        "childPughAdjustment": "Zero hepatic metabolism; 100% excreted by the kidney via proximal tubular sodium reabsorption pathways.",
+        "hepatotoxicRisk": "Low"
+      },
+      "majorInteractions": [
+        { "agent": "Hydrochlorothiazide / Thiazides", "mechanism": "Promotes proximal sodium reabsorption, decreasing lithium excretion by 40% and causing acute toxicity", "severity": "Major" },
+        { "agent": "ACE Inhibitors (Lisinopril)", "mechanism": "Reduces GFR and renal lithium clearance by 20-30%, leading to slow insidious intoxication", "severity": "Major" },
+        { "agent": "Ibuprofen / NSAIDs", "mechanism": "Inhibits renal prostaglandin synthesis, reducing renal blood flow and lithium clearance by ~30%", "severity": "Major" }
+      ],
+      "citation": "Mason RW, et al. Pharmacokinetics of lithium. Clin Pharmacokinet 1983;8(4):332-354."
+    },
+    {
+      "id": "paracetamol",
+      "name": "Paracetamol (Acetaminophen)",
+      "brandName": "Tylenol / Panadol",
+      "drugClass": "Analgesic & Antipyretic",
+      "standardRoute": "Oral",
+      "supportedRoutes": ["Oral", "IV Infusion"],
+      "bioavailability": 0.88,
+      "absorptionRateKa": 1.5,
+      "volumeOfDistributionLperKg": 0.90,
+      "clearanceLperHperKg": 0.30,
+      "fractionExcretedUnchanged": 0.05,
+      "eliminationHalfLifeHours": 2.2,
+      "narrowTherapeuticIndex": false,
+      "therapeuticRange": {
+        "min": 10.0,
+        "max": 20.0,
+        "unit": "mcg/mL",
+        "toxicCeiling": 150.0,
+        "description": "Therapeutic analgesic range: 10–20 mcg/mL. Hepatotoxicity nomogram (Rumack-Matthew): 150 mcg/mL at 4 hours post-acute ingestion indicates N-acetylcysteine intervention."
+      },
+      "saturable": false,
+      "twoCompartment": false,
+      "renalRules": {
+        "crclThresholds": [
+          { "minCrcl": 50, "adjustment": "Standard dosing (max 3000-4000 mg/day)", "factor": 1.0 },
+          { "minCrcl": 10, "adjustment": "Extend dosing interval to every 6 hours", "factor": 0.75 },
+          { "minCrcl": 0, "adjustment": "Extend dosing interval to every 8 hours, metabolites can accumulate in ESRD", "factor": 0.5 }
+        ],
+        "nephrotoxicRisk": "Low",
+        "guideline": "FDA Acetaminophen Dosing Guidelines & Rumack-Matthew Nomogram"
+      },
+      "hepaticRules": {
+        "childPughAdjustment": "Extensive glucuronidation/sulfation and CYP2E1 NAPQI generation. Child-Pugh A/B: ceiling 2000 mg/day; Child-Pugh C or chronic alcoholism: maximum 1000-2000 mg/day or avoid.",
+        "hepatotoxicRisk": "High"
+      },
+      "majorInteractions": [
+        { "agent": "Ethanol (Chronic)", "mechanism": "Induces CYP2E1 and depletes hepatocellular glutathione, dramatically lowering the threshold for toxic NAPQI injury", "severity": "Major" },
+        { "agent": "Isoniazid", "mechanism": "Potent CYP2E1 inducer that amplifies hepatotoxic metabolite formation", "severity": "Major" },
+        { "agent": "Warfarin", "mechanism": "High-dose chronic paracetamol (>2g/day) inhibits vitamin K epoxide reductase, elevating INR", "severity": "Moderate" }
+      ],
+      "citation": "Rumack BH, Matthew H. Acetaminophen poisoning and toxicity. Pediatrics 1975;55(6):871-876."
+    },
+    {
+      "id": "metformin",
+      "name": "Metformin Hydrochloride",
+      "brandName": "Glucophage",
+      "drugClass": "Biguanide Antihyperglycemic",
+      "standardRoute": "Oral",
+      "supportedRoutes": ["Oral"],
+      "bioavailability": 0.55,
+      "absorptionRateKa": 1.1,
+      "volumeOfDistributionLperKg": 0.95,
+      "clearanceLperHperKg": 0.45,
+      "fractionExcretedUnchanged": 0.90,
+      "eliminationHalfLifeHours": 6.2,
+      "narrowTherapeuticIndex": false,
+      "therapeuticRange": {
+        "min": 0.5,
+        "max": 1.8,
+        "unit": "mcg/mL",
+        "toxicCeiling": 2.0,
+        "description": "Target therapeutic level: 0.5–1.8 mcg/mL; levels > 2.0–5.0 mcg/mL correlate with fatal biguanide-associated lactic acidosis (MALA)."
+      },
+      "saturable": false,
+      "twoCompartment": false,
+      "renalRules": {
+        "crclThresholds": [
+          { "minCrcl": 60, "adjustment": "Standard dosing up to 2000 mg/day", "factor": 1.0 },
+          { "minCrcl": 45, "adjustment": "Max 2000 mg/day; monitor eGFR every 3-6 months", "factor": 1.0 },
+          { "minCrcl": 30, "adjustment": "Reduce ceiling to 1000 mg/day (KDIGO 2023 / ADA)", "factor": 0.5 },
+          { "minCrcl": 0, "adjustment": "ABSOLUTE CONTRAINDICATION (eGFR < 30 mL/min/1.73m²)", "factor": 0.0 }
+        ],
+        "nephrotoxicRisk": "Low",
+        "guideline": "KDIGO 2023 Clinical Practice Guideline for Diabetes Management in CKD & FDA Boxed Warning"
+      },
+      "hepaticRules": {
+        "childPughAdjustment": "Contraindicated in severe hepatic impairment due to impaired blood lactate clearance, greatly exacerbating lactic acidosis.",
+        "hepatotoxicRisk": "Moderate"
+      },
+      "majorInteractions": [
+        { "agent": "Iodinated Radiocontrast", "mechanism": "Contrast-induced nephropathy abruptly halts metformin excretion, triggering lactic acidosis; withhold 48h prior", "severity": "Contraindicated" },
+        { "agent": "Cimetidine", "mechanism": "OCT2 transport inhibition in renal tubules decreases metformin clearance by 27%", "severity": "Moderate" }
+      ],
+      "citation": "Inzucchi SE, et al. Metformin in patients with type 2 diabetes and kidney disease. JAMA 2014;312(24):2668-2675."
+    }
+  ]
+}
