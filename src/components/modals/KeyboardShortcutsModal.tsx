@@ -41,7 +41,7 @@ export const KeyboardShortcutsModal: React.FC<KeyboardShortcutsModalProps> = ({ 
       <div className="bg-white dark:bg-slate-900 rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-4 animate-scale-in text-slate-900 dark:text-slate-100">
         <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
           <div className="flex items-center gap-2">
-            <span className="material-symbols-outlined text-[#14B8A6] dark:text-teal-400 text-[22px]">keyboard</span>
+            <span className="material-symbols-outlined text-[#15803D] dark:text-teal-400 text-[22px]">keyboard</span>
             <h3 className="font-['Plus_Jakarta_Sans'] font-bold text-base">Keyboard Shortcuts</h3>
           </div>
           <button

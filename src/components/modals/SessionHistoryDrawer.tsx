@@ -61,7 +61,7 @@ Timestamp: ${r.timestamp}`;
         {/* Header */}
         <div className="p-5 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-[#E6F4F1] dark:bg-teal-950 border border-[#BEE3DB] dark:border-teal-800 flex items-center justify-center text-[#0F766E] dark:text-teal-300">
+            <div className="w-9 h-9 rounded-xl bg-[#EEF7EE] dark:bg-teal-950 border border-[#CBE4CB] dark:border-teal-800 flex items-center justify-center text-[#15803D] dark:text-teal-300">
               <span className="material-symbols-outlined text-[20px]">history</span>
             </div>
             <div>
@@ -168,7 +168,7 @@ Timestamp: ${r.timestamp}`;
                           onLoadRecordIntoTwin(r);
                           onClose();
                         }}
-                        className="px-2 py-1 rounded bg-[#0F766E] text-white hover:bg-[#14B8A6] text-[11px] font-bold flex items-center gap-1 cursor-pointer transition-colors"
+                        className="px-2 py-1 rounded bg-[#15803D] text-white hover:bg-[#15803D] text-[11px] font-bold flex items-center gap-1 cursor-pointer transition-colors"
                       >
                         <span className="material-symbols-outlined text-[13px]">tune</span>
                         <span>Re-simulate</span>

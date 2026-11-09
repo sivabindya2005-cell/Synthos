@@ -26,7 +26,7 @@ export const PatientTwinView: React.FC<PatientTwinViewProps> = ({
       <div className="bg-[#0d1c32] text-white rounded-xl p-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="w-2 h-2 rounded-full bg-[#14b8a6] animate-pulse"></span>
+            <span className="w-2 h-2 rounded-full bg-[#15803D] animate-pulse"></span>
             <span className="text-xs font-mono text-[#86f2e4] font-bold">DIGITAL ORGAN TWIN ARCHITECTURE</span>
             <span className="text-[10px] px-1.5 py-0.2 rounded bg-white/10 text-white">{patient.id}</span>
           </div>
@@ -47,7 +47,7 @@ export const PatientTwinView: React.FC<PatientTwinViewProps> = ({
           </button>
           <button
             onClick={onOpenSimulator}
-            className="px-3 py-1.5 rounded bg-[#006a61] hover:bg-[#006f66] text-white text-xs font-semibold flex items-center gap-1.5 cursor-pointer transition-colors"
+            className="px-3 py-1.5 rounded bg-[#15803D] hover:bg-[#006f66] text-white text-xs font-semibold flex items-center gap-1.5 cursor-pointer transition-colors"
           >
             <span className="material-symbols-outlined text-[16px]">tune</span>
             <span>Simulate Stress Test</span>
@@ -56,7 +56,7 @@ export const PatientTwinView: React.FC<PatientTwinViewProps> = ({
       </div>
 
       {/* Organ Systems Navigation */}
-      <div className="flex border-b border-[#e2e8f0] bg-white rounded-t-xl px-4 pt-2 gap-2 text-xs font-semibold">
+      <div className="flex border-b border-[#E5DDD0] bg-white rounded-t-xl px-4 pt-2 gap-2 text-xs font-semibold">
         {[
           { id: 'renal', label: 'Renal Elimination (eGFR & CrCl)', icon: 'water_drop' },
           { id: 'hepatic', label: 'Hepatic Function & CYP450', icon: 'biotech' },
@@ -68,8 +68,8 @@ export const PatientTwinView: React.FC<PatientTwinViewProps> = ({
             onClick={() => setActiveOrganTab(tab.id as any)}
             className={`flex items-center gap-2 px-4 py-2.5 border-b-2 transition-all cursor-pointer ${
               activeOrganTab === tab.id
-                ? 'border-[#006a61] text-[#006a61] font-bold bg-[#006a61]/5'
-                : 'border-transparent text-[#475569] hover:text-[#191c1e]'
+                ? 'border-[#15803D] text-[#15803D] font-bold bg-[#15803D]/5'
+                : 'border-transparent text-[#4B6584] hover:text-[#1E3A8A]'
             }`}
           >
             <span className="material-symbols-outlined text-[18px]">{tab.icon}</span>
@@ -79,7 +79,7 @@ export const PatientTwinView: React.FC<PatientTwinViewProps> = ({
       </div>
 
       {/* Tab Panels */}
-      <div className="bg-white rounded-b-xl border border-t-0 border-[#e2e8f0] p-5 shadow-2xs">
+      <div className="bg-white rounded-b-xl border border-t-0 border-[#E5DDD0] p-5 shadow-2xs">
         {activeOrganTab === 'renal' && (
           <div className="space-y-5">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -88,30 +88,30 @@ export const PatientTwinView: React.FC<PatientTwinViewProps> = ({
                 <span className="text-xl font-bold text-[#92400e] mt-1 block">Stage 3b CKD</span>
                 <span className="text-xs text-[#92400e]">Moderate to Severe Impairment</span>
               </div>
-              <div className="p-4 rounded-xl bg-[#f2f4f6] border border-[#e2e8f0]">
-                <span className="text-[11px] font-bold text-[#475569] uppercase tracking-wider block">2021 CKD-EPI eGFR</span>
-                <span className="text-xl font-bold text-[#191c1e] font-mono mt-1 block">{ckdEpi} mL/min/1.73m²</span>
-                <span className="text-xs text-[#475569]">Race-free standardized equation</span>
+              <div className="p-4 rounded-xl bg-[#F4EFE6] border border-[#E5DDD0]">
+                <span className="text-[11px] font-bold text-[#4B6584] uppercase tracking-wider block">2021 CKD-EPI eGFR</span>
+                <span className="text-xl font-bold text-[#1E3A8A] font-mono mt-1 block">{ckdEpi} mL/min/1.73m²</span>
+                <span className="text-xs text-[#4B6584]">Race-free standardized equation</span>
               </div>
-              <div className="p-4 rounded-xl bg-[#f2f4f6] border border-[#e2e8f0]">
-                <span className="text-[11px] font-bold text-[#475569] uppercase tracking-wider block">Cockcroft-Gault CrCl</span>
-                <span className="text-xl font-bold text-[#006a61] font-mono mt-1 block">{cg.crcl} mL/min</span>
-                <span className="text-xs text-[#475569]">AdjBW {cg.weightUsed} kg applied</span>
+              <div className="p-4 rounded-xl bg-[#F4EFE6] border border-[#E5DDD0]">
+                <span className="text-[11px] font-bold text-[#4B6584] uppercase tracking-wider block">Cockcroft-Gault CrCl</span>
+                <span className="text-xl font-bold text-[#15803D] font-mono mt-1 block">{cg.crcl} mL/min</span>
+                <span className="text-xs text-[#4B6584]">AdjBW {cg.weightUsed} kg applied</span>
               </div>
-              <div className="p-4 rounded-xl bg-[#f2f4f6] border border-[#e2e8f0]">
-                <span className="text-[11px] font-bold text-[#475569] uppercase tracking-wider block">BUN / SCr Ratio</span>
-                <span className="text-xl font-bold text-[#191c1e] font-mono mt-1 block">
+              <div className="p-4 rounded-xl bg-[#F4EFE6] border border-[#E5DDD0]">
+                <span className="text-[11px] font-bold text-[#4B6584] uppercase tracking-wider block">BUN / SCr Ratio</span>
+                <span className="text-xl font-bold text-[#1E3A8A] font-mono mt-1 block">
                   {(organStatus.renal.bun / organStatus.renal.scr).toFixed(1)}
                 </span>
-                <span className="text-xs text-[#475569]">Normal intrinsic renal ratio (&lt;20)</span>
+                <span className="text-xs text-[#4B6584]">Normal intrinsic renal ratio (&lt;20)</span>
               </div>
             </div>
 
             {/* Renal Clearance Drug Banding Matrix */}
-            <div className="border border-[#e2e8f0] rounded-xl overflow-hidden">
-              <div className="p-3 bg-[#f2f4f6] font-bold text-xs text-[#191c1e] flex items-center justify-between">
+            <div className="border border-[#E5DDD0] rounded-xl overflow-hidden">
+              <div className="p-3 bg-[#F4EFE6] font-bold text-xs text-[#1E3A8A] flex items-center justify-between">
                 <span>Renal Dose Adjustment Banding for Current Regimen</span>
-                <span className="text-[11px] text-[#006a61] font-medium">Standard of Care: FDA + KDIGO 2023</span>
+                <span className="text-[11px] text-[#15803D] font-medium">Standard of Care: FDA + KDIGO 2023</span>
               </div>
               <div className="p-4 space-y-3 text-xs">
                 <div className="p-3 rounded-lg bg-[#fef3c7]/40 border border-[#fde68a] flex items-start justify-between">
@@ -126,14 +126,14 @@ export const PatientTwinView: React.FC<PatientTwinViewProps> = ({
                   </span>
                 </div>
 
-                <div className="p-3 rounded-lg bg-[#f2f4f6] border border-[#e2e8f0] flex items-start justify-between">
+                <div className="p-3 rounded-lg bg-[#F4EFE6] border border-[#E5DDD0] flex items-start justify-between">
                   <div>
-                    <span className="font-bold text-[#191c1e]">Lisinopril</span>
+                    <span className="font-bold text-[#1E3A8A]">Lisinopril</span>
                     <p className="text-xs text-[#44474d] mt-1">
                       Clearance: Primary renal filtration. Dose 20mg is therapeutic for proteinuria, but monitor for hyperkalemia given K+ 4.9.
                     </p>
                   </div>
-                  <span className="px-2 py-1 rounded bg-white text-[#475569] font-medium text-[11px] shrink-0 border border-[#cbd5e1]">
+                  <span className="px-2 py-1 rounded bg-white text-[#4B6584] font-medium text-[11px] shrink-0 border border-[#cbd5e1]">
                     MONITOR: Recheck BMP in 14d
                   </span>
                 </div>
@@ -162,22 +162,22 @@ export const PatientTwinView: React.FC<PatientTwinViewProps> = ({
                 <span className="text-2xl font-bold text-[#065f46] mt-1 block">Class A (Score 5)</span>
                 <span className="text-xs text-[#065f46]">Well-compensated hepatic function</span>
               </div>
-              <div className="p-4 rounded-xl bg-[#f2f4f6] border border-[#e2e8f0]">
-                <span className="text-[11px] font-bold text-[#475569] uppercase tracking-wider block">Liver Enzymes</span>
-                <span className="text-xl font-bold text-[#191c1e] font-mono mt-1 block">
+              <div className="p-4 rounded-xl bg-[#F4EFE6] border border-[#E5DDD0]">
+                <span className="text-[11px] font-bold text-[#4B6584] uppercase tracking-wider block">Liver Enzymes</span>
+                <span className="text-xl font-bold text-[#1E3A8A] font-mono mt-1 block">
                   ALT 22 U/L • AST 24 U/L
                 </span>
-                <span className="text-xs text-[#475569]">Baseline within normal reference</span>
+                <span className="text-xs text-[#4B6584]">Baseline within normal reference</span>
               </div>
-              <div className="p-4 rounded-xl bg-[#f2f4f6] border border-[#e2e8f0]">
-                <span className="text-[11px] font-bold text-[#475569] uppercase tracking-wider block">Total Bilirubin &amp; Albumin</span>
-                <span className="text-xl font-bold text-[#191c1e] font-mono mt-1 block">
+              <div className="p-4 rounded-xl bg-[#F4EFE6] border border-[#E5DDD0]">
+                <span className="text-[11px] font-bold text-[#4B6584] uppercase tracking-wider block">Total Bilirubin &amp; Albumin</span>
+                <span className="text-xl font-bold text-[#1E3A8A] font-mono mt-1 block">
                   0.8 mg/dL • 4.1 g/dL
                 </span>
-                <span className="text-xs text-[#475569]">Synthetic liver capacity intact</span>
+                <span className="text-xs text-[#4B6584]">Synthetic liver capacity intact</span>
               </div>
             </div>
-            <p className="text-[#475569] leading-relaxed">
+            <p className="text-[#4B6584] leading-relaxed">
               Hepatic phase I oxidation and phase II glucuronidation pathways are fully functional for this patient profile. Atorvastatin clearance is unhindered; however, concurrent CYP3A4 inhibitors (e.g., Clarithromycin or Azoles) should be flagged to avoid myopathy risk.
             </p>
           </div>
@@ -196,10 +196,10 @@ export const PatientTwinView: React.FC<PatientTwinViewProps> = ({
                 <span className="text-2xl font-bold text-[#92400e] font-mono mt-1 block">4.9 mEq/L</span>
                 <span className="text-xs text-[#92400e]">Borderline ceiling (&gt;5.0 triggers ACEi taper)</span>
               </div>
-              <div className="p-4 rounded-xl bg-[#f2f4f6] border border-[#e2e8f0]">
-                <span className="text-[11px] font-bold text-[#475569] uppercase tracking-wider block">Cardiac Rhythm</span>
-                <span className="text-2xl font-bold text-[#191c1e] mt-1 block">68 bpm NSR</span>
-                <span className="text-xs text-[#475569]">Normal Sinus Rhythm, QTc 418ms</span>
+              <div className="p-4 rounded-xl bg-[#F4EFE6] border border-[#E5DDD0]">
+                <span className="text-[11px] font-bold text-[#4B6584] uppercase tracking-wider block">Cardiac Rhythm</span>
+                <span className="text-2xl font-bold text-[#1E3A8A] mt-1 block">68 bpm NSR</span>
+                <span className="text-xs text-[#4B6584]">Normal Sinus Rhythm, QTc 418ms</span>
               </div>
             </div>
           </div>
@@ -207,9 +207,9 @@ export const PatientTwinView: React.FC<PatientTwinViewProps> = ({
 
         {activeOrganTab === 'pgx' && (
           <div className="space-y-4 text-xs">
-            <div className="border border-[#e2e8f0] rounded-xl overflow-hidden">
+            <div className="border border-[#E5DDD0] rounded-xl overflow-hidden">
               <table className="w-full text-left">
-                <thead className="bg-[#f2f4f6] text-[10px] font-bold text-[#475569] uppercase tracking-wider">
+                <thead className="bg-[#F4EFE6] text-[10px] font-bold text-[#4B6584] uppercase tracking-wider">
                   <tr>
                     <th className="p-2.5">Gene</th>
                     <th className="p-2.5">Genotype</th>
@@ -220,29 +220,29 @@ export const PatientTwinView: React.FC<PatientTwinViewProps> = ({
                 </thead>
                 <tbody className="divide-y divide-[#eceef0]">
                   <tr>
-                    <td className="p-2.5 font-bold text-[#191c1e]">CYP2C19</td>
+                    <td className="p-2.5 font-bold text-[#1E3A8A]">CYP2C19</td>
                     <td className="p-2.5 font-mono">*1/*1</td>
                     <td className="p-2.5 text-[#065f46] font-semibold">Normal Metabolizer</td>
                     <td className="p-2.5">Omeprazole, Clopidogrel</td>
-                    <td className="p-2.5 text-[#475569]">Standard therapeutic dosing.</td>
+                    <td className="p-2.5 text-[#4B6584]">Standard therapeutic dosing.</td>
                   </tr>
                   <tr>
-                    <td className="p-2.5 font-bold text-[#191c1e]">CYP2C9</td>
+                    <td className="p-2.5 font-bold text-[#1E3A8A]">CYP2C9</td>
                     <td className="p-2.5 font-mono">{patient.id === 'DEMO-PT-0108' ? '*3/*3' : '*1/*1'}</td>
                     <td className={`p-2.5 font-semibold ${patient.id === 'DEMO-PT-0108' ? 'text-[#991b1b]' : 'text-[#065f46]'}`}>
                       {patient.id === 'DEMO-PT-0108' ? 'Poor Metabolizer' : 'Normal Metabolizer'}
                     </td>
                     <td className="p-2.5">Warfarin, Glipizide, Celecoxib</td>
-                    <td className="p-2.5 text-[#475569]">
+                    <td className="p-2.5 text-[#4B6584]">
                       {patient.id === 'DEMO-PT-0108' ? '70-80% dose reduction required or DOAC' : 'Standard starting dose.'}
                     </td>
                   </tr>
                   <tr>
-                    <td className="p-2.5 font-bold text-[#191c1e]">SLCO1B1</td>
+                    <td className="p-2.5 font-bold text-[#1E3A8A]">SLCO1B1</td>
                     <td className="p-2.5 font-mono">521T&gt;T</td>
                     <td className="p-2.5 text-[#065f46] font-semibold">Normal Transporter Function</td>
                     <td className="p-2.5">Atorvastatin, Simvastatin</td>
-                    <td className="p-2.5 text-[#475569]">Low risk of statin-associated myopathy.</td>
+                    <td className="p-2.5 text-[#4B6584]">Low risk of statin-associated myopathy.</td>
                   </tr>
                 </tbody>
               </table>

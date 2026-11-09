@@ -103,7 +103,7 @@ export const ProvenanceDrawer: React.FC<ProvenanceDrawerProps> = ({ provenanceId
                   href={`https://pubmed.ncbi.nlm.nih.gov/${item.pubmedId}/`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-white border border-slate-300 text-slate-700 hover:text-[#0F766E] hover:border-[#14B8A6] transition-colors font-mono text-[11px]"
+                  className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-white border border-slate-300 text-slate-700 hover:text-[#15803D] hover:border-[#14B8A6] transition-colors font-mono text-[11px]"
                 >
                   <span className="material-symbols-outlined text-[14px]">open_in_new</span>
                   <span>PubMed: {item.pubmedId}</span>
@@ -115,7 +115,7 @@ export const ProvenanceDrawer: React.FC<ProvenanceDrawerProps> = ({ provenanceId
                   href={`https://doi.org/${item.doi}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-white border border-slate-300 text-slate-700 hover:text-[#0F766E] hover:border-[#14B8A6] transition-colors font-mono text-[11px]"
+                  className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-white border border-slate-300 text-slate-700 hover:text-[#15803D] hover:border-[#14B8A6] transition-colors font-mono text-[11px]"
                 >
                   <span className="material-symbols-outlined text-[14px]">link</span>
                   <span>DOI: {item.doi}</span>
@@ -127,7 +127,7 @@ export const ProvenanceDrawer: React.FC<ProvenanceDrawerProps> = ({ provenanceId
                   href={`https://clinicaltrials.gov/study/${item.clinicalTrialsId.split(' ')[0]}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-white border border-slate-300 text-slate-700 hover:text-[#0F766E] hover:border-[#14B8A6] transition-colors font-mono text-[11px]"
+                  className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-white border border-slate-300 text-slate-700 hover:text-[#15803D] hover:border-[#14B8A6] transition-colors font-mono text-[11px]"
                 >
                   <span className="material-symbols-outlined text-[14px]">medication</span>
                   <span>ClinicalTrials: {item.clinicalTrialsId}</span>

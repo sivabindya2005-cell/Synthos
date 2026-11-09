@@ -75,7 +75,7 @@ export const DisclaimerModal: React.FC = () => {
           <button
             type="button"
             onClick={acceptDisclaimer}
-            className="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-[#0F766E] hover:bg-[#0F766E] text-white font-bold text-xs shadow-md transition-all cursor-pointer flex items-center justify-center gap-2"
+            className="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-[#15803D] hover:bg-[#15803D] text-white font-bold text-xs shadow-md transition-all cursor-pointer flex items-center justify-center gap-2"
           >
             <span className="material-symbols-outlined text-[18px]">verified</span>
             <span>I Acknowledge &amp; Accept Terms</span>

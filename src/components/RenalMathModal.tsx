@@ -29,11 +29,11 @@ export const RenalMathModal: React.FC<RenalMathModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4 animate-fade-in">
-      <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full border border-[#e2e8f0] overflow-hidden flex flex-col max-h-[90vh]">
+      <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full border border-[#E5DDD0] overflow-hidden flex flex-col max-h-[90vh]">
         {/* Modal Header */}
         <div className="p-4 bg-[#0d1c32] text-white flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="material-symbols-outlined text-[#14b8a6] text-[22px]">calculate</span>
+            <span className="material-symbols-outlined text-[#15803D] text-[22px]">calculate</span>
             <div>
               <h3 className="font-['Plus_Jakarta_Sans'] font-semibold text-base">
                 Renal Clearance Mathematical Trace &amp; Biometrics
@@ -55,14 +55,14 @@ export const RenalMathModal: React.FC<RenalMathModalProps> = ({
         <div className="p-6 overflow-y-auto space-y-5 text-sm">
           {/* Key Result Summary */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <div className="p-3 rounded-lg bg-[#f2f4f6] border border-[#e2e8f0]">
-              <span className="text-[11px] font-bold text-[#475569] uppercase tracking-wider block">
+            <div className="p-3 rounded-lg bg-[#F4EFE6] border border-[#E5DDD0]">
+              <span className="text-[11px] font-bold text-[#4B6584] uppercase tracking-wider block">
                 Cockcroft-Gault CrCl
               </span>
-              <span className="text-2xl font-bold text-[#006a61] font-mono">
+              <span className="text-2xl font-bold text-[#15803D] font-mono">
                 {cgResult.crcl}
               </span>
-              <span className="text-xs text-[#475569] block">mL/min (IBW Adjusted)</span>
+              <span className="text-xs text-[#4B6584] block">mL/min (IBW Adjusted)</span>
             </div>
 
             <div className="p-3 rounded-lg bg-[#fef3c7]/40 border border-[#fde68a]">
@@ -75,32 +75,32 @@ export const RenalMathModal: React.FC<RenalMathModalProps> = ({
               <span className="text-xs text-[#92400e] block">mL/min/1.73m² (Race-free)</span>
             </div>
 
-            <div className="p-3 rounded-lg bg-[#f2f4f6] border border-[#e2e8f0]">
-              <span className="text-[11px] font-bold text-[#475569] uppercase tracking-wider block">
+            <div className="p-3 rounded-lg bg-[#F4EFE6] border border-[#E5DDD0]">
+              <span className="text-[11px] font-bold text-[#4B6584] uppercase tracking-wider block">
                 Ideal Body Weight (Devine)
               </span>
-              <span className="text-2xl font-bold text-[#191c1e] font-mono">
+              <span className="text-2xl font-bold text-[#1E3A8A] font-mono">
                 {ibw}
               </span>
-              <span className="text-xs text-[#475569] block">kg (Actual: {biometrics.weightKg}kg)</span>
+              <span className="text-xs text-[#4B6584] block">kg (Actual: {biometrics.weightKg}kg)</span>
             </div>
           </div>
 
           {/* Cockcroft-Gault Step-by-Step */}
-          <div className="p-4 rounded-lg bg-[#f8fafc] border border-[#e2e8f0] space-y-3">
+          <div className="p-4 rounded-lg bg-[#FAF7F2] border border-[#E5DDD0] space-y-3">
             <div className="flex items-center justify-between">
               <span className="font-bold text-[#0f2b38] text-sm">
                 1. Cockcroft-Gault Equation (Standard for FDA Drug Labeling)
               </span>
-              <span className="text-[11px] px-2 py-0.5 rounded bg-[#006a61]/10 text-[#006a61] font-mono font-semibold">
+              <span className="text-[11px] px-2 py-0.5 rounded bg-[#15803D]/10 text-[#15803D] font-mono font-semibold">
                 CrCl = [(140 - Age) × Weight] / (72 × SCr) × [0.85 if Female]
               </span>
             </div>
 
-            <div className="bg-white p-3 rounded border border-[#e2e8f0] font-mono text-xs text-[#191c1e] space-y-1">
+            <div className="bg-white p-3 rounded border border-[#E5DDD0] font-mono text-xs text-[#1E3A8A] space-y-1">
               <div>Age = {biometrics.age} years | SCr = {organStatus.renal.scr.toFixed(2)} mg/dL</div>
               <div>Actual Weight = {biometrics.weightKg} kg | IBW = {ibw} kg (Actual is {Math.round((biometrics.weightKg / ibw) * 100)}% of IBW)</div>
-              <div className="text-[#006a61] font-semibold">
+              <div className="text-[#15803D] font-semibold">
                 Weight Used: Adjusted Body Weight = IBW + 0.4 × (Actual - IBW) = {cgResult.weightUsed} kg
               </div>
               <div className="pt-2 border-t border-dashed border-[#cbd5e1] text-[#0f2b38] font-bold">
@@ -110,7 +110,7 @@ export const RenalMathModal: React.FC<RenalMathModalProps> = ({
           </div>
 
           {/* CKD-EPI Step-by-Step */}
-          <div className="p-4 rounded-lg bg-[#f8fafc] border border-[#e2e8f0] space-y-3">
+          <div className="p-4 rounded-lg bg-[#FAF7F2] border border-[#E5DDD0] space-y-3">
             <div className="flex items-center justify-between">
               <span className="font-bold text-[#0f2b38] text-sm">
                 2. 2021 CKD-EPI Creatinine Equation (KDIGO 2023 Dosing Standard)
@@ -120,7 +120,7 @@ export const RenalMathModal: React.FC<RenalMathModalProps> = ({
               </span>
             </div>
 
-            <div className="bg-white p-3 rounded border border-[#e2e8f0] font-mono text-xs text-[#191c1e] space-y-1">
+            <div className="bg-white p-3 rounded border border-[#E5DDD0] font-mono text-xs text-[#1E3A8A] space-y-1">
               <div>Male Constants: κ = 0.9, α = -0.302 | Ratio = {organStatus.renal.scr} / 0.9 = {(organStatus.renal.scr / 0.9).toFixed(3)}</div>
               <div>Calculated Result: {ckdEpi} mL/min/1.73m² (Classified as CKD Stage 3b: 30-44 mL/min)</div>
             </div>
@@ -136,7 +136,7 @@ export const RenalMathModal: React.FC<RenalMathModalProps> = ({
         </div>
 
         {/* Modal Footer */}
-        <div className="p-4 bg-[#f2f4f6] border-t border-[#e2e8f0] flex justify-end">
+        <div className="p-4 bg-[#F4EFE6] border-t border-[#E5DDD0] flex justify-end">
           <button
             onClick={onClose}
             className="px-4 py-2 rounded bg-[#0f2b38] text-white hover:bg-[#162a36] text-xs font-semibold cursor-pointer"

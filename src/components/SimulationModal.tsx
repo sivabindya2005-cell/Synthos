@@ -90,11 +90,11 @@ export const SimulationModal: React.FC<SimulationModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4">
-      <div className="bg-white rounded-xl shadow-2xl max-w-xl w-full border border-[#e2e8f0] overflow-hidden flex flex-col">
+      <div className="bg-white rounded-xl shadow-2xl max-w-xl w-full border border-[#E5DDD0] overflow-hidden flex flex-col">
         {/* Header */}
         <div className="p-4 bg-[#0d1c32] text-white flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="material-symbols-outlined text-[#14b8a6] text-[22px]">science</span>
+            <span className="material-symbols-outlined text-[#15803D] text-[22px]">science</span>
             <div>
               <h3 className="font-['Plus_Jakarta_Sans'] font-semibold text-base">
                 Pharmacokinetic &amp; Renal Twin Simulator
@@ -116,7 +116,7 @@ export const SimulationModal: React.FC<SimulationModalProps> = ({
         <div className="p-6 space-y-5 text-xs">
           {/* Quick Scenario Presets */}
           <div>
-            <label className="text-[11px] font-bold text-[#475569] uppercase tracking-wider block mb-2">
+            <label className="text-[11px] font-bold text-[#4B6584] uppercase tracking-wider block mb-2">
               Instant Simulation Presets
             </label>
             <div className="grid grid-cols-3 gap-2">
@@ -159,9 +159,9 @@ export const SimulationModal: React.FC<SimulationModalProps> = ({
           </div>
 
           {/* eGFR Slider */}
-          <div className="p-3 bg-[#f8fafc] rounded-lg border border-[#e2e8f0] space-y-2">
+          <div className="p-3 bg-[#FAF7F2] rounded-lg border border-[#E5DDD0] space-y-2">
             <div className="flex justify-between items-center">
-              <span className="font-bold text-[#191c1e]">Estimated GFR (mL/min/1.73m²):</span>
+              <span className="font-bold text-[#1E3A8A]">Estimated GFR (mL/min/1.73m²):</span>
               <span className={`text-base font-bold font-mono px-2 py-0.5 rounded ${
                 simEgfr < 30 ? 'bg-[#fee2e2] text-[#991b1b]' : simEgfr < 45 ? 'bg-[#fef3c7] text-[#92400e]' : 'bg-[#d1fae5] text-[#065f46]'
               }`}>
@@ -180,9 +180,9 @@ export const SimulationModal: React.FC<SimulationModalProps> = ({
                 // approximate reciprocal SCr
                 setSimScr(Number((75 / Math.max(15, val)).toFixed(2)));
               }}
-              className="w-full accent-[#006a61] cursor-pointer"
+              className="w-full accent-[#15803D] cursor-pointer"
             />
-            <div className="flex justify-between text-[10px] text-[#64748b]">
+            <div className="flex justify-between text-[10px] text-[#4B6584]">
               <span>15 (Severe CKD 4/5)</span>
               <span>30 (Contraindicated)</span>
               <span>45 (Threshold)</span>
@@ -193,8 +193,8 @@ export const SimulationModal: React.FC<SimulationModalProps> = ({
 
           {/* Serum Creatinine & Potassium Grid */}
           <div className="grid grid-cols-2 gap-3">
-            <div className="p-3 bg-[#f8fafc] rounded-lg border border-[#e2e8f0] space-y-1">
-              <label className="font-bold text-[#191c1e] block">Serum Creatinine (mg/dL)</label>
+            <div className="p-3 bg-[#FAF7F2] rounded-lg border border-[#E5DDD0] space-y-1">
+              <label className="font-bold text-[#1E3A8A] block">Serum Creatinine (mg/dL)</label>
               <input
                 type="number"
                 step="0.1"
@@ -206,8 +206,8 @@ export const SimulationModal: React.FC<SimulationModalProps> = ({
               />
             </div>
 
-            <div className="p-3 bg-[#f8fafc] rounded-lg border border-[#e2e8f0] space-y-1">
-              <label className="font-bold text-[#191c1e] block">Serum Potassium (mEq/L)</label>
+            <div className="p-3 bg-[#FAF7F2] rounded-lg border border-[#E5DDD0] space-y-1">
+              <label className="font-bold text-[#1E3A8A] block">Serum Potassium (mEq/L)</label>
               <input
                 type="number"
                 step="0.1"
@@ -221,8 +221,8 @@ export const SimulationModal: React.FC<SimulationModalProps> = ({
           </div>
 
           {/* Metformin Dose Selection */}
-          <div className="p-3 bg-[#f8fafc] rounded-lg border border-[#e2e8f0] space-y-1.5">
-            <label className="font-bold text-[#191c1e] block">Simulated Metformin Regimen</label>
+          <div className="p-3 bg-[#FAF7F2] rounded-lg border border-[#E5DDD0] space-y-1.5">
+            <label className="font-bold text-[#1E3A8A] block">Simulated Metformin Regimen</label>
             <div className="grid grid-cols-2 gap-2">
               {['1000 mg BID (2000 mg/day)', '500 mg BID (1000 mg/day)', '500 mg Daily (500 mg/day)', 'Discontinue (0 mg)'].map((opt) => (
                 <button
@@ -231,8 +231,8 @@ export const SimulationModal: React.FC<SimulationModalProps> = ({
                   onClick={() => setSimMetforminDose(opt)}
                   className={`p-2 rounded border text-left transition-colors cursor-pointer ${
                     simMetforminDose === opt
-                      ? 'border-[#006a61] bg-[#006a61]/10 text-[#006a61] font-bold'
-                      : 'border-[#cbd5e1] bg-white text-[#475569] hover:bg-[#f1f5f9]'
+                      ? 'border-[#15803D] bg-[#15803D]/10 text-[#15803D] font-bold'
+                      : 'border-[#cbd5e1] bg-white text-[#4B6584] hover:bg-[#f1f5f9]'
                   }`}
                 >
                   {opt}
@@ -263,23 +263,23 @@ export const SimulationModal: React.FC<SimulationModalProps> = ({
         </div>
 
         {/* Footer */}
-        <div className="p-4 bg-[#f2f4f6] border-t border-[#e2e8f0] flex items-center justify-between">
+        <div className="p-4 bg-[#F4EFE6] border-t border-[#E5DDD0] flex items-center justify-between">
           <button
             onClick={() => handleQuickPreset('baseline')}
-            className="text-xs text-[#475569] hover:underline"
+            className="text-xs text-[#4B6584] hover:underline"
           >
             Reset to Case Baseline
           </button>
           <div className="flex gap-2">
             <button
               onClick={onClose}
-              className="px-3 py-1.5 rounded border border-[#cbd5e1] bg-white text-[#191c1e] text-xs font-semibold cursor-pointer"
+              className="px-3 py-1.5 rounded border border-[#cbd5e1] bg-white text-[#1E3A8A] text-xs font-semibold cursor-pointer"
             >
               Cancel
             </button>
             <button
               onClick={handleApply}
-              className="px-4 py-1.5 rounded bg-[#006a61] text-white hover:bg-[#006f66] text-xs font-semibold cursor-pointer shadow-xs"
+              className="px-4 py-1.5 rounded bg-[#15803D] text-white hover:bg-[#006f66] text-xs font-semibold cursor-pointer shadow-xs"
             >
               Apply Simulation to Twin
             </button>

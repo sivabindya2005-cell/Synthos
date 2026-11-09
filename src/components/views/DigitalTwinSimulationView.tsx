@@ -148,7 +148,7 @@ export const DigitalTwinSimulationView: React.FC<DigitalTwinSimulationViewProps>
   };
 
   // Clinician authentication & profile
-  const { clinician, currentUser, isGuest, requireAuthForAction } = useClinicianAuth();
+  const { clinician, currentUser, isGuest, requireAuthForAction, refreshSavedCases, openPersonalizedModal } = useClinicianAuth();
   const [logNotification, setLogNotification] = useState<string | null>(null);
 
   // Deterministic PK & Validation
@@ -272,12 +272,13 @@ export const DigitalTwinSimulationView: React.FC<DigitalTwinSimulationViewProps>
           primarySafetyFinding: deterministicPK.safetyFinding || causationExplanation,
           guidelineViolationCode: deterministicPK.guidelineCode
         },
-        clinicianNotes: lastChangedParam || 'User simulation study'
-      });
+          clinicianNotes: lastChangedParam || 'User simulation study'
+        });
 
-      setLogNotification(`Case ${anonCaseId} permanently saved to Firestore Cloud Vault`);
-      setTimeout(() => setLogNotification(null), 4000);
-    } catch (err) {
+        await refreshSavedCases();
+        setLogNotification(`Case ${anonCaseId} saved to your personalized cloud cases! View in "My Cases".`);
+        setTimeout(() => setLogNotification(null), 4000);
+      } catch (err) {
       console.error('Failed to save simulation case to Firestore:', err);
       setLogNotification('Error saving case to cloud. Saved locally instead.');
       setTimeout(() => setLogNotification(null), 4000);
@@ -438,7 +439,7 @@ export const DigitalTwinSimulationView: React.FC<DigitalTwinSimulationViewProps>
       )}
 
       {/* Simulation Command Banner */}
-      <div className="bg-[#0B2545] text-white rounded-xl p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <div className="bg-[#1E3A8A] dark:bg-slate-900 text-white rounded-xl p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border border-[#1E3A8A] dark:border-slate-800 shadow-sm">
         <div>
           <div className="flex items-center gap-2 mb-1">
             <span className="text-xs font-mono text-teal-300 font-bold">
@@ -451,7 +452,7 @@ export const DigitalTwinSimulationView: React.FC<DigitalTwinSimulationViewProps>
           <h2 className="font-['Plus_Jakarta_Sans'] text-xl font-bold">
             Interactive Digital Twin &amp; Scenario Simulator
           </h2>
-          <p className="text-xs text-[#B5A496]">
+          <p className="text-xs text-slate-300 dark:text-slate-400">
             Modify biometric parameters, clearance values, and dose regimens to observe real-time pharmacokinetic shifts and rule evaluations.
           </p>
         </div>
@@ -461,7 +462,7 @@ export const DigitalTwinSimulationView: React.FC<DigitalTwinSimulationViewProps>
           <button
             onClick={handleSaveToFirestore}
             disabled={isSavingToCloud}
-            className="px-3 py-1.5 rounded bg-[#14B8A6] hover:bg-[#0F766E] disabled:opacity-50 text-white text-xs font-semibold flex items-center gap-1.5 cursor-pointer shadow-2xs transition-colors"
+            className="px-3 py-1.5 rounded bg-[#15803D] hover:bg-[#15803D] disabled:opacity-50 text-white text-xs font-semibold flex items-center gap-1.5 cursor-pointer shadow-2xs transition-colors"
             title={isGuest ? 'Sign in to save cases to Firestore cloud' : 'Save simulation case to Firestore Cloud Vault'}
           >
             <span className="material-symbols-outlined text-[16px]">
@@ -495,7 +496,7 @@ export const DigitalTwinSimulationView: React.FC<DigitalTwinSimulationViewProps>
 
           <button
             onClick={() => recordCurrentSimulationTelemetry('Manual simulation snapshot')}
-            className="px-3 py-1.5 rounded bg-[#0F766E] hover:bg-[#0B2545] text-[#f8fafc] text-xs font-semibold flex items-center gap-1.5 cursor-pointer shadow-2xs transition-colors border border-teal-500/40"
+            className="px-3 py-1.5 rounded bg-[#15803D] hover:bg-[#1E3A8A] text-[#f8fafc] text-xs font-semibold flex items-center gap-1.5 cursor-pointer shadow-2xs transition-colors border border-teal-500/40"
             title="Log current pharmacokinetic state to central telemetry database"
           >
             <span className="material-symbols-outlined text-[16px]">data_saver_on</span>
@@ -524,7 +525,7 @@ export const DigitalTwinSimulationView: React.FC<DigitalTwinSimulationViewProps>
 
           <button
             onClick={onOpenRenalMath}
-            className="px-3 py-1.5 rounded bg-[#0f766e] hover:bg-[#0F766E] text-white text-xs font-semibold flex items-center gap-1.5 cursor-pointer shadow-2xs transition-colors"
+            className="px-3 py-1.5 rounded bg-[#15803D] hover:bg-[#15803D] text-white text-xs font-semibold flex items-center gap-1.5 cursor-pointer shadow-2xs transition-colors"
           >
             <span className="material-symbols-outlined text-[16px]">calculate</span>
             <span>Inspect Equations</span>
@@ -544,15 +545,15 @@ export const DigitalTwinSimulationView: React.FC<DigitalTwinSimulationViewProps>
       </div>
 
       {/* Preset Scenario Quick Bar */}
-      <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-3 shadow-2xs flex flex-wrap items-center justify-between gap-3 text-xs transition-colors">
+      <div className="bg-white dark:bg-slate-900 rounded-xl border border-[#E5DDD0] dark:border-slate-800 p-3 shadow-2xs flex flex-wrap items-center justify-between gap-3 text-xs transition-colors">
         <div className="flex items-center gap-2">
-          <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase font-mono tracking-wider">
+          <span className="text-[10px] font-bold text-[#4B6584] dark:text-slate-400 uppercase font-mono tracking-wider">
             Educational Presets:
           </span>
           <div className="flex flex-wrap gap-1.5">
             <button
               onClick={() => handlePresetSelect('baseline')}
-              className="px-2.5 py-1 rounded bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold cursor-pointer transition-colors"
+              className="px-2.5 py-1 rounded bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-[#1E3A5F] dark:text-slate-300 font-semibold cursor-pointer transition-colors"
             >
               Baseline CKD 3b
             </button>
@@ -564,21 +565,21 @@ export const DigitalTwinSimulationView: React.FC<DigitalTwinSimulationViewProps>
             </button>
             <button
               onClick={() => handlePresetSelect('dose-reduction')}
-              className="px-2.5 py-1 rounded bg-[#E6F4F1] dark:bg-[#1e293b] border border-[#BEE3DB] dark:border-[#334155] hover:bg-[#D4ECE6] text-[#0f766e] dark:text-teal-300 font-semibold cursor-pointer transition-colors"
+              className="px-2.5 py-1 rounded bg-[#EEF7EE] dark:bg-[#1e293b] border border-[#CBE4CB] dark:border-[#334155] hover:bg-[#D4ECE6] text-[#15803D] dark:text-teal-300 font-semibold cursor-pointer transition-colors"
             >
               KDIGO Guideline Taper (500mg BID)
             </button>
             <button
               onClick={() => handlePresetSelect('normal')}
-              className="px-2.5 py-1 rounded bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold cursor-pointer transition-colors"
+              className="px-2.5 py-1 rounded bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-[#1E3A5F] dark:text-slate-300 font-semibold cursor-pointer transition-colors"
             >
               Normal Function (SCr 0.9)
             </button>
           </div>
         </div>
 
-        <div className="text-[11px] text-slate-500 dark:text-slate-400 font-mono">
-          Last event: <span className="text-slate-800 dark:text-slate-200 font-semibold">{lastChangedParam}</span>
+        <div className="text-[11px] text-[#4B6584] dark:text-slate-400 font-mono">
+          Last event: <span className="text-[#1E3A8A] dark:text-teal-300 font-semibold">{lastChangedParam}</span>
         </div>
       </div>
 
@@ -606,19 +607,19 @@ export const DigitalTwinSimulationView: React.FC<DigitalTwinSimulationViewProps>
       {/* Main Grid: Control Panel (5 cols) & Real-time Visualization (7 cols) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
         {/* Left Column: Interactive Parameters */}
-        <div className="lg:col-span-5 bg-white rounded-xl border border-slate-200 p-5 shadow-2xs space-y-4">
-          <div className="flex items-center justify-between border-b border-slate-200 pb-3">
-            <span className="text-xs font-bold text-slate-700 uppercase tracking-wider">
+        <div className="lg:col-span-5 bg-white dark:bg-slate-900 rounded-xl border border-[#E5DDD0] dark:border-slate-800 p-5 shadow-2xs space-y-4 transition-colors">
+          <div className="flex items-center justify-between border-b border-[#E5DDD0] dark:border-slate-800 pb-3">
+            <span className="text-xs font-bold text-[#1E3A5F] dark:text-slate-200 uppercase tracking-wider">
               Simulation Parameter Controls
             </span>
-            <span className="text-[10px] font-mono text-[#0f766e] bg-[#E6F4F1] px-2 py-0.5 rounded font-bold">
+            <span className="text-[10px] font-mono text-[#15803D] dark:text-teal-300 bg-[#EEF7EE] dark:bg-slate-800 px-2 py-0.5 rounded font-bold border border-[#CBE4CB] dark:border-slate-700">
               Active Patient: {patient.id}
             </span>
           </div>
 
           {/* Drug Selection */}
           <div className="space-y-1.5">
-            <label className="text-xs font-bold text-slate-800 block">
+            <label className="text-xs font-bold text-[#1E3A8A] dark:text-slate-200 block">
               Pharmacotherapy Regimen
             </label>
             <select
@@ -632,7 +633,7 @@ export const DigitalTwinSimulationView: React.FC<DigitalTwinSimulationViewProps>
                 if (drug === 'warfarin') setDoseMg(5);
                 setLastChangedParam(`Selected drug: ${drug.toUpperCase()}`);
               }}
-              className="w-full p-2 text-xs rounded border border-slate-300 bg-slate-50 font-medium outline-none focus:border-[#0d9488]"
+              className="w-full p-2 text-xs rounded border border-[#DDD4C5] dark:border-slate-700 bg-[#FAF7F2] dark:bg-slate-800 text-slate-900 dark:text-slate-100 font-medium outline-none focus:border-[#15803D]"
             >
               <option value="metformin">Metformin HCl (Biguanide Antidiabetic - Renal Excretion)</option>
               <option value="empagliflozin">Empagliflozin (SGLT2 Inhibitor - Cardiorenal Protection)</option>
@@ -643,8 +644,8 @@ export const DigitalTwinSimulationView: React.FC<DigitalTwinSimulationViewProps>
 
           {/* Dose and Interval Controls */}
           <div className="grid grid-cols-2 gap-3 text-xs">
-            <div className="p-3 bg-slate-50 rounded-lg border border-slate-200 space-y-1">
-              <label className="font-semibold text-slate-700 block">Dose per Administration</label>
+            <div className="p-3 bg-[#FAF7F2] rounded-lg border border-[#E5DDD0] space-y-1">
+              <label className="font-semibold text-[#1E3A5F] block">Dose per Administration</label>
               <div className="flex items-center gap-1">
                 <input
                   type="number"
@@ -657,14 +658,14 @@ export const DigitalTwinSimulationView: React.FC<DigitalTwinSimulationViewProps>
                     setDoseMg(val);
                     setLastChangedParam(`Dose adjusted to ${val} mg`);
                   }}
-                  className="w-full p-1.5 font-mono text-sm bg-white border border-slate-300 rounded font-bold"
+                  className="w-full p-1.5 font-mono text-sm bg-white border border-[#DDD4C5] rounded font-bold"
                 />
-                <span className="font-mono text-slate-500 font-semibold">mg</span>
+                <span className="font-mono text-[#4B6584] font-semibold">mg</span>
               </div>
             </div>
 
-            <div className="p-3 bg-slate-50 rounded-lg border border-slate-200 space-y-1">
-              <label className="font-semibold text-slate-700 block">Dosing Interval</label>
+            <div className="p-3 bg-[#FAF7F2] rounded-lg border border-[#E5DDD0] space-y-1">
+              <label className="font-semibold text-[#1E3A5F] block">Dosing Interval</label>
               <select
                 value={intervalHours}
                 onChange={(e) => {
@@ -672,7 +673,7 @@ export const DigitalTwinSimulationView: React.FC<DigitalTwinSimulationViewProps>
                   setIntervalHours(val);
                   setLastChangedParam(`Dosing interval changed to ${val} hours`);
                 }}
-                className="w-full p-1.5 text-xs bg-white border border-slate-300 rounded font-medium"
+                className="w-full p-1.5 text-xs bg-white border border-[#DDD4C5] rounded font-medium"
               >
                 <option value={12}>Every 12 hours (BID)</option>
                 <option value={24}>Every 24 hours (Daily)</option>
@@ -682,11 +683,11 @@ export const DigitalTwinSimulationView: React.FC<DigitalTwinSimulationViewProps>
           </div>
 
           {/* Serum Creatinine Slider */}
-          <div className="p-3.5 bg-slate-50 rounded-lg border border-slate-200 space-y-2 text-xs">
+          <div className="p-3.5 bg-[#FAF7F2] rounded-lg border border-[#E5DDD0] space-y-2 text-xs">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1.5">
-                <span className="font-bold text-slate-800">Serum Creatinine (SCr):</span>
-                <span className="text-[10px] text-[#0f766e] font-mono font-bold px-1.5 py-0.5 bg-[#E6F4F1] border border-[#BEE3DB] rounded">
+                <span className="font-bold text-[#1E3A8A]">Serum Creatinine (SCr):</span>
+                <span className="text-[10px] text-[#15803D] font-mono font-bold px-1.5 py-0.5 bg-[#EEF7EE] border border-[#CBE4CB] rounded">
                   0.01 digits
                 </span>
               </div>
@@ -698,12 +699,12 @@ export const DigitalTwinSimulationView: React.FC<DigitalTwinSimulationViewProps>
                     setScr(next);
                     setLastChangedParam(`SCr stepped to ${next.toFixed(2)} mg/dL`);
                   }}
-                  className="w-5 h-5 rounded bg-white hover:bg-slate-200 border border-slate-300 text-slate-700 font-bold flex items-center justify-center text-[11px] cursor-pointer"
+                  className="w-5 h-5 rounded bg-white hover:bg-slate-200 border border-[#DDD4C5] text-[#1E3A5F] font-bold flex items-center justify-center text-[11px] cursor-pointer"
                   title="Fine decrement (-0.02)"
                 >
                   -
                 </button>
-                <span className="font-mono text-sm font-bold text-slate-900 bg-white px-2 py-0.5 rounded border border-slate-300 shadow-2xs min-w-[70px] text-center">
+                <span className="font-mono text-sm font-bold text-[#1E3A8A] bg-white px-2 py-0.5 rounded border border-[#DDD4C5] shadow-2xs min-w-[70px] text-center">
                   {scr.toFixed(2)} mg/dL
                 </span>
                 <button
@@ -713,7 +714,7 @@ export const DigitalTwinSimulationView: React.FC<DigitalTwinSimulationViewProps>
                     setScr(next);
                     setLastChangedParam(`SCr stepped to ${next.toFixed(2)} mg/dL`);
                   }}
-                  className="w-5 h-5 rounded bg-white hover:bg-slate-200 border border-slate-300 text-slate-700 font-bold flex items-center justify-center text-[11px] cursor-pointer"
+                  className="w-5 h-5 rounded bg-white hover:bg-slate-200 border border-[#DDD4C5] text-[#1E3A5F] font-bold flex items-center justify-center text-[11px] cursor-pointer"
                   title="Fine increment (+0.02)"
                 >
                   +
@@ -731,9 +732,9 @@ export const DigitalTwinSimulationView: React.FC<DigitalTwinSimulationViewProps>
                 setScr(val);
                 setLastChangedParam(`SCr updated to ${val.toFixed(2)} mg/dL`);
               }}
-              className="w-full accent-[#0d9488] cursor-pointer"
+              className="w-full accent-[#15803D] cursor-pointer"
             />
-            <div className="flex justify-between text-[11px] font-mono text-slate-500">
+            <div className="flex justify-between text-[11px] font-mono text-[#4B6584]">
               <span>0.60 (Hyperfiltration)</span>
               <span>1.00 (Normal)</span>
               <span>1.80 (Stage 3b)</span>
@@ -742,11 +743,11 @@ export const DigitalTwinSimulationView: React.FC<DigitalTwinSimulationViewProps>
           </div>
 
           {/* Body Weight Slider */}
-          <div className="p-3.5 bg-slate-50 rounded-lg border border-slate-200 space-y-2 text-xs">
+          <div className="p-3.5 bg-[#FAF7F2] rounded-lg border border-[#E5DDD0] space-y-2 text-xs">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1.5">
-                <span className="font-bold text-slate-800">Body Weight (Actual / IBW):</span>
-                <span className="text-[10px] text-[#0f766e] font-mono font-bold px-1.5 py-0.5 bg-[#E6F4F1] border border-[#BEE3DB] rounded">
+                <span className="font-bold text-[#1E3A8A]">Body Weight (Actual / IBW):</span>
+                <span className="text-[10px] text-[#15803D] font-mono font-bold px-1.5 py-0.5 bg-[#EEF7EE] border border-[#CBE4CB] rounded">
                   0.1 kg
                 </span>
               </div>
@@ -758,13 +759,13 @@ export const DigitalTwinSimulationView: React.FC<DigitalTwinSimulationViewProps>
                     setWeightKg(next);
                     setLastChangedParam(`Weight stepped to ${next.toFixed(1)} kg`);
                   }}
-                  className="w-5 h-5 rounded bg-white hover:bg-slate-200 border border-slate-300 text-slate-700 font-bold flex items-center justify-center text-[11px] cursor-pointer"
+                  className="w-5 h-5 rounded bg-white hover:bg-slate-200 border border-[#DDD4C5] text-[#1E3A5F] font-bold flex items-center justify-center text-[11px] cursor-pointer"
                   title="Fine decrement (-0.2 kg)"
                 >
                   -
                 </button>
-                <span className="font-mono text-sm font-bold text-slate-900 bg-white px-2 py-0.5 rounded border border-slate-300 shadow-2xs">
-                  {weightKg.toFixed(1)} kg <span className="text-xs text-slate-500 font-normal">(IBW: {ibw}kg)</span>
+                <span className="font-mono text-sm font-bold text-[#1E3A8A] bg-white px-2 py-0.5 rounded border border-[#DDD4C5] shadow-2xs">
+                  {weightKg.toFixed(1)} kg <span className="text-xs text-[#4B6584] font-normal">(IBW: {ibw}kg)</span>
                 </span>
                 <button
                   type="button"
@@ -773,7 +774,7 @@ export const DigitalTwinSimulationView: React.FC<DigitalTwinSimulationViewProps>
                     setWeightKg(next);
                     setLastChangedParam(`Weight stepped to ${next.toFixed(1)} kg`);
                   }}
-                  className="w-5 h-5 rounded bg-white hover:bg-slate-200 border border-slate-300 text-slate-700 font-bold flex items-center justify-center text-[11px] cursor-pointer"
+                  className="w-5 h-5 rounded bg-white hover:bg-slate-200 border border-[#DDD4C5] text-[#1E3A5F] font-bold flex items-center justify-center text-[11px] cursor-pointer"
                   title="Fine increment (+0.2 kg)"
                 >
                   +
@@ -791,16 +792,16 @@ export const DigitalTwinSimulationView: React.FC<DigitalTwinSimulationViewProps>
                 setWeightKg(val);
                 setLastChangedParam(`Weight updated to ${val.toFixed(1)} kg`);
               }}
-              className="w-full accent-[#0d9488] cursor-pointer"
+              className="w-full accent-[#15803D] cursor-pointer"
             />
           </div>
 
           {/* Serum Potassium Slider */}
-          <div className="p-3.5 bg-slate-50 rounded-lg border border-slate-200 space-y-2 text-xs">
+          <div className="p-3.5 bg-[#FAF7F2] rounded-lg border border-[#E5DDD0] space-y-2 text-xs">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1.5">
-                <span className="font-bold text-slate-800">Serum Potassium (K+):</span>
-                <span className="text-[10px] text-[#0f766e] font-mono font-bold px-1.5 py-0.5 bg-[#E6F4F1] border border-[#BEE3DB] rounded">
+                <span className="font-bold text-[#1E3A8A]">Serum Potassium (K+):</span>
+                <span className="text-[10px] text-[#15803D] font-mono font-bold px-1.5 py-0.5 bg-[#EEF7EE] border border-[#CBE4CB] rounded">
                   0.02 digits
                 </span>
               </div>
@@ -812,14 +813,14 @@ export const DigitalTwinSimulationView: React.FC<DigitalTwinSimulationViewProps>
                     setPotassium(next);
                     setLastChangedParam(`Potassium stepped to ${next.toFixed(2)} mEq/L`);
                   }}
-                  className="w-5 h-5 rounded bg-white hover:bg-slate-200 border border-slate-300 text-slate-700 font-bold flex items-center justify-center text-[11px] cursor-pointer"
+                  className="w-5 h-5 rounded bg-white hover:bg-slate-200 border border-[#DDD4C5] text-[#1E3A5F] font-bold flex items-center justify-center text-[11px] cursor-pointer"
                   title="Fine decrement (-0.02 mEq/L)"
                 >
                   -
                 </button>
                 <span
                   className={`font-mono text-sm font-bold px-2 py-0.5 rounded border shadow-2xs ${
-                    potassium >= 5.0 ? 'bg-amber-100 text-amber-900 border-amber-300' : 'bg-white text-slate-900 border-slate-300'
+                    potassium >= 5.0 ? 'bg-amber-100 text-amber-900 border-amber-300' : 'bg-white text-[#1E3A8A] border-[#DDD4C5]'
                   }`}
                 >
                   {potassium.toFixed(2)} mEq/L
@@ -831,7 +832,7 @@ export const DigitalTwinSimulationView: React.FC<DigitalTwinSimulationViewProps>
                     setPotassium(next);
                     setLastChangedParam(`Potassium stepped to ${next.toFixed(2)} mEq/L`);
                   }}
-                  className="w-5 h-5 rounded bg-white hover:bg-slate-200 border border-slate-300 text-slate-700 font-bold flex items-center justify-center text-[11px] cursor-pointer"
+                  className="w-5 h-5 rounded bg-white hover:bg-slate-200 border border-[#DDD4C5] text-[#1E3A5F] font-bold flex items-center justify-center text-[11px] cursor-pointer"
                   title="Fine increment (+0.02 mEq/L)"
                 >
                   +
@@ -849,9 +850,9 @@ export const DigitalTwinSimulationView: React.FC<DigitalTwinSimulationViewProps>
                 setPotassium(val);
                 setLastChangedParam(`Potassium updated to ${val.toFixed(2)} mEq/L`);
               }}
-              className="w-full accent-[#0d9488] cursor-pointer"
+              className="w-full accent-[#15803D] cursor-pointer"
             />
-            <div className="flex justify-between text-[11px] font-mono text-slate-500">
+            <div className="flex justify-between text-[11px] font-mono text-[#4B6584]">
               <span>3.40 (Lower Normal)</span>
               <span>4.50 (Target)</span>
               <span>5.00 (Ceiling)</span>
@@ -874,7 +875,7 @@ export const DigitalTwinSimulationView: React.FC<DigitalTwinSimulationViewProps>
                     className={`p-2 rounded text-xs font-semibold border transition-all cursor-pointer ${
                       pgxVariant.includes(p.split(' ')[1])
                         ? 'bg-indigo-900 text-white border-indigo-900'
-                        : 'bg-white text-slate-700 border-indigo-200 hover:bg-indigo-100/50'
+                        : 'bg-white text-[#1E3A5F] border-indigo-200 hover:bg-indigo-100/50'
                     }`}
                   >
                     {p}
@@ -888,7 +889,7 @@ export const DigitalTwinSimulationView: React.FC<DigitalTwinSimulationViewProps>
         {/* Right Column: Dynamic Outputs, Curve, and Causation Explanation */}
         <div className="lg:col-span-7 space-y-4">
           {/* Real-time Parameter Causation Explainer Banner */}
-          <div className="p-4 rounded-xl bg-slate-900 text-white space-y-2 border border-slate-800 shadow-sm">
+          <div className="p-4 rounded-xl bg-slate-900 dark:bg-slate-950 text-white space-y-2 border border-slate-800 shadow-sm">
             <div className="flex items-center justify-between">
               <span className="text-[10px] font-mono text-teal-300 uppercase tracking-wider font-bold">
                 Mechanistic Parameter Causation Engine
@@ -904,92 +905,92 @@ export const DigitalTwinSimulationView: React.FC<DigitalTwinSimulationViewProps>
 
           {/* Dynamic Organ Metric Cards */}
           <div className="grid grid-cols-3 gap-3">
-            <div className="p-3 rounded-xl bg-white border border-slate-200 shadow-2xs">
-              <span className="text-[10px] font-bold text-slate-500 uppercase font-mono block">CKD-EPI (2021) eGFR</span>
+            <div className="p-3 rounded-xl bg-white dark:bg-slate-900 border border-[#E5DDD0] dark:border-slate-800 shadow-2xs transition-colors">
+              <span className="text-[10px] font-bold text-[#4B6584] dark:text-slate-400 uppercase font-mono block">CKD-EPI (2021) eGFR</span>
               <span className={`text-2xl font-bold font-mono mt-1 block ${
-                egfr < 30 ? 'text-[#DC2626]' : egfr < 45 ? 'text-amber-700' : 'text-[#0d9488]'
+                egfr < 30 ? 'text-[#DC2626] dark:text-rose-400' : egfr < 45 ? 'text-amber-700 dark:text-amber-400' : 'text-[#15803D] dark:text-teal-300'
               }`}>
-                {egfr} <span className="text-xs font-normal text-slate-500">mL/min</span>
+                {egfr} <span className="text-xs font-normal text-[#4B6584] dark:text-slate-400">mL/min</span>
               </span>
-              <span className="text-[11px] text-slate-500">
+              <span className="text-[11px] text-[#4B6584] dark:text-slate-400">
                 {egfr < 30 ? 'Stage 4 / 5 (Severe)' : egfr < 45 ? 'Stage 3b (Moderate)' : egfr < 60 ? 'Stage 3a (Mild)' : 'Normal Function'}
               </span>
             </div>
 
-            <div className="p-3 rounded-xl bg-white border border-slate-200 shadow-2xs">
-              <span className="text-[10px] font-bold text-slate-500 uppercase font-mono block">Cockcroft-Gault CrCl</span>
-              <span className="text-2xl font-bold font-mono text-slate-900 mt-1 block">
-                {cgResult.crcl} <span className="text-xs font-normal text-slate-500">mL/min</span>
+            <div className="p-3 rounded-xl bg-white dark:bg-slate-900 border border-[#E5DDD0] dark:border-slate-800 shadow-2xs transition-colors">
+              <span className="text-[10px] font-bold text-[#4B6584] dark:text-slate-400 uppercase font-mono block">Cockcroft-Gault CrCl</span>
+              <span className="text-2xl font-bold font-mono text-[#1E3A8A] dark:text-slate-100 mt-1 block">
+                {cgResult.crcl} <span className="text-xs font-normal text-[#4B6584] dark:text-slate-400">mL/min</span>
               </span>
-              <span className="text-[11px] text-slate-500">
+              <span className="text-[11px] text-[#4B6584] dark:text-slate-400">
                 AdjBW {cgResult.weightUsed} kg applied
               </span>
             </div>
 
-            <div className="p-3 rounded-xl bg-white border border-slate-200 shadow-2xs">
-              <span className="text-[10px] font-bold text-slate-500 uppercase font-mono block">Simulated Half-Life</span>
+            <div className="p-3 rounded-xl bg-white dark:bg-slate-900 border border-[#E5DDD0] dark:border-slate-800 shadow-2xs transition-colors">
+              <span className="text-[10px] font-bold text-[#4B6584] dark:text-slate-400 uppercase font-mono block">Simulated Half-Life</span>
               <span className={`text-2xl font-bold font-mono mt-1 block ${
-                simulatedHalfLife > 12 ? 'text-amber-700' : 'text-slate-900'
+                simulatedHalfLife > 12 ? 'text-amber-700 dark:text-amber-400' : 'text-[#1E3A8A] dark:text-teal-300'
               }`}>
-                {simulatedHalfLife} <span className="text-xs font-normal text-slate-500">hours</span>
+                {simulatedHalfLife} <span className="text-xs font-normal text-[#4B6584] dark:text-slate-400">hours</span>
               </span>
-              <span className="text-[11px] text-slate-500">
+              <span className="text-[11px] text-[#4B6584] dark:text-slate-400">
                 Baseline reference: {baselineHalfLife}h
               </span>
             </div>
           </div>
 
           {/* Secondary Deterministic PK Engine Outputs Grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 p-3 rounded-xl bg-slate-100 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 font-mono text-xs">
-            <div className="bg-white dark:bg-slate-900 p-2.5 rounded-lg border border-slate-200 dark:border-slate-800">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 p-3 rounded-xl bg-slate-100 dark:bg-slate-800/60 border border-[#E5DDD0] dark:border-slate-700 font-mono text-xs">
+            <div className="bg-white dark:bg-slate-900 p-2.5 rounded-lg border border-[#E5DDD0] dark:border-slate-800">
               <span className="text-[9px] uppercase font-bold text-slate-400 block">Dist. Volume (Vd)</span>
-              <span className="text-sm font-bold text-slate-900 dark:text-slate-100 mt-0.5 block">
+              <span className="text-sm font-bold text-[#1E3A8A] dark:text-slate-100 mt-0.5 block">
                 {deterministicPK.vdLiters} L
               </span>
-              <span className="text-[10px] text-slate-500 font-sans">
+              <span className="text-[10px] text-[#4B6584] font-sans">
                 {(deterministicPK.vdLiters / weightKg).toFixed(2)} L/kg
               </span>
             </div>
 
-            <div className="bg-white dark:bg-slate-900 p-2.5 rounded-lg border border-slate-200 dark:border-slate-800">
+            <div className="bg-white dark:bg-slate-900 p-2.5 rounded-lg border border-[#E5DDD0] dark:border-slate-800">
               <span className="text-[9px] uppercase font-bold text-slate-400 block">Total Clearance (CL)</span>
-              <span className="text-sm font-bold text-[#0d9488] dark:text-teal-300 mt-0.5 block">
+              <span className="text-sm font-bold text-[#15803D] dark:text-teal-300 mt-0.5 block">
                 {deterministicPK.clearanceLperH} L/h
               </span>
-              <span className="text-[10px] text-slate-500 font-sans">
+              <span className="text-[10px] text-[#4B6584] font-sans">
                 {((deterministicPK.clearanceLperH * 1000) / 60).toFixed(1)} mL/min
               </span>
             </div>
 
-            <div className="bg-white dark:bg-slate-900 p-2.5 rounded-lg border border-slate-200 dark:border-slate-800">
+            <div className="bg-white dark:bg-slate-900 p-2.5 rounded-lg border border-[#E5DDD0] dark:border-slate-800">
               <span className="text-[9px] uppercase font-bold text-slate-400 block">Steady-State Trough</span>
-              <span className="text-sm font-bold text-slate-900 dark:text-slate-100 mt-0.5 block">
+              <span className="text-sm font-bold text-[#1E3A8A] dark:text-slate-100 mt-0.5 block">
                 {deterministicPK.troughSteadyStateCss} mcg/mL
               </span>
-              <span className="text-[10px] text-slate-500 font-sans">
+              <span className="text-[10px] text-[#4B6584] font-sans">
                 Peak: {deterministicPK.peakSteadyStateCss} mcg/mL
               </span>
             </div>
 
-            <div className="bg-white dark:bg-slate-900 p-2.5 rounded-lg border border-slate-200 dark:border-slate-800">
+            <div className="bg-white dark:bg-slate-900 p-2.5 rounded-lg border border-[#E5DDD0] dark:border-slate-800">
               <span className="text-[9px] uppercase font-bold text-slate-400 block">24h Exposure (AUC)</span>
-              <span className="text-sm font-bold text-slate-900 dark:text-slate-100 mt-0.5 block">
+              <span className="text-sm font-bold text-[#1E3A8A] dark:text-slate-100 mt-0.5 block">
                 {deterministicPK.aucTau} mcg·h/mL
               </span>
-              <span className="text-[10px] text-slate-500 font-sans">
+              <span className="text-[10px] text-[#4B6584] font-sans">
                 R: {deterministicPK.accumulationRatio}x
               </span>
             </div>
           </div>
 
           {/* Interactive Output Tabs */}
-          <div className="flex items-center gap-2 border-b border-slate-200 dark:border-slate-700 text-xs">
+          <div className="flex items-center gap-2 border-b border-[#E5DDD0] dark:border-slate-700 text-xs">
             <button
               onClick={() => setActiveOutputTab('curve')}
               className={`px-3 py-2 font-semibold border-b-2 transition-colors cursor-pointer flex items-center gap-1.5 ${
                 activeOutputTab === 'curve'
-                  ? 'border-[#0d9488] text-[#0f766e] dark:text-teal-300'
-                  : 'border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
+                  ? 'border-[#15803D] text-[#15803D] dark:text-teal-300'
+                  : 'border-transparent text-[#4B6584] hover:text-[#1E3A8A] dark:hover:text-slate-200'
               }`}
             >
               <span className="material-symbols-outlined text-[16px]">show_chart</span>
@@ -1000,8 +1001,8 @@ export const DigitalTwinSimulationView: React.FC<DigitalTwinSimulationViewProps>
               onClick={() => setActiveOutputTab('lineage')}
               className={`px-3 py-2 font-semibold border-b-2 transition-colors cursor-pointer flex items-center gap-1.5 ${
                 activeOutputTab === 'lineage'
-                  ? 'border-[#0d9488] text-[#0f766e] dark:text-teal-300'
-                  : 'border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
+                  ? 'border-[#15803D] text-[#15803D] dark:text-teal-300'
+                  : 'border-transparent text-[#4B6584] hover:text-[#1E3A8A] dark:hover:text-slate-200'
               }`}
             >
               <span className="material-symbols-outlined text-[16px]">menu_book</span>
@@ -1013,7 +1014,7 @@ export const DigitalTwinSimulationView: React.FC<DigitalTwinSimulationViewProps>
               className={`px-3 py-2 font-semibold border-b-2 transition-colors cursor-pointer flex items-center gap-1.5 ${
                 activeOutputTab === 'ai'
                   ? 'border-indigo-600 text-indigo-700 dark:text-indigo-400'
-                  : 'border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
+                  : 'border-transparent text-[#4B6584] hover:text-[#1E3A8A] dark:hover:text-slate-200'
               }`}
             >
               <span className="material-symbols-outlined text-[16px]">psychology</span>
@@ -1025,13 +1026,13 @@ export const DigitalTwinSimulationView: React.FC<DigitalTwinSimulationViewProps>
           {/* TAB 1: Simulated PK Curve */}
           {activeOutputTab === 'curve' && (
             <div className="space-y-4 animate-fade-in">
-              <div className="p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-2xs space-y-3">
+              <div className="p-4 bg-white dark:bg-slate-900 rounded-xl border border-[#E5DDD0] dark:border-slate-800 shadow-2xs space-y-3 transition-colors">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h3 className="font-['Plus_Jakarta_Sans'] font-semibold text-sm text-slate-900 dark:text-slate-100">
+                    <h3 className="font-['Plus_Jakarta_Sans'] font-semibold text-sm text-[#1E3A8A] dark:text-slate-100">
                       Simulated Steady-State Plasma Curve (Css) — 36h Multi-Dose Profile
                     </h3>
-                    <span className="text-[11px] text-slate-500 dark:text-slate-400">
+                    <span className="text-[11px] text-[#4B6584] dark:text-slate-400">
                       Model: Deterministic 1-Compartment oral absorption with repeated dosing every {intervalHours}h
                     </span>
                   </div>
@@ -1048,7 +1049,7 @@ export const DigitalTwinSimulationView: React.FC<DigitalTwinSimulationViewProps>
                         else if (selectedDrug === 'lisinopril') onOpenProvenance('prov-lis-acei');
                         else onOpenProvenance('prov-pk-model-met');
                       }}
-                      className="text-xs text-[#0d9488] dark:text-teal-300 hover:underline font-semibold flex items-center gap-0.5 cursor-pointer"
+                      className="text-xs text-[#15803D] dark:text-teal-300 hover:underline font-semibold flex items-center gap-0.5 cursor-pointer"
                     >
                       <span>Provenance</span>
                       <span className="material-symbols-outlined text-[14px]">open_in_new</span>
@@ -1057,12 +1058,12 @@ export const DigitalTwinSimulationView: React.FC<DigitalTwinSimulationViewProps>
                 </div>
 
                 {/* SVG Plot */}
-                <div className="relative w-full h-44 bg-slate-50 dark:bg-slate-950/60 rounded-lg p-2 border border-slate-200 dark:border-slate-800 overflow-hidden">
+                <div className="relative w-full h-44 bg-[#FAF7F2] dark:bg-slate-950/80 rounded-lg p-2 border border-[#E5DDD0] dark:border-slate-800 overflow-hidden">
                   <svg className="w-full h-full" preserveAspectRatio="none" viewBox="0 0 680 120">
                     <defs>
                       <linearGradient id="activeGradient" x1="0" x2="0" y1="0" y2="1">
-                        <stop offset="0%" stopColor={isMetforminLacticAcidosisZone ? '#991b1b' : '#0d9488'} stopOpacity="0.25" />
-                        <stop offset="100%" stopColor={isMetforminLacticAcidosisZone ? '#991b1b' : '#0d9488'} stopOpacity="0.0" />
+                        <stop offset="0%" stopColor={isMetforminLacticAcidosisZone ? '#991b1b' : '#15803D'} stopOpacity="0.25" />
+                        <stop offset="100%" stopColor={isMetforminLacticAcidosisZone ? '#991b1b' : '#15803D'} stopOpacity="0.0" />
                       </linearGradient>
                     </defs>
 
@@ -1093,7 +1094,7 @@ export const DigitalTwinSimulationView: React.FC<DigitalTwinSimulationViewProps>
                     <path
                       d={activePath}
                       fill="none"
-                      stroke={deterministicPK.safetyCeilingExceeded ? '#DC2626' : '#0F766E'}
+                      stroke={deterministicPK.safetyCeilingExceeded ? '#DC2626' : '#15803D'}
                       strokeWidth="2.5"
                     />
 
@@ -1101,24 +1102,24 @@ export const DigitalTwinSimulationView: React.FC<DigitalTwinSimulationViewProps>
                     <circle
                       cx={540}
                       cy={Math.max(10, 110 - (activePeak / 3.2) * 100)}
-                      fill={deterministicPK.safetyCeilingExceeded ? '#DC2626' : '#14B8A6'}
+                      fill={deterministicPK.safetyCeilingExceeded ? '#DC2626' : '#15803D'}
                       r="4.5"
                     />
                   </svg>
 
-                  <div className="absolute right-4 top-3 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xs rounded px-2.5 py-1 text-xs border border-slate-200 dark:border-slate-800 shadow-2xs font-mono">
-                    Predicted Peak: <strong className={deterministicPK.safetyCeilingExceeded ? 'text-[#DC2626] dark:text-rose-400' : 'text-[#0d9488] dark:text-teal-300'}>
+                  <div className="absolute right-4 top-3 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xs rounded px-2.5 py-1 text-xs border border-[#E5DDD0] dark:border-slate-800 shadow-2xs font-mono">
+                    Predicted Peak: <strong className={deterministicPK.safetyCeilingExceeded ? 'text-[#DC2626] dark:text-rose-400' : 'text-[#15803D] dark:text-teal-300'}>
                       {deterministicPK.peakSteadyStateCss} mcg/mL
                     </strong>
                     {isCompareMode && (
-                      <span className="text-slate-500 ml-2">
+                      <span className="text-[#4B6584] ml-2">
                         (Baseline: {baselinePeak.toFixed(2)})
                       </span>
                     )}
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between text-[11px] font-mono text-slate-500 dark:text-slate-400">
+                <div className="flex items-center justify-between text-[11px] font-mono text-[#4B6584] dark:text-slate-400">
                   <span>0h (Trough)</span>
                   <span>12h Interval Dose</span>
                   <span>24h Steady State</span>
@@ -1150,34 +1151,34 @@ export const DigitalTwinSimulationView: React.FC<DigitalTwinSimulationViewProps>
                     </thead>
                     <tbody className="divide-y divide-indigo-100 dark:divide-indigo-900/40 font-mono text-xs">
                       <tr>
-                        <td className="py-1.5 text-slate-700 dark:text-slate-300 font-sans">eGFR (CKD-EPI)</td>
-                        <td className="py-1.5 text-slate-600 dark:text-slate-400">{baselineEgfr} mL/min</td>
-                        <td className="py-1.5 font-bold text-slate-900 dark:text-slate-100">{egfr} mL/min</td>
+                        <td className="py-1.5 text-[#1E3A5F] dark:text-slate-300 font-sans">eGFR (CKD-EPI)</td>
+                        <td className="py-1.5 text-[#1E3A5F] dark:text-slate-400">{baselineEgfr} mL/min</td>
+                        <td className="py-1.5 font-bold text-[#1E3A8A] dark:text-slate-100">{egfr} mL/min</td>
                         <td className={`py-1.5 text-right font-bold ${egfr < baselineEgfr ? 'text-[#DC2626] dark:text-rose-400' : 'text-emerald-700 dark:text-emerald-400'}`}>
                           {egfr - baselineEgfr > 0 ? `+${egfr - baselineEgfr}` : `${egfr - baselineEgfr}`} mL/min
                         </td>
                       </tr>
                       <tr>
-                        <td className="py-1.5 text-slate-700 dark:text-slate-300 font-sans">Cockcroft-Gault CrCl</td>
-                        <td className="py-1.5 text-slate-600 dark:text-slate-400">{baselineCg.crcl} mL/min</td>
-                        <td className="py-1.5 font-bold text-slate-900 dark:text-slate-100">{cgResult.crcl} mL/min</td>
-                        <td className="py-1.5 text-right font-bold text-slate-700 dark:text-slate-300">
+                        <td className="py-1.5 text-[#1E3A5F] dark:text-slate-300 font-sans">Cockcroft-Gault CrCl</td>
+                        <td className="py-1.5 text-[#1E3A5F] dark:text-slate-400">{baselineCg.crcl} mL/min</td>
+                        <td className="py-1.5 font-bold text-[#1E3A8A] dark:text-slate-100">{cgResult.crcl} mL/min</td>
+                        <td className="py-1.5 text-right font-bold text-[#1E3A5F] dark:text-slate-300">
                           {(cgResult.crcl - baselineCg.crcl).toFixed(1)} mL/min
                         </td>
                       </tr>
                       <tr>
-                        <td className="py-1.5 text-slate-700 dark:text-slate-300 font-sans">Predicted Peak (Css)</td>
-                        <td className="py-1.5 text-slate-600 dark:text-slate-400">{baselinePeak.toFixed(2)} mcg/mL</td>
-                        <td className="py-1.5 font-bold text-slate-900 dark:text-slate-100">{deterministicPK.peakSteadyStateCss} mcg/mL</td>
+                        <td className="py-1.5 text-[#1E3A5F] dark:text-slate-300 font-sans">Predicted Peak (Css)</td>
+                        <td className="py-1.5 text-[#1E3A5F] dark:text-slate-400">{baselinePeak.toFixed(2)} mcg/mL</td>
+                        <td className="py-1.5 font-bold text-[#1E3A8A] dark:text-slate-100">{deterministicPK.peakSteadyStateCss} mcg/mL</td>
                         <td className={`py-1.5 text-right font-bold ${activePeak > baselinePeak ? 'text-[#DC2626] dark:text-rose-400' : 'text-emerald-700 dark:text-emerald-400'}`}>
                           {activePeak > baselinePeak ? `+${((activePeak - baselinePeak) / baselinePeak * 100).toFixed(0)}%` : `${((activePeak - baselinePeak) / baselinePeak * 100).toFixed(0)}%`}
                         </td>
                       </tr>
                       <tr>
-                        <td className="py-1.5 text-slate-700 dark:text-slate-300 font-sans">Drug Half-Life (t1/2)</td>
-                        <td className="py-1.5 text-slate-600 dark:text-slate-400">{baselineHalfLife} hours</td>
-                        <td className="py-1.5 font-bold text-slate-900 dark:text-slate-100">{deterministicPK.halfLifeHours} hours</td>
-                        <td className="py-1.5 text-right text-slate-700 dark:text-slate-300">
+                        <td className="py-1.5 text-[#1E3A5F] dark:text-slate-300 font-sans">Drug Half-Life (t1/2)</td>
+                        <td className="py-1.5 text-[#1E3A5F] dark:text-slate-400">{baselineHalfLife} hours</td>
+                        <td className="py-1.5 font-bold text-[#1E3A8A] dark:text-slate-100">{deterministicPK.halfLifeHours} hours</td>
+                        <td className="py-1.5 text-right text-[#1E3A5F] dark:text-slate-300">
                           {(deterministicPK.halfLifeHours - baselineHalfLife).toFixed(1)}h
                         </td>
                       </tr>
@@ -1190,52 +1191,52 @@ export const DigitalTwinSimulationView: React.FC<DigitalTwinSimulationViewProps>
 
           {/* TAB 2: Mathematical Lineage & Formulas */}
           {activeOutputTab === 'lineage' && (
-            <div className="p-5 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 space-y-4 text-xs animate-fade-in">
+            <div className="p-5 bg-white dark:bg-slate-900 rounded-xl border border-[#E5DDD0] dark:border-slate-800 space-y-4 text-xs animate-fade-in">
               <div>
-                <h3 className="font-['Plus_Jakarta_Sans'] font-bold text-sm text-slate-900 dark:text-slate-100 flex items-center gap-2">
-                  <span className="material-symbols-outlined text-[#0d9488] dark:text-teal-300 text-[18px]">functions</span>
+                <h3 className="font-['Plus_Jakarta_Sans'] font-bold text-sm text-[#1E3A8A] dark:text-slate-100 flex items-center gap-2">
+                  <span className="material-symbols-outlined text-[#15803D] dark:text-teal-300 text-[18px]">functions</span>
                   <span>Deterministic Mathematical Lineage &amp; Validation Proof</span>
                 </h3>
-                <p className="text-slate-500 dark:text-slate-400 text-[11px] mt-0.5">
+                <p className="text-[#4B6584] dark:text-slate-400 text-[11px] mt-0.5">
                   All calculations below are algorithmic and deterministic. AI is strictly excluded from numerical computation.
                 </p>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <div className="p-3.5 rounded-lg bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 space-y-1.5">
-                  <span className="font-bold text-slate-800 dark:text-slate-200 block text-[11px] uppercase font-mono">
+                <div className="p-3.5 rounded-lg bg-[#FAF7F2] dark:bg-slate-800/80 border border-[#E5DDD0] dark:border-slate-700 space-y-1.5">
+                  <span className="font-bold text-[#1E3A8A] dark:text-slate-200 block text-[11px] uppercase font-mono">
                     Renal Clearance Formula (Cockcroft-Gault)
                   </span>
-                  <div className="font-mono text-[11px] text-[#0f766e] dark:text-teal-300 bg-white dark:bg-slate-900 p-2 rounded border border-slate-200 dark:border-slate-800">
+                  <div className="font-mono text-[11px] text-[#15803D] dark:text-teal-300 bg-white dark:bg-slate-900 p-2 rounded border border-[#E5DDD0] dark:border-slate-800">
                     {cgResult.formulaString}
                   </div>
-                  <div className="text-[11px] text-slate-600 dark:text-slate-400">
+                  <div className="text-[11px] text-[#1E3A5F] dark:text-slate-400">
                     <strong>Reference:</strong> {cgResult.reference}
                   </div>
                 </div>
 
-                <div className="p-3.5 rounded-lg bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 space-y-1.5">
-                  <span className="font-bold text-slate-800 dark:text-slate-200 block text-[11px] uppercase font-mono">
+                <div className="p-3.5 rounded-lg bg-[#FAF7F2] dark:bg-slate-800/80 border border-[#E5DDD0] dark:border-slate-700 space-y-1.5">
+                  <span className="font-bold text-[#1E3A8A] dark:text-slate-200 block text-[11px] uppercase font-mono">
                     Pharmacokinetic Kinetic Formula (One-Compartment)
                   </span>
-                  <div className="font-mono text-[11px] text-[#0f766e] dark:text-teal-300 bg-white dark:bg-slate-900 p-2 rounded border border-slate-200 dark:border-slate-800">
+                  <div className="font-mono text-[11px] text-[#15803D] dark:text-teal-300 bg-white dark:bg-slate-900 p-2 rounded border border-[#E5DDD0] dark:border-slate-800">
                     {deterministicPK.formulaMetadata.cMaxFormula}
                   </div>
-                  <div className="text-[11px] text-slate-600 dark:text-slate-400">
+                  <div className="text-[11px] text-[#1E3A5F] dark:text-slate-400">
                     <strong>Reference:</strong> {deterministicPK.formulaMetadata.primaryReference}
                   </div>
                 </div>
               </div>
 
               {/* Evaluated Clinical Guideline Rules */}
-              <div className="space-y-2 pt-2 border-t border-slate-200 dark:border-slate-800">
-                <span className="font-bold text-slate-800 dark:text-slate-200 block text-[11px] uppercase font-mono">
+              <div className="space-y-2 pt-2 border-t border-[#E5DDD0] dark:border-slate-800">
+                <span className="font-bold text-[#1E3A8A] dark:text-slate-200 block text-[11px] uppercase font-mono">
                   Guideline Rules Evaluated:
                 </span>
                 <div className={`p-3 rounded-lg border text-xs flex items-start gap-2 ${
                   deterministicPK.safetyCeilingExceeded
                     ? 'bg-rose-50 dark:bg-rose-950/50 border-rose-200 dark:border-rose-800 text-rose-900 dark:text-rose-200'
-                    : 'bg-[#E6F4F1] dark:bg-[#1e293b] border-[#BEE3DB] dark:border-[#334155] text-[#0f766e] dark:text-teal-300'
+                    : 'bg-[#EEF7EE] dark:bg-[#1e293b] border-[#CBE4CB] dark:border-[#334155] text-[#15803D] dark:text-teal-300'
                 }`}>
                   <span className="material-symbols-outlined text-[18px] shrink-0 mt-0.5">
                     {deterministicPK.safetyCeilingExceeded ? 'cancel' : 'check_circle'}
@@ -1256,14 +1257,14 @@ export const DigitalTwinSimulationView: React.FC<DigitalTwinSimulationViewProps>
 
           {/* TAB 3: Plain-Language AI Interpretation */}
           {activeOutputTab === 'ai' && (
-            <div className="p-5 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 space-y-4 text-xs animate-fade-in">
+            <div className="p-5 bg-white dark:bg-slate-900 rounded-xl border border-[#E5DDD0] dark:border-slate-800 space-y-4 text-xs animate-fade-in">
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="font-['Plus_Jakarta_Sans'] font-bold text-sm text-slate-900 dark:text-slate-100 flex items-center gap-2">
+                  <h3 className="font-['Plus_Jakarta_Sans'] font-bold text-sm text-[#1E3A8A] dark:text-slate-100 flex items-center gap-2">
                     <span className="material-symbols-outlined text-indigo-600 text-[18px]">psychology</span>
                     <span>Plain-Language Clinical Interpretation</span>
                   </h3>
-                  <p className="text-slate-500 dark:text-slate-400 text-[11px] mt-0.5">
+                  <p className="text-[#4B6584] dark:text-slate-400 text-[11px] mt-0.5">
                     Grounded strictly in verified deterministic calculations and peer-reviewed clinical guidelines.
                   </p>
                 </div>
@@ -1283,13 +1284,13 @@ export const DigitalTwinSimulationView: React.FC<DigitalTwinSimulationViewProps>
               {isExplaining ? (
                 <div className="p-8 text-center space-y-2">
                   <div className="w-8 h-8 mx-auto border-3 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
-                  <p className="text-xs text-slate-600 dark:text-slate-400 font-medium">
+                  <p className="text-xs text-[#1E3A5F] dark:text-slate-400 font-medium">
                     Consulting clinical pharmacology guidelines...
                   </p>
                 </div>
               ) : aiExplanation ? (
                 <div className="space-y-3">
-                  <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 leading-relaxed text-slate-800 dark:text-slate-200 whitespace-pre-line text-xs font-sans">
+                  <div className="p-4 rounded-xl bg-[#FAF7F2] dark:bg-slate-800/80 border border-[#E5DDD0] dark:border-slate-700 leading-relaxed text-[#1E3A8A] dark:text-slate-200 whitespace-pre-line text-xs font-sans">
                     {aiExplanation}
                   </div>
 
@@ -1301,9 +1302,9 @@ export const DigitalTwinSimulationView: React.FC<DigitalTwinSimulationViewProps>
                   </div>
                 </div>
               ) : (
-                <div className="p-8 text-center space-y-3 border border-dashed border-slate-300 dark:border-slate-700 rounded-xl">
+                <div className="p-8 text-center space-y-3 border border-dashed border-[#DDD4C5] dark:border-slate-700 rounded-xl">
                   <span className="material-symbols-outlined text-4xl text-slate-400">psychology</span>
-                  <p className="text-slate-600 dark:text-slate-400 text-xs">
+                  <p className="text-[#1E3A5F] dark:text-slate-400 text-xs">
                     Click "Explain with AI" to generate an authoritative plain-language synthesis of this patient's pharmacokinetic state.
                   </p>
                   <button

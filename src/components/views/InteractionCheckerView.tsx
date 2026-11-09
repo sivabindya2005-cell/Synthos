@@ -302,7 +302,7 @@ export const InteractionCheckerView: React.FC<InteractionCheckerViewProps> = ({
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 pb-3">
           <div>
             <h3 className="font-['Plus_Jakarta_Sans'] font-semibold text-sm text-slate-900 flex items-center gap-2">
-              <span className="material-symbols-outlined text-[#0F766E] text-[18px]">add_circle</span>
+              <span className="material-symbols-outlined text-[#15803D] text-[18px]">add_circle</span>
               <span>Prospective Co-Prescription &amp; Polypharmacy Stress-Tester</span>
             </h3>
             <p className="text-xs text-slate-500">
@@ -325,7 +325,7 @@ export const InteractionCheckerView: React.FC<InteractionCheckerViewProps> = ({
             <button
               onClick={handleAddCandidate}
               type="button"
-              className="px-4 py-2 rounded-lg bg-[#0F766E] hover:bg-teal-900 text-white text-xs font-semibold flex items-center gap-1.5 cursor-pointer shadow-xs transition-colors"
+              className="px-4 py-2 rounded-lg bg-[#15803D] hover:bg-teal-900 text-white text-xs font-semibold flex items-center gap-1.5 cursor-pointer shadow-xs transition-colors"
             >
               <span className="material-symbols-outlined text-[16px]">add</span>
               <span>Add to Simulation</span>
@@ -375,7 +375,7 @@ export const InteractionCheckerView: React.FC<InteractionCheckerViewProps> = ({
               onClick={() => setActiveTab(tab.id as any)}
               className={`px-4 py-3 flex items-center gap-2 border-b-2 transition-colors whitespace-nowrap cursor-pointer ${
                 activeTab === tab.id
-                  ? 'border-teal-700 text-[#0F766E] bg-white font-bold'
+                  ? 'border-teal-700 text-[#15803D] bg-white font-bold'
                   : 'border-transparent text-slate-600 hover:text-slate-900'
               }`}
             >
@@ -393,7 +393,7 @@ export const InteractionCheckerView: React.FC<InteractionCheckerViewProps> = ({
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <span className="font-bold text-slate-900 text-sm">Metformin HCl</span>
-                    <span className="text-[#0F766E] font-mono">⟷</span>
+                    <span className="text-[#15803D] font-mono">⟷</span>
                     <span className="font-bold text-slate-900 text-sm">Lisinopril</span>
                   </div>
                   <span className="px-2.5 py-0.5 rounded bg-amber-100 text-amber-900 font-bold text-[10px] border border-amber-200">
@@ -406,7 +406,7 @@ export const InteractionCheckerView: React.FC<InteractionCheckerViewProps> = ({
                 {onOpenProvenance && (
                   <button
                     onClick={() => onOpenProvenance('prov-met-renal')}
-                    className="text-[11px] font-semibold text-[#0F766E] hover:underline flex items-center gap-1 cursor-pointer pt-1"
+                    className="text-[11px] font-semibold text-[#15803D] hover:underline flex items-center gap-1 cursor-pointer pt-1"
                   >
                     <span className="material-symbols-outlined text-[13px]">verified</span>
                     <span>Audit KDIGO 2023 Dosing Guidelines</span>
@@ -497,7 +497,7 @@ export const InteractionCheckerView: React.FC<InteractionCheckerViewProps> = ({
               </span>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                 <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
-                  <span className="font-mono text-[10px] font-bold text-[#0F766E] uppercase block">OATP1B1 (SLCO1B1)</span>
+                  <span className="font-mono text-[10px] font-bold text-[#15803D] uppercase block">OATP1B1 (SLCO1B1)</span>
                   <span className="text-slate-900 font-bold block">Hepatic Sinusoidal Uptake</span>
                   <p className="text-slate-600 text-[11px] leading-relaxed">
                     Substrates: Atorvastatin, Rosuvastatin. Gemfibrozil &amp; Cyclosporine block uptake, escalating systemic statin concentrations.

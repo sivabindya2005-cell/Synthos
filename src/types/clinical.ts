@@ -106,6 +106,9 @@ export interface Biometrics {
   smoking: 'Non-smoker' | 'Former smoker' | 'Current smoker';
   allergies: string[];
   diagnoses: string[];
+  raceEthnicity?: string;
+  bsaM2?: number;
+  serumAlbuminGdl?: number;
 }
 
 export interface OrganStatus {

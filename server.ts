@@ -1,4 +1,5 @@
-import express, { Request, Response, NextFunction } from 'express';
+import express from 'express';
+import type { Request, Response, NextFunction } from 'express';
 import { GoogleGenAI } from '@google/genai';
 import dotenv from 'dotenv';
 import path from 'path';
@@ -6,15 +7,16 @@ import { fileURLToPath } from 'url';
 import fs from 'fs';
 import crypto from 'crypto';
 
-dotenv.config();
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+dotenv.config({ path: path.resolve(__dirname, '.env'), override: true });
 
 const app = express();
 const portArgIndex = process.argv.indexOf('--port');
 const cliPort = portArgIndex !== -1 ? Number(process.argv[portArgIndex + 1]) : null;
-const port = cliPort || (process.env.PORT && process.env.PORT !== '8080' ? Number(process.env.PORT) : 3000);
+const isProduction = process.env.NODE_ENV === 'production' || (!cliPort && fs.existsSync(path.resolve(__dirname, 'dist', 'index.html')));
+const port = cliPort || Number(process.env.PORT || 3000);
 
 app.use(express.json({ limit: '1mb' }));
 
@@ -58,8 +60,8 @@ const DB_PATH = path.resolve(DATA_DIR, 'telemetry_database.json');
 
 // Designated system administrator & authentication key
 const AUTHORIZED_ADMIN_EMAIL = (process.env.ADMIN_EMAIL || 'sivasyam05@gmail.com').toLowerCase().trim();
-const ADMIN_ACCESS_KEY = process.env.ADMIN_KEY || 'synthos-admin-2026';
-const JWT_OR_SESSION_SECRET = process.env.SESSION_SECRET || 'synthos_secure_salt_8f9b2d3e7104';
+const ADMIN_ACCESS_KEY = process.env.ADMIN_KEY || '';
+const JWT_OR_SESSION_SECRET = process.env.SESSION_SECRET || crypto.randomBytes(32).toString('hex');
 
 // Benchmark baseline anonymized records to seed the database
 const INITIAL_BENCHMARK_TELEMETRY = [
@@ -522,6 +524,11 @@ app.post('/api/telemetry/log', (req: Request, res: Response) => {
 // ==========================================
 app.post('/api/admin/auth', (req: Request, res: Response) => {
   try {
+    if (!ADMIN_ACCESS_KEY) {
+      res.status(503).json({ error: 'Admin login is disabled. Set ADMIN_KEY on the server.' });
+      return;
+    }
+
     const { email, accessKey } = req.body;
     if (!email || !accessKey) {
       res.status(400).json({ error: 'Email and administrator access key are required.' });
@@ -532,19 +539,20 @@ app.post('/api/admin/auth', (req: Request, res: Response) => {
     const providedKey = String(accessKey).trim();
 
     if (normalizedEmail !== AUTHORIZED_ADMIN_EMAIL) {
-      res.status(403).json({
-        error: `Access denied. ${normalizedEmail} is not authorized. Only the designated administrator (${AUTHORIZED_ADMIN_EMAIL}) has access.`
-      });
+      res.status(403).json({ error: 'Access denied. Unrecognized administrator account.' });
       return;
     }
 
-    if (providedKey !== ADMIN_ACCESS_KEY) {
-      res.status(401).json({ error: 'Invalid admin passkey. Please check credentials.' });
+    const keyBuffer = Buffer.from(providedKey, 'utf-8');
+    const expectedKeyBuffer = Buffer.from(ADMIN_ACCESS_KEY, 'utf-8');
+
+    if (keyBuffer.length !== expectedKeyBuffer.length || !crypto.timingSafeEqual(keyBuffer, expectedKeyBuffer)) {
+      res.status(401).json({ error: 'Invalid admin passkey.' });
       return;
     }
 
     // Generate secure admin session token
-    const token = generateAdminToken(normalizedEmail);
+    const token = generateAdminToken(AUTHORIZED_ADMIN_EMAIL);
     res.json({
       success: true,
       token,
@@ -681,7 +689,7 @@ app.get('/api/admin/export', requireAdmin, (req: Request, res: Response) => {
 });
 
 // Mount Vite middleware in development or serve static files in production
-if (process.env.NODE_ENV === 'production') {
+if (isProduction) {
   app.use(express.static(path.resolve(__dirname, 'dist')));
   app.get('*', (_req, res) => {
     res.sendFile(path.resolve(__dirname, 'dist', 'index.html'));

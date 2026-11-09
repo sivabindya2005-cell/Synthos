@@ -429,7 +429,7 @@ Deterministic Verification Hash: SYNTHOS-LAB-HASH-${Date.now().toString(16).toUp
         <div className="flex flex-wrap items-center gap-2.5 shrink-0">
           <button
             onClick={handleExportPdf}
-            className="px-4 py-2.5 rounded-xl bg-[#14B8A6] hover:bg-[#E6F4F1]0 text-white text-xs font-bold flex items-center gap-2 cursor-pointer shadow-sm transition-all"
+            className="px-4 py-2.5 rounded-xl bg-[#15803D] hover:bg-[#EEF7EE]0 text-white text-xs font-bold flex items-center gap-2 cursor-pointer shadow-sm transition-all"
             title="Download formatted Clinical PDF report"
           >
             <span className="material-symbols-outlined text-[18px]">
@@ -457,7 +457,7 @@ Deterministic Verification Hash: SYNTHOS-LAB-HASH-${Date.now().toString(16).toUp
             onClick={() => setActiveSubTab('labs')}
             className={`px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2 transition-all cursor-pointer ${
               activeSubTab === 'labs'
-                ? 'bg-[#0F766E] text-white shadow-xs'
+                ? 'bg-[#15803D] text-white shadow-xs'
                 : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
             }`}
           >
@@ -469,7 +469,7 @@ Deterministic Verification Hash: SYNTHOS-LAB-HASH-${Date.now().toString(16).toUp
             onClick={() => setActiveSubTab('calibrator')}
             className={`px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2 transition-all cursor-pointer ${
               activeSubTab === 'calibrator'
-                ? 'bg-[#0F766E] text-white shadow-xs'
+                ? 'bg-[#15803D] text-white shadow-xs'
                 : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
             }`}
           >
@@ -481,7 +481,7 @@ Deterministic Verification Hash: SYNTHOS-LAB-HASH-${Date.now().toString(16).toUp
             onClick={() => setActiveSubTab('soap')}
             className={`px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2 transition-all cursor-pointer ${
               activeSubTab === 'soap'
-                ? 'bg-[#0F766E] text-white shadow-xs'
+                ? 'bg-[#15803D] text-white shadow-xs'
                 : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
             }`}
           >
@@ -493,7 +493,7 @@ Deterministic Verification Hash: SYNTHOS-LAB-HASH-${Date.now().toString(16).toUp
             onClick={() => setActiveSubTab('orders')}
             className={`px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2 transition-all cursor-pointer ${
               activeSubTab === 'orders'
-                ? 'bg-[#0F766E] text-white shadow-xs'
+                ? 'bg-[#15803D] text-white shadow-xs'
                 : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
             }`}
           >
@@ -506,7 +506,7 @@ Deterministic Verification Hash: SYNTHOS-LAB-HASH-${Date.now().toString(16).toUp
           <button
             onClick={onOpenPersonalizeRegimen}
             type="button"
-            className="px-3 py-1.5 rounded-lg bg-[#E6F4F1] border border-[#14B8A6] text-[#0F766E] hover:bg-[#D4ECE6] font-bold text-xs flex items-center gap-1.5 transition-colors cursor-pointer"
+            className="px-3 py-1.5 rounded-lg bg-[#EEF7EE] border border-[#14B8A6] text-[#15803D] hover:bg-[#D4ECE6] font-bold text-xs flex items-center gap-1.5 transition-colors cursor-pointer"
           >
             <span className="material-symbols-outlined text-[16px]">tune</span>
             <span>Personalize Regimen</span>
@@ -517,7 +517,7 @@ Deterministic Verification Hash: SYNTHOS-LAB-HASH-${Date.now().toString(16).toUp
       {/* Free Medical Search Engines & UpToDate Direct Connector Banner */}
       <div className="p-3.5 rounded-xl bg-gradient-to-r from-blue-50/70 via-slate-50 to-teal-50/70 border border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg bg-[#0F766E] text-white flex items-center justify-center shrink-0">
+          <div className="w-8 h-8 rounded-lg bg-[#15803D] text-white flex items-center justify-center shrink-0">
             <span className="material-symbols-outlined text-[18px]">manage_search</span>
           </div>
           <div>
@@ -568,7 +568,7 @@ Deterministic Verification Hash: SYNTHOS-LAB-HASH-${Date.now().toString(16).toUp
             <button
               type="button"
               onClick={() => onOpenSearch('')}
-              className="px-3 py-1.5 rounded-lg bg-[#0F766E] hover:bg-teal-900 text-white text-[11px] font-bold flex items-center gap-1.5 cursor-pointer shadow-2xs"
+              className="px-3 py-1.5 rounded-lg bg-[#15803D] hover:bg-teal-900 text-white text-[11px] font-bold flex items-center gap-1.5 cursor-pointer shadow-2xs"
             >
               <span className="material-symbols-outlined text-[14px]">search</span>
               <span>Search Hub →</span>
@@ -578,8 +578,8 @@ Deterministic Verification Hash: SYNTHOS-LAB-HASH-${Date.now().toString(16).toUp
       </div>
 
       {calibNotice && (
-        <div className="p-3 rounded-xl bg-[#E6F4F1] border border-[#BEE3DB] text-teal-900 text-xs font-semibold flex items-center gap-2 animate-fade-in shadow-2xs">
-          <span className="material-symbols-outlined text-[#0F766E] text-[18px]">verified</span>
+        <div className="p-3 rounded-xl bg-[#EEF7EE] border border-[#CBE4CB] text-teal-900 text-xs font-semibold flex items-center gap-2 animate-fade-in shadow-2xs">
+          <span className="material-symbols-outlined text-[#15803D] text-[18px]">verified</span>
           <span>{calibNotice}</span>
         </div>
       )}
@@ -621,7 +621,7 @@ Deterministic Verification Hash: SYNTHOS-LAB-HASH-${Date.now().toString(16).toUp
             </div>
             <div>
               <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider block">EHR Interface</span>
-              <span className="font-mono text-[#0F766E] text-[11px] font-bold">HL7 FHIR R4 Ready</span>
+              <span className="font-mono text-[#15803D] text-[11px] font-bold">HL7 FHIR R4 Ready</span>
             </div>
           </div>
 
@@ -629,7 +629,7 @@ Deterministic Verification Hash: SYNTHOS-LAB-HASH-${Date.now().toString(16).toUp
           <div className="bg-white rounded-xl border border-slate-200 shadow-2xs overflow-hidden">
             <div className="p-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-[#0F766E] text-[20px]">water_drop</span>
+                <span className="material-symbols-outlined text-[#15803D] text-[20px]">water_drop</span>
                 <h3 className="font-['Plus_Jakarta_Sans'] font-bold text-sm text-slate-900">
                   Renal Function &amp; Serum Electrolytes (BMP)
                 </h3>
@@ -696,7 +696,7 @@ Deterministic Verification Hash: SYNTHOS-LAB-HASH-${Date.now().toString(16).toUp
                             <button
                               type="button"
                               onClick={() => onOpenSearch ? onOpenSearch(`${item.testName} ${item.value} ${item.unit} clinical guideline pharmacotherapy`) : window.open(`https://www.uptodate.com/contents/search?search=${encodeURIComponent(`${item.testName} ${item.value}`)}`, '_blank')}
-                              className="inline-flex items-center gap-1 text-[10px] text-[#0F766E] hover:text-teal-900 font-bold underline cursor-pointer"
+                              className="inline-flex items-center gap-1 text-[10px] text-[#15803D] hover:text-teal-900 font-bold underline cursor-pointer"
                             >
                               <span className="material-symbols-outlined text-[12px]">search</span>
                               <span>Check UpToDate / PubMed Updates</span>
@@ -715,7 +715,7 @@ Deterministic Verification Hash: SYNTHOS-LAB-HASH-${Date.now().toString(16).toUp
           <div className="bg-white rounded-xl border border-slate-200 shadow-2xs overflow-hidden">
             <div className="p-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-[#0F766E] text-[20px]">monitor_heart</span>
+                <span className="material-symbols-outlined text-[#15803D] text-[20px]">monitor_heart</span>
                 <h3 className="font-['Plus_Jakarta_Sans'] font-bold text-sm text-slate-900">
                   Cardiometabolic Endpoints &amp; Therapeutic Drug Monitoring (TDM)
                 </h3>
@@ -782,7 +782,7 @@ Deterministic Verification Hash: SYNTHOS-LAB-HASH-${Date.now().toString(16).toUp
                             <button
                               type="button"
                               onClick={() => onOpenSearch ? onOpenSearch(`${item.testName} ${item.value} ${item.unit} therapeutic monitoring guidelines`) : window.open(`https://www.uptodate.com/contents/search?search=${encodeURIComponent(`${item.testName} ${item.value}`)}`, '_blank')}
-                              className="inline-flex items-center gap-1 text-[10px] text-[#0F766E] hover:text-teal-900 font-bold underline cursor-pointer"
+                              className="inline-flex items-center gap-1 text-[10px] text-[#15803D] hover:text-teal-900 font-bold underline cursor-pointer"
                             >
                               <span className="material-symbols-outlined text-[12px]">search</span>
                               <span>Check UpToDate / PubMed Updates</span>
@@ -803,7 +803,7 @@ Deterministic Verification Hash: SYNTHOS-LAB-HASH-${Date.now().toString(16).toUp
             <div className="lg:col-span-6 bg-white rounded-xl border border-slate-200 shadow-2xs overflow-hidden">
               <div className="p-3.5 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
                 <span className="font-bold text-slate-900 text-xs flex items-center gap-1.5">
-                  <span className="material-symbols-outlined text-[#0F766E] text-[18px]">vital_signs</span>
+                  <span className="material-symbols-outlined text-[#15803D] text-[18px]">vital_signs</span>
                   <span>Hepatic Function Panel (LFT)</span>
                 </span>
                 <span className="text-[10px] text-slate-500 font-mono">LOINC 24325-3</span>
@@ -858,7 +858,7 @@ Deterministic Verification Hash: SYNTHOS-LAB-HASH-${Date.now().toString(16).toUp
                 <div className="p-3 rounded-lg bg-slate-50 border border-slate-200 space-y-1">
                   <div className="flex items-center justify-between">
                     <span className="font-bold text-slate-900">Clinical Action Trigger:</span>
-                    <span className="font-semibold text-[#0F766E] text-[11px]">
+                    <span className="font-semibold text-[#15803D] text-[11px]">
                       {isWarfarinPatient ? 'Switch to Factor Xa Inhibitor' : 'Standard Substrate Clearance'}
                     </span>
                   </div>
@@ -889,7 +889,7 @@ Deterministic Verification Hash: SYNTHOS-LAB-HASH-${Date.now().toString(16).toUp
           <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-2xs space-y-3">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-xl bg-[#0F766E] text-white flex items-center justify-center">
+                <div className="w-9 h-9 rounded-xl bg-[#15803D] text-white flex items-center justify-center">
                   <span className="material-symbols-outlined text-[20px]">tune</span>
                 </div>
                 <div>
@@ -913,7 +913,7 @@ Deterministic Verification Hash: SYNTHOS-LAB-HASH-${Date.now().toString(16).toUp
                 <button
                   type="button"
                   onClick={handleApplyCalibratedLabs}
-                  className="px-4 py-2 rounded-xl bg-[#0F766E] hover:bg-teal-900 text-white text-xs font-bold flex items-center gap-1.5 cursor-pointer shadow-sm transition-all"
+                  className="px-4 py-2 rounded-xl bg-[#15803D] hover:bg-teal-900 text-white text-xs font-bold flex items-center gap-1.5 cursor-pointer shadow-sm transition-all"
                 >
                   <span className="material-symbols-outlined text-[16px]">check_circle</span>
                   <span>Apply Labs to Twin</span>
@@ -1005,7 +1005,7 @@ Deterministic Verification Hash: SYNTHOS-LAB-HASH-${Date.now().toString(16).toUp
             <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-2xs space-y-4">
               <div className="flex items-center justify-between pb-2 border-b border-slate-100">
                 <div className="flex items-center gap-2">
-                  <span className="material-symbols-outlined text-[#0F766E] text-[20px]">water_drop</span>
+                  <span className="material-symbols-outlined text-[#15803D] text-[20px]">water_drop</span>
                   <h4 className="font-bold text-sm text-slate-900">Renal Glomerular Filtration &amp; SCr</h4>
                 </div>
                 <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-slate-100 text-slate-700 font-bold">
@@ -1046,7 +1046,7 @@ Deterministic Verification Hash: SYNTHOS-LAB-HASH-${Date.now().toString(16).toUp
               <div className="space-y-2">
                 <div className="flex items-center justify-between text-xs font-bold text-slate-800">
                   <label htmlFor="calib-scr-range">Serum Creatinine (SCr)</label>
-                  <span className="font-mono text-[#0F766E] bg-[#E6F4F1] px-2 py-0.5 rounded border border-[#BEE3DB]">
+                  <span className="font-mono text-[#15803D] bg-[#EEF7EE] px-2 py-0.5 rounded border border-[#CBE4CB]">
                     {calibScr.toFixed(2)} mg/dL
                   </span>
                 </div>
@@ -1101,7 +1101,7 @@ Deterministic Verification Hash: SYNTHOS-LAB-HASH-${Date.now().toString(16).toUp
             <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-2xs space-y-4">
               <div className="flex items-center justify-between pb-2 border-b border-slate-100">
                 <div className="flex items-center gap-2">
-                  <span className="material-symbols-outlined text-[#0F766E] text-[20px]">monitor_heart</span>
+                  <span className="material-symbols-outlined text-[#15803D] text-[20px]">monitor_heart</span>
                   <h4 className="font-bold text-sm text-slate-900">Coagulation (INR) &amp; Glycemic Control</h4>
                 </div>
                 <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-slate-100 text-slate-700 font-bold">
@@ -1141,7 +1141,7 @@ Deterministic Verification Hash: SYNTHOS-LAB-HASH-${Date.now().toString(16).toUp
               <div className="space-y-2 pt-2 border-t border-slate-100">
                 <div className="flex items-center justify-between text-xs font-bold text-slate-800">
                   <label htmlFor="calib-hba1c-range">Hemoglobin A1c (HbA1c)</label>
-                  <span className="font-mono text-[#0F766E] bg-[#E6F4F1] px-2 py-0.5 rounded border border-[#BEE3DB]">
+                  <span className="font-mono text-[#15803D] bg-[#EEF7EE] px-2 py-0.5 rounded border border-[#CBE4CB]">
                     {calibHba1c.toFixed(1)}%
                   </span>
                 </div>
@@ -1166,7 +1166,7 @@ Deterministic Verification Hash: SYNTHOS-LAB-HASH-${Date.now().toString(16).toUp
               {/* Dynamic Safety Impact Forecast Box */}
               <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-1.5 text-xs">
                 <span className="font-bold text-slate-900 block flex items-center gap-1.5">
-                  <span className="material-symbols-outlined text-[16px] text-[#0F766E]">insights</span>
+                  <span className="material-symbols-outlined text-[16px] text-[#15803D]">insights</span>
                   <span>Real-Time Pharmacotherapy Risk Forecast:</span>
                 </span>
                 <ul className="space-y-1 text-[11px] text-slate-700">
@@ -1208,7 +1208,7 @@ Deterministic Verification Hash: SYNTHOS-LAB-HASH-${Date.now().toString(16).toUp
           {/* Action Row */}
           <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 flex flex-wrap items-center justify-between gap-3 text-xs">
             <div className="flex items-center gap-2 text-slate-600">
-              <span className="material-symbols-outlined text-[#0F766E] text-[18px]">sync</span>
+              <span className="material-symbols-outlined text-[#15803D] text-[18px]">sync</span>
               <span>Changes take immediate effect upon applying to live twin or personalizing regimen.</span>
             </div>
 
@@ -1219,7 +1219,7 @@ Deterministic Verification Hash: SYNTHOS-LAB-HASH-${Date.now().toString(16).toUp
                   onClick={onOpenPersonalizeRegimen}
                   className="px-4 py-2.5 rounded-xl bg-white border border-slate-300 hover:bg-slate-100 text-slate-800 font-bold flex items-center gap-2 cursor-pointer shadow-2xs"
                 >
-                  <span className="material-symbols-outlined text-[17px] text-[#0F766E]">tune</span>
+                  <span className="material-symbols-outlined text-[17px] text-[#15803D]">tune</span>
                   <span>Personalize Medication Regimen</span>
                 </button>
               )}
@@ -1238,7 +1238,7 @@ Deterministic Verification Hash: SYNTHOS-LAB-HASH-${Date.now().toString(16).toUp
               <button
                 type="button"
                 onClick={handleApplyCalibratedLabs}
-                className="px-5 py-2.5 rounded-xl bg-[#0F766E] hover:bg-teal-900 text-white font-bold flex items-center gap-2 cursor-pointer shadow-sm transition-all"
+                className="px-5 py-2.5 rounded-xl bg-[#15803D] hover:bg-teal-900 text-white font-bold flex items-center gap-2 cursor-pointer shadow-sm transition-all"
               >
                 <span className="material-symbols-outlined text-[18px]">done_all</span>
                 <span>Apply Calibrated Labs to Patient Twin</span>
@@ -1253,7 +1253,7 @@ Deterministic Verification Hash: SYNTHOS-LAB-HASH-${Date.now().toString(16).toUp
         <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-2xs space-y-4">
           <div className="flex items-center justify-between pb-3 border-b border-slate-200">
             <div className="flex items-center gap-2">
-              <span className="material-symbols-outlined text-[#0F766E] text-[20px]">description</span>
+              <span className="material-symbols-outlined text-[#15803D] text-[20px]">description</span>
               <span className="font-bold text-sm text-slate-900">Patient-Tailored Pharmacotherapy Evaluation Record</span>
             </div>
             <span className="text-xs font-mono text-slate-500">Format: Clinical SOAP / EHR Cryptographic Hash</span>
@@ -1267,7 +1267,7 @@ Deterministic Verification Hash: SYNTHOS-LAB-HASH-${Date.now().toString(16).toUp
             <span>Signed electronically by {activeClinicianName}</span>
             <button
               onClick={handleCopy}
-              className="px-3 py-1.5 rounded-lg bg-[#0F766E] text-white font-semibold flex items-center gap-1.5 cursor-pointer hover:bg-teal-900 transition-colors"
+              className="px-3 py-1.5 rounded-lg bg-[#15803D] text-white font-semibold flex items-center gap-1.5 cursor-pointer hover:bg-teal-900 transition-colors"
             >
               <span className="material-symbols-outlined text-[16px]">content_copy</span>
               <span>{copied ? 'Copied!' : 'Copy to EHR'}</span>
@@ -1282,14 +1282,14 @@ Deterministic Verification Hash: SYNTHOS-LAB-HASH-${Date.now().toString(16).toUp
           {/* Create Order Box */}
           <div className="p-5 rounded-xl bg-white border border-slate-200 shadow-2xs space-y-4">
             <h3 className="font-['Plus_Jakarta_Sans'] font-bold text-sm text-slate-900 flex items-center gap-1.5">
-              <span className="material-symbols-outlined text-[#0F766E] text-[18px]">add_task</span>
+              <span className="material-symbols-outlined text-[#15803D] text-[18px]">add_task</span>
               <span>Simulate Requisition of Surveillance Laboratory Panels</span>
             </h3>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <button
                 onClick={() => handleAddOrder('Repeat Basic Metabolic Panel (K+, SCr, eGFR)', 'Routine (14d)', 'In 14 Days')}
-                className="p-3 rounded-xl bg-slate-50 hover:bg-[#E6F4F1] border border-slate-200 hover:border-[#14B8A6] text-left transition-all cursor-pointer group"
+                className="p-3 rounded-xl bg-slate-50 hover:bg-[#EEF7EE] border border-slate-200 hover:border-[#14B8A6] text-left transition-all cursor-pointer group"
               >
                 <div className="font-bold text-xs text-slate-900 group-hover:text-teal-900">
                   + Order 14-Day Repeat BMP
@@ -1329,7 +1329,7 @@ Deterministic Verification Hash: SYNTHOS-LAB-HASH-${Date.now().toString(16).toUp
           <div className="bg-white rounded-xl border border-slate-200 shadow-2xs overflow-hidden">
             <div className="p-3.5 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
               <span className="font-bold text-slate-900 text-xs flex items-center gap-1.5">
-                <span className="material-symbols-outlined text-[#0F766E] text-[18px]">checklist</span>
+                <span className="material-symbols-outlined text-[#15803D] text-[18px]">checklist</span>
                 <span>Active Requisition Queue ({pendingOrders.length} Orders)</span>
               </span>
               <span className="text-[10px] font-mono text-slate-500">Auto-Synced to Patient Surveillance</span>
@@ -1351,7 +1351,7 @@ Deterministic Verification Hash: SYNTHOS-LAB-HASH-${Date.now().toString(16).toUp
                   </div>
 
                   <div className="flex items-center gap-3">
-                    <span className="px-2 py-0.5 rounded bg-teal-100 text-[#0F766E] font-bold text-[10px] uppercase">
+                    <span className="px-2 py-0.5 rounded bg-teal-100 text-[#15803D] font-bold text-[10px] uppercase">
                       {ord.priority}
                     </span>
                     <button

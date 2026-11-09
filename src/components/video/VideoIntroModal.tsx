@@ -379,7 +379,7 @@ export const VideoIntroModal: React.FC<VideoIntroModalProps> = ({
           {!isPlaying && currentTime < VIDEO_DURATION && !isExporting && (
             <button
               onClick={togglePlayPause}
-              className="absolute inset-0 m-auto w-20 h-20 rounded-full bg-[#14B8A6]/80 hover:bg-[#E6F4F1]0 text-white flex items-center justify-center shadow-2xl backdrop-blur-md transition-all scale-100 hover:scale-105 cursor-pointer"
+              className="absolute inset-0 m-auto w-20 h-20 rounded-full bg-[#15803D]/80 hover:bg-[#EEF7EE]0 text-white flex items-center justify-center shadow-2xl backdrop-blur-md transition-all scale-100 hover:scale-105 cursor-pointer"
             >
               <span className="material-symbols-outlined text-[44px] ml-1">play_arrow</span>
             </button>
@@ -405,7 +405,7 @@ export const VideoIntroModal: React.FC<VideoIntroModalProps> = ({
                     onClose();
                     onLaunchTwin();
                   }}
-                  className="px-6 py-3 rounded-xl bg-[#14B8A6] hover:bg-[#E6F4F1]0 text-white font-semibold text-sm shadow-lg shadow-teal-900/40 transition-all flex items-center gap-2 cursor-pointer"
+                  className="px-6 py-3 rounded-xl bg-[#15803D] hover:bg-[#EEF7EE]0 text-white font-semibold text-sm shadow-lg shadow-teal-900/40 transition-all flex items-center gap-2 cursor-pointer"
                 >
                   <span className="material-symbols-outlined text-[18px]">tune</span>
                   <span>Launch Digital Twin Simulation</span>
@@ -468,7 +468,7 @@ export const VideoIntroModal: React.FC<VideoIntroModalProps> = ({
             <div className="flex items-center gap-3">
               <button
                 onClick={togglePlayPause}
-                className="w-8 h-8 rounded-lg bg-[#E6F4F1]0/20 hover:bg-[#E6F4F1]0 text-teal-300 hover:text-white flex items-center justify-center transition-colors cursor-pointer"
+                className="w-8 h-8 rounded-lg bg-[#EEF7EE]0/20 hover:bg-[#EEF7EE]0 text-teal-300 hover:text-white flex items-center justify-center transition-colors cursor-pointer"
                 title={isPlaying ? 'Pause (Space)' : 'Play (Space)'}
               >
                 <span className="material-symbols-outlined text-[20px]">
@@ -515,7 +515,7 @@ export const VideoIntroModal: React.FC<VideoIntroModalProps> = ({
                     onClick={() => jumpToChapter(ch)}
                     className={`px-2.5 py-1 rounded-md text-[11px] font-semibold transition-all whitespace-nowrap cursor-pointer ${
                       isActive
-                        ? 'bg-[#E6F4F1]0/30 text-teal-300 border border-teal-500/50'
+                        ? 'bg-[#EEF7EE]0/30 text-teal-300 border border-teal-500/50'
                         : 'bg-slate-800/60 text-slate-400 hover:text-slate-200 hover:bg-slate-800'
                     }`}
                   >
@@ -531,7 +531,7 @@ export const VideoIntroModal: React.FC<VideoIntroModalProps> = ({
               <button
                 onClick={() => setEnableVoiceover((prev) => !prev)}
                 className={`p-1.5 rounded text-[11px] font-mono font-semibold flex items-center gap-1 transition-colors cursor-pointer ${
-                  enableVoiceover ? 'text-teal-400 hover:bg-[#E6F4F1]0/10' : 'text-slate-500 hover:bg-white/5'
+                  enableVoiceover ? 'text-teal-400 hover:bg-[#EEF7EE]0/10' : 'text-slate-500 hover:bg-white/5'
                 }`}
                 title="Toggle AI Speech Voiceover"
               >
@@ -579,7 +579,7 @@ export const VideoIntroModal: React.FC<VideoIntroModalProps> = ({
                   onClose();
                   onLaunchTwin();
                 }}
-                className="ml-2 px-3.5 py-1.5 rounded-lg bg-[#14B8A6] hover:bg-[#E6F4F1]0 text-white font-semibold text-xs transition-all shadow-xs flex items-center gap-1 cursor-pointer"
+                className="ml-2 px-3.5 py-1.5 rounded-lg bg-[#15803D] hover:bg-[#EEF7EE]0 text-white font-semibold text-xs transition-all shadow-xs flex items-center gap-1 cursor-pointer"
               >
                 <span>Launch Twin</span>
                 <span className="material-symbols-outlined text-[14px]">arrow_forward</span>

@@ -8,8 +8,10 @@ import {
   isUserAdminAuthenticated,
   getAdminEmail,
   getAdminToken,
+  setAdminSessionToken,
   resetServerTelemetryDatabase
 } from '../../utils/simulationStorage';
+import { useClinicianAuth } from '../../context/AuthContext';
 
 interface SimulationVaultViewProps {
   onOpenProvenance?: (id: string) => void;
@@ -22,8 +24,19 @@ export const SimulationVaultView: React.FC<SimulationVaultViewProps> = ({
   onLaunchTwin,
   onOpenPersonalizeRegimen
 }) => {
+  const { role, clinician } = useClinicianAuth();
+
   // Authentication State
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(isUserAdminAuthenticated());
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
+    return isUserAdminAuthenticated() || role === 'admin';
+  });
+
+  useEffect(() => {
+    if (role === 'admin' && !isUserAdminAuthenticated()) {
+      setAdminSessionToken(clinician.email || 'sivasyam05@gmail.com');
+      setIsAuthenticated(true);
+    }
+  }, [role, clinician.email]);
   const [adminEmailInput, setAdminEmailInput] = useState<string>('sivasyam05@gmail.com');
   const [adminKeyInput, setAdminKeyInput] = useState<string>('');
   const [showKey, setShowKey] = useState<boolean>(false);
@@ -200,18 +213,16 @@ export const SimulationVaultView: React.FC<SimulationVaultViewProps> = ({
   if (!isAuthenticated) {
     return (
       <div className="py-6 px-2 sm:px-6 max-w-xl mx-auto animate-fade-in">
-        <div className="bg-white rounded-2xl border border-slate-200 shadow-xl overflow-hidden">
+        <div className="bg-[#FFFDF9] dark:bg-[#13253A] rounded-2xl border border-[#E5DDD0] dark:border-[#1F3B5C] shadow-xl overflow-hidden">
           {/* Gate Banner */}
-          <div className="bg-[#0b1e28] text-white p-6 border-b border-slate-800 relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-48 h-48 bg-[#E6F4F1]0/10 rounded-full blur-3xl pointer-events-none"></div>
-            
+          <div className="bg-[#1E3A8A] text-white p-6 border-b border-[#0F2F57] relative overflow-hidden">
             <div className="flex items-center gap-3 mb-2">
-              <div className="w-10 h-10 rounded-xl bg-[#E6F4F1]0/20 border border-teal-400/30 flex items-center justify-center text-teal-300">
+              <div className="w-10 h-10 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center text-emerald-300">
                 <span className="material-symbols-outlined text-[24px]">lock</span>
               </div>
               <div>
-                <span className="text-[10px] font-mono font-bold tracking-widest text-teal-400 uppercase">
-                  RESTRICTED ACCESS
+                <span className="text-[10px] font-mono font-bold tracking-widest text-[#34D399] uppercase">
+                  CONFIDENTIAL ADMIN STORE
                 </span>
                 <h2 className="font-['Plus_Jakarta_Sans'] text-xl font-bold text-white">
                   Telemetry Database Gate
@@ -219,15 +230,15 @@ export const SimulationVaultView: React.FC<SimulationVaultViewProps> = ({
               </div>
             </div>
 
-            <p className="text-xs text-slate-300 leading-relaxed mt-2">
-              This private tracking database stores live simulation telemetry, drug titration records, and safety ceiling audits. Access is strictly limited to the verified system administrator.
+            <p className="text-xs text-blue-100 leading-relaxed mt-2">
+              Private simulation audit vault. Stores de-identified dosage simulations, guideline violations, and patient renal/hepatic states. Access is restricted to the administrator.
             </p>
           </div>
 
           {/* Login Form */}
           <form onSubmit={handleAdminLogin} className="p-6 space-y-4">
             {authError && (
-              <div className="p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs font-medium flex items-start gap-2.5 animate-fade-in">
+              <div className="p-3.5 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900 text-rose-800 dark:text-rose-200 text-xs font-medium flex items-start gap-2.5 animate-fade-in">
                 <span className="material-symbols-outlined text-[#DC2626] text-[18px] shrink-0 mt-0.5">
                   error
                 </span>
@@ -239,36 +250,36 @@ export const SimulationVaultView: React.FC<SimulationVaultViewProps> = ({
             )}
 
             <div className="space-y-1.5">
-              <label className="block text-xs font-bold text-slate-700">
+              <label className="block text-xs font-bold text-[#1E3A8A] dark:text-[#FAF7F2]">
                 Authorized Administrator Email
               </label>
               <div className="relative">
-                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[18px]">
+                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#4B6584] text-[18px]">
                   account_circle
                 </span>
                 <input
-                  type="email"
+                  type="text"
                   value={adminEmailInput}
                   onChange={(e) => setAdminEmailInput(e.target.value)}
                   placeholder="sivasyam05@gmail.com"
-                  className="w-full pl-9 pr-24 py-2.5 rounded-xl border border-slate-300 text-xs font-medium focus:border-teal-600 focus:bg-slate-50/50 outline-none transition-all"
+                  className="w-full pl-9 pr-24 py-2.5 rounded-xl border border-[#E5DDD0] dark:border-[#1F3B5C] bg-[#FAF7F2] dark:bg-[#0D1926] text-[#1E3A5F] dark:text-[#FAF7F2] text-xs font-medium focus:border-[#15803D] focus:ring-1 focus:ring-[#15803D] outline-hidden transition-all"
                   required
                 />
-                <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[10px] font-mono px-2 py-0.5 rounded bg-[#E6F4F1] text-[#0F766E] border border-[#BEE3DB] font-bold">
-                  Designated Admin
+                <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[10px] font-mono px-2 py-0.5 rounded bg-[#EEF7EE] text-[#15803D] border border-[#CBE4CB] font-bold">
+                  Owner Email
                 </span>
               </div>
-              <p className="text-[11px] text-slate-500">
-                Only <strong className="text-slate-700">sivasyam05@gmail.com</strong> possesses cryptographic decryption privileges.
+              <p className="text-[11px] text-[#4B6584]">
+                Authorized administrator account: <strong className="text-[#1E3A8A] dark:text-[#FAF7F2]">sivasyam05@gmail.com</strong>
               </p>
             </div>
 
             <div className="space-y-1.5">
-              <label className="block text-xs font-bold text-slate-700">
+              <label className="block text-xs font-bold text-[#1E3A8A] dark:text-[#FAF7F2]">
                 Administrator Passkey
               </label>
               <div className="relative">
-                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[18px]">
+                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#4B6584] text-[18px]">
                   vpn_key
                 </span>
                 <input
@@ -276,13 +287,13 @@ export const SimulationVaultView: React.FC<SimulationVaultViewProps> = ({
                   value={adminKeyInput}
                   onChange={(e) => setAdminKeyInput(e.target.value)}
                   placeholder="Enter administrator passkey..."
-                  className="w-full pl-9 pr-10 py-2.5 rounded-xl border border-slate-300 text-xs font-medium focus:border-teal-600 focus:bg-slate-50/50 outline-none transition-all"
+                  className="w-full pl-9 pr-10 py-2.5 rounded-xl border border-[#E5DDD0] dark:border-[#1F3B5C] bg-[#FAF7F2] dark:bg-[#0D1926] text-[#1E3A5F] dark:text-[#FAF7F2] text-xs font-medium focus:border-[#15803D] focus:ring-1 focus:ring-[#15803D] outline-hidden transition-all"
                   required
                 />
                 <button
                   type="button"
                   onClick={() => setShowKey(!showKey)}
-                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer p-1"
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#4B6584] hover:text-[#1E3A8A] cursor-pointer p-1"
                   title={showKey ? 'Hide passkey' : 'Show passkey'}
                 >
                   <span className="material-symbols-outlined text-[18px]">
@@ -290,20 +301,17 @@ export const SimulationVaultView: React.FC<SimulationVaultViewProps> = ({
                   </span>
                 </button>
               </div>
-              <p className="text-[11px] text-slate-500">
-                Default project key: <code className="bg-slate-100 text-slate-800 px-1 py-0.5 rounded font-mono text-[10px]">synthos-admin-2026</code>
-              </p>
             </div>
 
             <button
               type="submit"
               disabled={isSubmittingAuth}
-              className="w-full py-3 rounded-xl bg-[#0F766E] hover:bg-[#14B8A6] text-white font-bold text-xs flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer disabled:opacity-60"
+              className="w-full py-3 rounded-xl bg-[#15803D] hover:bg-[#166534] text-white font-bold text-xs flex items-center justify-center gap-2 shadow-xs transition-all cursor-pointer disabled:opacity-60"
             >
               {isSubmittingAuth ? (
                 <>
                   <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
-                  <span>Authenticating Privileges...</span>
+                  <span>Verifying Credentials...</span>
                 </>
               ) : (
                 <>
@@ -315,17 +323,17 @@ export const SimulationVaultView: React.FC<SimulationVaultViewProps> = ({
           </form>
 
           {/* Privacy & Safety Guarantee */}
-          <div className="bg-slate-50 p-4 border-t border-slate-200 text-[11px] text-slate-600 space-y-2">
-            <div className="flex items-center gap-2 font-bold text-slate-800">
-              <span className="material-symbols-outlined text-emerald-600 text-[16px]">verified_user</span>
+          <div className="bg-[#FAF7F2] dark:bg-[#0D1926] p-4 border-t border-[#E5DDD0] dark:border-[#1F3B5C] text-[11px] text-[#1E3A5F] dark:text-[#8DA4BE] space-y-2">
+            <div className="flex items-center gap-2 font-bold text-[#1E3A8A] dark:text-[#FAF7F2]">
+              <span className="material-symbols-outlined text-[#15803D] text-[16px]">verified_user</span>
               <span>Patient Privacy &amp; Data Safety Architecture</span>
             </div>
-            <p className="text-slate-500 leading-relaxed text-[10.5px]">
-              • <strong>Zero PHI:</strong> All data logged conforms to HIPAA Safe Harbor (45 CFR § 164.514). No patient names, MRNs, initials, or addresses are ever captured.
+            <p className="text-[#4B6584] leading-relaxed text-[10.5px]">
+              • <strong>Zero PHI:</strong> Conforms strictly to HIPAA Safe Harbor (45 CFR § 164.514). No patient names, MRNs, or addresses stored.
               <br />
-              • <strong>Access Isolation:</strong> Public users and clinicians cannot read this telemetry store. Every session generates synthetic tokens (e.g., ANON-SIM-XXXX).
+              • <strong>Access Isolation:</strong> Public users cannot read this telemetry store. Every session generates synthetic identifiers (e.g., ANON-SIM-XXXX).
               <br />
-              • <strong>Full Ownership:</strong> Only you (sivasyam05@gmail.com) can view live simulations, export audit tables, or reset records.
+              • <strong>Administrative Control:</strong> Only you (sivasyam05@gmail.com) can view live simulations, export audit tables, or reset records.
             </p>
           </div>
         </div>
@@ -396,7 +404,7 @@ export const SimulationVaultView: React.FC<SimulationVaultViewProps> = ({
           {/* Export JSON */}
           <button
             onClick={() => handleExportDirect('json')}
-            className="px-3.5 py-2 rounded-xl bg-[#14B8A6] hover:bg-[#E6F4F1]0 text-white text-xs font-bold flex items-center gap-1.5 shadow-sm transition-all cursor-pointer"
+            className="px-3.5 py-2 rounded-xl bg-[#15803D] hover:bg-[#EEF7EE]0 text-white text-xs font-bold flex items-center gap-1.5 shadow-sm transition-all cursor-pointer"
             title="Download full server JSON database"
           >
             <span className="material-symbols-outlined text-[18px]">download</span>
@@ -456,7 +464,7 @@ export const SimulationVaultView: React.FC<SimulationVaultViewProps> = ({
           <div className="text-2xl font-black text-slate-900 font-mono">
             {totalSimulations}
           </div>
-          <span className="text-[11px] text-[#0F766E] font-medium">
+          <span className="text-[11px] text-[#15803D] font-medium">
             Across {uniqueSessions} unique sessions
           </span>
         </div>
@@ -489,8 +497,8 @@ export const SimulationVaultView: React.FC<SimulationVaultViewProps> = ({
           <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
             Database Integrity
           </span>
-          <div className="text-2xl font-black text-[#0F766E] font-mono flex items-center gap-1">
-            <span className="material-symbols-outlined text-[24px] text-[#14B8A6]">shield_lock</span>
+          <div className="text-2xl font-black text-[#15803D] font-mono flex items-center gap-1">
+            <span className="material-symbols-outlined text-[24px] text-[#15803D]">shield_lock</span>
             <span>100%</span>
           </div>
           <span className="text-[11px] text-slate-500 font-medium">
@@ -504,7 +512,7 @@ export const SimulationVaultView: React.FC<SimulationVaultViewProps> = ({
         <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-2xs space-y-2.5">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
-              <span className="material-symbols-outlined text-[#0F766E] text-[18px]">bar_chart</span>
+              <span className="material-symbols-outlined text-[#15803D] text-[18px]">bar_chart</span>
               <span>Most Tested Pharmacological Agents by Users</span>
             </span>
             <span className="text-[10px] text-slate-500 font-mono">
@@ -517,11 +525,11 @@ export const SimulationVaultView: React.FC<SimulationVaultViewProps> = ({
               <div key={idx} className="p-2.5 rounded-lg bg-slate-50 border border-slate-200 space-y-1">
                 <div className="flex items-center justify-between text-xs font-bold text-slate-800">
                   <span className="truncate" title={item.name}>{item.name}</span>
-                  <span className="font-mono text-[#0F766E]">{item.count}</span>
+                  <span className="font-mono text-[#15803D]">{item.count}</span>
                 </div>
                 <div className="w-full h-1.5 bg-slate-200 rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-[#14B8A6] rounded-full"
+                    className="h-full bg-[#15803D] rounded-full"
                     style={{ width: `${Math.min(100, Math.round((item.count / totalSimulations) * 100))}%` }}
                   ></div>
                 </div>
@@ -588,7 +596,7 @@ export const SimulationVaultView: React.FC<SimulationVaultViewProps> = ({
         <div className="lg:col-span-7 bg-white rounded-xl border border-slate-200 shadow-2xs overflow-hidden flex flex-col">
           <div className="p-3.5 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
             <span className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
-              <span className="material-symbols-outlined text-[#0F766E] text-[18px]">folder_open</span>
+              <span className="material-symbols-outlined text-[#15803D] text-[18px]">folder_open</span>
               <span>Central Telemetry Dossiers ({filteredRecords.length})</span>
             </span>
             <span className="text-[10px] text-slate-500 font-mono">
@@ -611,7 +619,7 @@ export const SimulationVaultView: React.FC<SimulationVaultViewProps> = ({
                     key={r.id}
                     onClick={() => setSelectedRecord(r)}
                     className={`p-4 hover:bg-slate-50 transition-all cursor-pointer flex flex-col gap-2 ${
-                      isSelected ? 'bg-[#E6F4F1]/70 border-l-4 border-l-teal-700' : ''
+                      isSelected ? 'bg-[#EEF7EE]/70 border-l-4 border-l-teal-700' : ''
                     }`}
                   >
                     <div className="flex items-center justify-between">
@@ -669,7 +677,7 @@ export const SimulationVaultView: React.FC<SimulationVaultViewProps> = ({
             <div className="space-y-4">
               <div className="flex items-center justify-between border-b border-slate-100 pb-3">
                 <div>
-                  <span className="text-[10px] font-mono font-bold text-[#0F766E] uppercase">
+                  <span className="text-[10px] font-mono font-bold text-[#15803D] uppercase">
                     Record Dossier
                   </span>
                   <h3 className="font-['Plus_Jakarta_Sans'] font-bold text-base text-slate-900">
@@ -768,7 +776,7 @@ export const SimulationVaultView: React.FC<SimulationVaultViewProps> = ({
                   <button
                     onClick={onOpenPersonalizeRegimen}
                     type="button"
-                    className="w-full py-2.5 px-3 rounded-xl bg-[#0F766E] hover:bg-teal-900 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer"
+                    className="w-full py-2.5 px-3 rounded-xl bg-[#15803D] hover:bg-teal-900 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer"
                   >
                     <span className="material-symbols-outlined text-[17px]">tune</span>
                     <span>Personalize Regimen According to Patient Specifics</span>
@@ -781,7 +789,7 @@ export const SimulationVaultView: React.FC<SimulationVaultViewProps> = ({
                     type="button"
                     className="w-full py-2 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold text-xs flex items-center justify-center gap-2 transition-colors cursor-pointer border border-slate-300"
                   >
-                    <span className="material-symbols-outlined text-[16px] text-[#0F766E]">arrow_forward</span>
+                    <span className="material-symbols-outlined text-[16px] text-[#15803D]">arrow_forward</span>
                     <span>Load Case into Digital Twin Simulator</span>
                   </button>
                 )}

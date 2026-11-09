@@ -142,7 +142,7 @@ export const MethodologyLimitationsView: React.FC<MethodologyLimitationsViewProp
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
           <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
             <div className="flex items-center gap-2 text-slate-900 font-bold">
-              <span className="material-symbols-outlined text-[#0F766E] text-[18px]">menu_book</span>
+              <span className="material-symbols-outlined text-[#15803D] text-[18px]">menu_book</span>
               <span>1. Evidence Uncertainty</span>
             </div>
             <p className="text-slate-600 leading-relaxed">
@@ -252,7 +252,7 @@ export const MethodologyLimitationsView: React.FC<MethodologyLimitationsViewProp
               </div>
               <button
                 onClick={() => onOpenProvenance(item.id)}
-                className="self-start sm:self-center px-3 py-1 rounded bg-[#E6F4F1] border border-[#BEE3DB] text-[#0F766E] font-semibold text-[11px] hover:bg-[#D4ECE6] transition-colors cursor-pointer shrink-0"
+                className="self-start sm:self-center px-3 py-1 rounded bg-[#EEF7EE] border border-[#CBE4CB] text-[#15803D] font-semibold text-[11px] hover:bg-[#D4ECE6] transition-colors cursor-pointer shrink-0"
               >
                 Inspect Provenance
               </button>

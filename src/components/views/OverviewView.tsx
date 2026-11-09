@@ -326,23 +326,23 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
   };
 
   const renderOrganProfileWidget = () => (
-    <section className="bg-white rounded-xl shadow-2xs border border-[#e2e8f0] overflow-hidden">
-      <div className="p-3 bg-[#f2f4f6] flex flex-wrap items-center justify-between gap-2 border-b border-[#e2e8f0]">
+    <section className="bg-white rounded-xl shadow-2xs border border-[#E5DDD0] overflow-hidden">
+      <div className="p-3 bg-[#F4EFE6] flex flex-wrap items-center justify-between gap-2 border-b border-[#E5DDD0]">
         <div className="flex items-center gap-2">
-          <span className="material-symbols-outlined text-[#006a61] text-[22px]">hub</span>
+          <span className="material-symbols-outlined text-[#15803D] text-[22px]">hub</span>
           <div>
-            <h2 className="font-['Plus_Jakarta_Sans'] font-semibold text-sm text-[#191c1e]">
+            <h2 className="font-['Plus_Jakarta_Sans'] font-semibold text-sm text-[#1E3A8A]">
               Synthetic Patient Digital Profile &amp; Organ Status Map
             </h2>
-            <p className="text-[11px] text-[#475569]">
+            <p className="text-[11px] text-[#4B6584]">
               Biometric organ nodes synthesized from baseline EHR lab feeds
             </p>
           </div>
         </div>
-        <div className="flex items-center gap-1.5 text-[#475569] text-[11px] font-semibold">
+        <div className="flex items-center gap-1.5 text-[#4B6584] text-[11px] font-semibold">
           <span
             className={`inline-block w-2.5 h-2.5 rounded-full ${
-              organStatus.renal.status === 'compromised' ? 'bg-[#92400e]' : 'bg-[#006a61]'
+              organStatus.renal.status === 'compromised' ? 'bg-[#92400e]' : 'bg-[#15803D]'
             }`}
           ></span>
           <span>
@@ -360,7 +360,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
             className={`relative rounded-xl p-3 flex flex-col justify-between border ${
               organStatus.renal.status === 'compromised'
                 ? 'bg-[#fef3c7]/30 border-[#fde68a]'
-                : 'bg-[#f2f4f6] border-[#e2e8f0]'
+                : 'bg-[#F4EFE6] border-[#E5DDD0]'
             }`}
           >
             <div className="flex items-center justify-between">
@@ -371,7 +371,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
                 className={`w-2 h-2 rounded-full ${
                   organStatus.renal.status === 'compromised'
                     ? 'bg-[#92400e] animate-pulse'
-                    : 'bg-[#006a61]'
+                    : 'bg-[#15803D]'
                 }`}
               ></span>
             </div>
@@ -386,11 +386,11 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
             </div>
             <div className="space-y-1 text-xs">
               <div className="flex justify-between">
-                <span className="text-[#475569]">SCr:</span>
+                <span className="text-[#4B6584]">SCr:</span>
                 <span className="font-mono font-bold">{organStatus.renal.scr.toFixed(2)} mg/dL</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-[#475569]">BUN:</span>
+                <span className="text-[#4B6584]">BUN:</span>
                 <span className="font-mono">{organStatus.renal.bun} mg/dL</span>
               </div>
             </div>
@@ -403,31 +403,31 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
           </div>
 
           {/* Hepatic Node */}
-          <div className="bg-[#f2f4f6] rounded-xl p-3 flex flex-col justify-between border border-[#e2e8f0]">
+          <div className="bg-[#F4EFE6] rounded-xl p-3 flex flex-col justify-between border border-[#E5DDD0]">
             <div className="flex items-center justify-between">
-              <span className="text-[11px] font-bold text-[#006a61] uppercase tracking-wider">
+              <span className="text-[11px] font-bold text-[#15803D] uppercase tracking-wider">
                 Hepatic Function
               </span>
-              <span className="w-2 h-2 rounded-full bg-[#006a61]"></span>
+              <span className="w-2 h-2 rounded-full bg-[#15803D]"></span>
             </div>
             <div className="my-2">
-              <div className="font-['Plus_Jakarta_Sans'] text-xl font-bold text-[#191c1e]">
+              <div className="font-['Plus_Jakarta_Sans'] text-xl font-bold text-[#1E3A8A]">
                 Normal{' '}
-                <span className="text-xs text-[#006a61] font-normal block">
+                <span className="text-xs text-[#15803D] font-normal block">
                   {organStatus.hepatic.cypStatus}
                 </span>
               </div>
-              <div className="text-[11px] text-[#475569]">{organStatus.hepatic.childPugh}</div>
+              <div className="text-[11px] text-[#4B6584]">{organStatus.hepatic.childPugh}</div>
             </div>
             <div className="space-y-1 text-xs">
               <div className="flex justify-between">
-                <span className="text-[#475569]">ALT / AST:</span>
+                <span className="text-[#4B6584]">ALT / AST:</span>
                 <span className="font-mono">
                   {organStatus.hepatic.alt} / {organStatus.hepatic.ast} U/L
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-[#475569]">Total Bili:</span>
+                <span className="text-[#4B6584]">Total Bili:</span>
                 <span className="font-mono">{organStatus.hepatic.totalBili} mg/dL</span>
               </div>
             </div>
@@ -437,7 +437,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
           </div>
 
           {/* Cardiovascular Node */}
-          <div className="bg-[#f2f4f6] rounded-xl p-3 flex flex-col justify-between border border-[#e2e8f0]">
+          <div className="bg-[#F4EFE6] rounded-xl p-3 flex flex-col justify-between border border-[#E5DDD0]">
             <div className="flex items-center justify-between">
               <span className="text-[11px] font-bold text-[#92400e] uppercase tracking-wider">
                 Cardiovascular
@@ -445,33 +445,33 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
               <span className="w-2 h-2 rounded-full bg-[#92400e]"></span>
             </div>
             <div className="my-2">
-              <div className="font-['Plus_Jakarta_Sans'] text-xl font-bold text-[#191c1e]">
+              <div className="font-['Plus_Jakarta_Sans'] text-xl font-bold text-[#1E3A8A]">
                 {organStatus.cardiovascular.bp}{' '}
-                <span className="text-xs text-[#475569] font-normal">mmHg</span>
+                <span className="text-xs text-[#4B6584] font-normal">mmHg</span>
               </div>
-              <div className="text-[11px] text-[#475569]">{organStatus.cardiovascular.bpStage}</div>
+              <div className="text-[11px] text-[#4B6584]">{organStatus.cardiovascular.bpStage}</div>
             </div>
             <div className="space-y-1 text-xs">
               <div className="flex justify-between">
-                <span className="text-[#475569]">Heart Rate:</span>
+                <span className="text-[#4B6584]">Heart Rate:</span>
                 <span className="font-mono">
                   {organStatus.cardiovascular.heartRate} bpm {organStatus.cardiovascular.rhythm}
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-[#475569]">K+ Serum:</span>
+                <span className="text-[#4B6584]">K+ Serum:</span>
                 <span className="font-mono font-bold text-[#92400e]">
                   {organStatus.cardiovascular.potassium.toFixed(1)} mEq/L
                 </span>
               </div>
             </div>
-            <div className="mt-2 py-1 px-2 rounded bg-[#e6e8ea] text-[#475569] text-[10px] uppercase tracking-tight text-center font-bold">
+            <div className="mt-2 py-1 px-2 rounded bg-[#e6e8ea] text-[#4B6584] text-[10px] uppercase tracking-tight text-center font-bold">
               {organStatus.cardiovascular.badge}
             </div>
           </div>
 
           {/* Glycemic Control Node */}
-          <div className="bg-[#f2f4f6] rounded-xl p-3 flex flex-col justify-between border border-[#e2e8f0]">
+          <div className="bg-[#F4EFE6] rounded-xl p-3 flex flex-col justify-between border border-[#E5DDD0]">
             <div className="flex items-center justify-between">
               <span className="text-[11px] font-bold text-[#92400e] uppercase tracking-wider">
                 Glycemic Control
@@ -479,19 +479,19 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
               <span className="w-2 h-2 rounded-full bg-[#92400e]"></span>
             </div>
             <div className="my-2">
-              <div className="font-['Plus_Jakarta_Sans'] text-xl font-bold text-[#191c1e]">
+              <div className="font-['Plus_Jakarta_Sans'] text-xl font-bold text-[#1E3A8A]">
                 {organStatus.glycemic.hba1c}%{' '}
-                <span className="text-xs text-[#475569] font-normal">HbA1c</span>
+                <span className="text-xs text-[#4B6584] font-normal">HbA1c</span>
               </div>
-              <div className="text-[11px] text-[#475569]">{organStatus.glycemic.controlText}</div>
+              <div className="text-[11px] text-[#4B6584]">{organStatus.glycemic.controlText}</div>
             </div>
             <div className="space-y-1 text-xs">
               <div className="flex justify-between">
-                <span className="text-[#475569]">Fasting Glucose:</span>
+                <span className="text-[#4B6584]">Fasting Glucose:</span>
                 <span className="font-mono">{organStatus.glycemic.fastingGlucose} mg/dL</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-[#475569]">UACR:</span>
+                <span className="text-[#4B6584]">UACR:</span>
                 <span className="font-mono">{organStatus.glycemic.uacr} mg/g</span>
               </div>
             </div>
@@ -502,20 +502,20 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
         </div>
 
         {/* Pharmacokinetic Simulation Curve: Metformin Accumulation Risk */}
-        <div className="bg-[#f2f4f6] rounded-xl p-3 border border-[#e2e8f0]">
+        <div className="bg-[#F4EFE6] rounded-xl p-3 border border-[#E5DDD0]">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-1 mb-2">
             <div className="flex items-center gap-1.5">
-              <span className="material-symbols-outlined text-[18px] text-[#006a61]">
+              <span className="material-symbols-outlined text-[18px] text-[#15803D]">
                 show_chart
               </span>
-              <span className="text-xs font-bold text-[#191c1e]">
+              <span className="text-xs font-bold text-[#1E3A8A]">
                 Simulated Metformin Plasma Steady-State Concentration (Css)
               </span>
             </div>
             <div className="flex items-center gap-2">
               <button
                 onClick={() => setShowDoseReductionCurve(!showDoseReductionCurve)}
-                className="text-[10px] px-2 py-0.5 rounded bg-white border border-[#cbd5e1] hover:bg-[#f8fafc] text-[#006a61] font-semibold transition-colors cursor-pointer"
+                className="text-[10px] px-2 py-0.5 rounded bg-white border border-[#cbd5e1] hover:bg-[#FAF7F2] text-[#15803D] font-semibold transition-colors cursor-pointer"
               >
                 {showDoseReductionCurve ? 'Hide 500mg Simulation' : 'Simulate 500mg BID'}
               </button>
@@ -525,7 +525,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
             </div>
           </div>
 
-          <div className="relative w-full h-36 bg-white rounded-lg p-2 border border-[#e2e8f0] overflow-hidden">
+          <div className="relative w-full h-36 bg-white rounded-lg p-2 border border-[#E5DDD0] overflow-hidden">
             <svg className="w-full h-full" preserveAspectRatio="none" viewBox="0 0 680 120">
               <defs>
                 <linearGradient id="curveFill" x1="0" x2="0" y1="0" y2="1">
@@ -533,8 +533,8 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
                   <stop offset="100%" stopColor="#92400e" stopOpacity="0.0"></stop>
                 </linearGradient>
                 <linearGradient id="normalFill" x1="0" x2="0" y1="0" y2="1">
-                  <stop offset="0%" stopColor="#006a61" stopOpacity="0.2"></stop>
-                  <stop offset="100%" stopColor="#006a61" stopOpacity="0.0"></stop>
+                  <stop offset="0%" stopColor="#15803D" stopOpacity="0.2"></stop>
+                  <stop offset="100%" stopColor="#15803D" stopOpacity="0.0"></stop>
                 </linearGradient>
               </defs>
 
@@ -544,14 +544,14 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
               </text>
 
               <line stroke="#cbd5e1" strokeDasharray="2,2" strokeWidth="1" x1="0" x2="680" y1="75" y2="75"></line>
-              <text className="text-[10px]" fill="#475569" x="5" y="70">
+              <text className="text-[10px]" fill="#4B6584" x="5" y="70">
                 Target Steady-State Range (1.0 - 2.0 mcg/mL)
               </text>
 
               <path
                 d="M 0,110 Q 70,50 140,80 T 280,75 T 420,78 T 560,76 T 680,75"
                 fill="none"
-                stroke="#006a61"
+                stroke="#15803D"
                 strokeWidth="2"
               ></path>
 
@@ -577,7 +577,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
                     strokeDasharray="4,3"
                   ></path>
                   <circle cx="540" cy="60" fill="#14b8a6" r="4"></circle>
-                  <text className="text-[10px] font-bold" fill="#006a61" x="380" y="55">
+                  <text className="text-[10px] font-bold" fill="#15803D" x="380" y="55">
                     Predicted Peak on 500mg BID: 1.45 mcg/mL (Safe Range)
                   </text>
                 </>
@@ -589,7 +589,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
             </div>
           </div>
 
-          <div className="mt-2 flex items-center justify-between text-[11px] text-[#475569] font-mono">
+          <div className="mt-2 flex items-center justify-between text-[11px] text-[#4B6584] font-mono">
             <span>Dose Interval: 0h (Trough)</span>
             <span>12h Steady State</span>
             <span>24h Multiple Dose Simulation</span>
@@ -601,11 +601,11 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
   );
 
   const renderMedicationReviewWidget = () => (
-    <section className="bg-white rounded-xl shadow-2xs border border-[#e2e8f0] overflow-hidden">
-      <div className="p-3 bg-[#f2f4f6] flex items-center justify-between border-b border-[#e2e8f0]">
+    <section className="bg-white rounded-xl shadow-2xs border border-[#E5DDD0] overflow-hidden">
+      <div className="p-3 bg-[#F4EFE6] flex items-center justify-between border-b border-[#E5DDD0]">
         <div className="flex items-center gap-2">
-          <span className="material-symbols-outlined text-[#006a61] text-[22px]">medication</span>
-          <h2 className="font-['Plus_Jakarta_Sans'] font-semibold text-sm text-[#191c1e]">
+          <span className="material-symbols-outlined text-[#15803D] text-[22px]">medication</span>
+          <h2 className="font-['Plus_Jakarta_Sans'] font-semibold text-sm text-[#1E3A8A]">
             Active Medication Review &amp; Guideline Synthesis
           </h2>
         </div>
@@ -613,14 +613,14 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
           {onOpenPersonalizeRegimen && (
             <button
               onClick={onOpenPersonalizeRegimen}
-              className="px-2.5 py-1 rounded bg-[#006a61] text-white hover:bg-[#006f66] text-xs font-bold flex items-center gap-1 cursor-pointer shadow-2xs transition-colors"
+              className="px-2.5 py-1 rounded bg-[#15803D] text-white hover:bg-[#006f66] text-xs font-bold flex items-center gap-1 cursor-pointer shadow-2xs transition-colors"
               title="Personalize and titrate medications specifically for this patient"
             >
               <span className="material-symbols-outlined text-[15px]">tune</span>
               <span>Personalize Regimen</span>
             </button>
           )}
-          <span className="text-[11px] bg-white border border-[#cbd5e1] px-2.5 py-0.5 rounded text-[#475569] font-bold">
+          <span className="text-[11px] bg-white border border-[#cbd5e1] px-2.5 py-0.5 rounded text-[#4B6584] font-bold">
             {patient.medications.length} Current Regimen Items
           </span>
         </div>
@@ -629,7 +629,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
       <div className="overflow-x-auto">
         <table className="w-full text-left border-collapse text-xs">
           <thead>
-            <tr className="bg-[#f2f4f6] text-[#475569] text-[10px] font-bold uppercase tracking-wider border-b border-[#e2e8f0]">
+            <tr className="bg-[#F4EFE6] text-[#4B6584] text-[10px] font-bold uppercase tracking-wider border-b border-[#E5DDD0]">
               <th className="py-2.5 px-3">Drug Name &amp; Dose</th>
               <th className="py-2.5 px-3">Therapeutic Class</th>
               <th className="py-2.5 px-3">Metabolism &amp; Target</th>
@@ -651,11 +651,11 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
                       ? 'bg-[#fef3c7]/20 hover:bg-[#fef3c7]/30'
                       : isContra
                       ? 'bg-[#fee2e2]/25 hover:bg-[#fee2e2]/40'
-                      : 'hover:bg-[#f2f4f6]'
+                      : 'hover:bg-[#F4EFE6]'
                   }`}
                 >
                   <td className="py-3 px-3">
-                    <div className="flex items-center gap-1.5 font-bold text-[#191c1e]">
+                    <div className="flex items-center gap-1.5 font-bold text-[#1E3A8A]">
                       <span>{med.name}</span>
                       {isFlagged && (
                         <span className="bg-[#fef3c7] text-[#92400e] text-[10px] px-1.5 py-0.2 rounded font-bold border border-[#fde68a]">
@@ -668,17 +668,17 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
                         </span>
                       )}
                     </div>
-                    <div className="text-[11px] text-[#475569] font-mono mt-0.5">
+                    <div className="text-[11px] text-[#4B6584] font-mono mt-0.5">
                       {med.dose} • {med.frequency}
                     </div>
                   </td>
 
-                  <td className="py-3 px-3 text-[#475569]">
+                  <td className="py-3 px-3 text-[#4B6584]">
                     {med.therapeuticClass}
                   </td>
 
                   <td className="py-3 px-3">
-                    <div className="text-[#191c1e] font-medium">{med.metabolism}</div>
+                    <div className="text-[#1E3A8A] font-medium">{med.metabolism}</div>
                     <div className="text-[11px] text-[#92400e]">{med.metabolismDetail}</div>
                   </td>
 
@@ -699,8 +699,8 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
                         {med.safetyEvaluation}
                       </span>
                     ) : (
-                      <span className="inline-flex items-center gap-1 text-[#191c1e] text-[11px] bg-[#eceef0] px-2 py-0.5 rounded font-medium">
-                        <span className="material-symbols-outlined text-[14px] text-[#14b8a6]">check_circle</span>
+                      <span className="inline-flex items-center gap-1 text-[#1E3A8A] text-[11px] bg-[#eceef0] px-2 py-0.5 rounded font-medium">
+                        <span className="material-symbols-outlined text-[14px] text-[#15803D]">check_circle</span>
                         {med.safetyEvaluation}
                       </span>
                     )}
@@ -715,7 +715,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
                           onNavigateTab('evidence-library');
                         }
                       }}
-                      className="inline-flex items-center gap-1 text-xs text-[#006a61] hover:underline font-medium cursor-pointer"
+                      className="inline-flex items-center gap-1 text-xs text-[#15803D] hover:underline font-medium cursor-pointer"
                       title={`Inspect verified provenance for ${med.name}`}
                     >
                       <span>{med.guidelineCitation}</span>
@@ -732,14 +732,14 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
       </div>
 
       {/* Calculated Cockcroft-Gault Bar */}
-      <div className="p-2.5 bg-[#f2f4f6] border-t border-[#e2e8f0] flex flex-wrap items-center justify-between text-[#475569] text-xs">
+      <div className="p-2.5 bg-[#F4EFE6] border-t border-[#E5DDD0] flex flex-wrap items-center justify-between text-[#4B6584] text-xs">
         <span className="flex items-center gap-1">
           <span className="material-symbols-outlined text-[16px]">info</span>
           Calculated Cockcroft-Gault CrCl: {patient.organStatus.renal.crcl} mL/min (IBW {biometrics.ibwKg}kg, Age {biometrics.age}, SCr {patient.organStatus.renal.scr.toFixed(2)})
         </span>
         <button
           onClick={onOpenRenalMath}
-          className="text-[#006a61] font-bold hover:underline flex items-center gap-1 cursor-pointer"
+          className="text-[#15803D] font-bold hover:underline flex items-center gap-1 cursor-pointer"
         >
           <span>Detailed Renal Clearance Math</span>
           <span className="material-symbols-outlined text-[14px]">chevron_right</span>
@@ -749,14 +749,14 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
   );
 
   const renderRulesTraceWidget = () => (
-    <section className="bg-white rounded-xl p-3 shadow-2xs border border-[#e2e8f0]">
-      <h3 className="font-['Plus_Jakarta_Sans'] font-semibold text-sm text-[#191c1e] mb-2.5 flex items-center gap-1.5">
-        <span className="material-symbols-outlined text-[#006a61] text-[20px]">menu_book</span>
+    <section className="bg-white rounded-xl p-3 shadow-2xs border border-[#E5DDD0]">
+      <h3 className="font-['Plus_Jakarta_Sans'] font-semibold text-sm text-[#1E3A8A] mb-2.5 flex items-center gap-1.5">
+        <span className="material-symbols-outlined text-[#15803D] text-[20px]">menu_book</span>
         Automated Pharmacogenomic &amp; Pharmacokinetic Rule Verification Trace
       </h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
         {patient.rulesTriggered.map((rule) => (
-          <div key={rule.id} className="bg-[#f2f4f6] rounded-lg p-3 border border-[#e2e8f0] flex flex-col justify-between">
+          <div key={rule.id} className="bg-[#F4EFE6] rounded-lg p-3 border border-[#E5DDD0] flex flex-col justify-between">
             <div>
               <div className="flex items-center justify-between mb-1.5">
                 <span className="font-bold text-[#92400e] text-[11px] truncate">
@@ -777,7 +777,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
                     rule.provenanceId || (rule.id === 'rule-1' ? 'prov-met-renal' : 'prov-sglt2-kdigo')
                   )
                 }
-                className="self-start text-[11px] font-semibold text-[#006a61] hover:underline flex items-center gap-1 cursor-pointer pt-1"
+                className="self-start text-[11px] font-semibold text-[#15803D] hover:underline flex items-center gap-1 cursor-pointer pt-1"
               >
                 <span className="material-symbols-outlined text-[14px]">verified</span>
                 <span>Audit Regulatory Provenance &amp; PubMed DOI</span>
@@ -803,10 +803,10 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
 
       <div className="p-3.5 flex flex-col gap-3">
         <div>
-          <div className="font-['Plus_Jakarta_Sans'] font-bold text-sm text-[#191c1e]">
+          <div className="font-['Plus_Jakarta_Sans'] font-bold text-sm text-[#1E3A8A]">
             {priorityTriage.title}
           </div>
-          <div className="text-xs text-[#475569] mt-0.5 font-medium">
+          <div className="text-xs text-[#4B6584] mt-0.5 font-medium">
             Current Dose: <strong>{priorityTriage.currentDoseSummary}</strong>
           </div>
         </div>
@@ -823,7 +823,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
 
         {/* Clinical Twin Recommended Interventions */}
         <div>
-          <span className="text-[10px] font-bold text-[#475569] uppercase tracking-wider block mb-1.5">
+          <span className="text-[10px] font-bold text-[#4B6584] uppercase tracking-wider block mb-1.5">
             Twin Prescribing Recommendations
           </span>
           <div className="space-y-1.5">
@@ -832,8 +832,8 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
                 key={option.id}
                 className={`flex items-start gap-2.5 p-2.5 rounded border transition-colors cursor-pointer ${
                   selectedRxOption === option.id
-                    ? 'border-[#006a61] bg-[#006a61]/5'
-                    : 'border-[#e2e8f0] bg-[#f2f4f6] hover:bg-[#eceef0]'
+                    ? 'border-[#15803D] bg-[#15803D]/5'
+                    : 'border-[#E5DDD0] bg-[#F4EFE6] hover:bg-[#eceef0]'
                 }`}
               >
                 <input
@@ -842,13 +842,13 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
                   value={option.id}
                   checked={selectedRxOption === option.id}
                   onChange={() => setSelectedRxOption(option.id)}
-                  className="mt-1 text-[#006a61] focus:ring-[#006a61]"
+                  className="mt-1 text-[#15803D] focus:ring-[#15803D]"
                 />
                 <div className="flex flex-col min-w-0">
-                  <span className="font-bold text-xs text-[#191c1e]">
+                  <span className="font-bold text-xs text-[#1E3A8A]">
                     {option.title}
                   </span>
-                  <span className="text-[11px] text-[#475569] leading-normal">
+                  <span className="text-[11px] text-[#4B6584] leading-normal">
                     {option.description}
                   </span>
                 </div>
@@ -859,13 +859,13 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
 
         {/* Interactive Review Note Form */}
         <div className="pt-1 flex flex-col gap-1.5">
-          <label className="text-[10px] font-bold text-[#475569] uppercase tracking-wider">
+          <label className="text-[10px] font-bold text-[#4B6584] uppercase tracking-wider">
             Clinical Pharmacist Review &amp; Sign-Off Note
           </label>
           <textarea
             value={pharmacistNote}
             onChange={(e) => setPharmacistNote(e.target.value)}
-            className="w-full p-2.5 rounded bg-[#f2f4f6] border border-[#cbd5e1] text-[#191c1e] text-xs outline-none focus:border-[#006a61] focus:bg-white transition-all leading-relaxed"
+            className="w-full p-2.5 rounded bg-[#F4EFE6] border border-[#cbd5e1] text-[#1E3A8A] text-xs outline-none focus:border-[#15803D] focus:bg-white transition-all leading-relaxed"
             rows={3}
             placeholder="Enter clinical assessment, physician communication rationale, and titration timeline..."
           ></textarea>
@@ -877,7 +877,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
               className={`h-9 px-2 rounded text-xs font-semibold flex items-center justify-center gap-1 transition-all shadow-xs cursor-pointer ${
                 isAcknowledged
                   ? 'bg-[#d1fae5] text-[#065f46] border border-[#a7f3d0]'
-                  : 'bg-[#006a61] text-white hover:bg-[#006f66]'
+                  : 'bg-[#15803D] text-white hover:bg-[#006f66]'
               }`}
             >
               <span className="material-symbols-outlined text-[16px]">task_alt</span>
@@ -887,7 +887,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
             <button
               onClick={handleSaveNote}
               type="button"
-              className="h-9 px-2 rounded bg-[#e6e8ea] hover:bg-[#e0e3e5] text-[#191c1e] text-xs font-semibold flex items-center justify-center gap-1 transition-all cursor-pointer border border-[#cbd5e1]"
+              className="h-9 px-2 rounded bg-[#e6e8ea] hover:bg-[#e0e3e5] text-[#1E3A8A] text-xs font-semibold flex items-center justify-center gap-1 transition-all cursor-pointer border border-[#cbd5e1]"
             >
               <span className="material-symbols-outlined text-[16px]">post_add</span>
               <span>Save to EHR</span>
@@ -905,38 +905,38 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
   );
 
   const renderBiometricsWidget = () => (
-    <section className="bg-white rounded-xl p-3.5 shadow-2xs border border-[#e2e8f0]">
-      <h3 className="font-['Plus_Jakarta_Sans'] font-semibold text-sm text-[#191c1e] mb-2.5 flex items-center justify-between">
+    <section className="bg-white rounded-xl p-3.5 shadow-2xs border border-[#E5DDD0]">
+      <h3 className="font-['Plus_Jakarta_Sans'] font-semibold text-sm text-[#1E3A8A] mb-2.5 flex items-center justify-between">
         <span>Patient Biometric Twin Status</span>
-        <span className="text-xs text-[#006a61] font-mono font-bold">{patient.id}</span>
+        <span className="text-xs text-[#15803D] font-mono font-bold">{patient.id}</span>
       </h3>
       <div className="space-y-1.5 text-xs">
-        <div className="flex justify-between py-1.5 px-2 rounded bg-[#f2f4f6]">
-          <span className="text-[#475569]">Demographics</span>
-          <span className="font-semibold text-[#191c1e]">
+        <div className="flex justify-between py-1.5 px-2 rounded bg-[#F4EFE6]">
+          <span className="text-[#4B6584]">Demographics</span>
+          <span className="font-semibold text-[#1E3A8A]">
             {biometrics.age} YO {biometrics.sex} • {biometrics.smoking}
           </span>
         </div>
-        <div className="flex justify-between py-1.5 px-2 rounded bg-[#f2f4f6]">
-          <span className="text-[#475569]">Height / Weight / BMI</span>
-          <span className="font-mono text-[#191c1e]">
+        <div className="flex justify-between py-1.5 px-2 rounded bg-[#F4EFE6]">
+          <span className="text-[#4B6584]">Height / Weight / BMI</span>
+          <span className="font-mono text-[#1E3A8A]">
             {biometrics.heightCm} cm • {biometrics.weightKg} kg • {biometrics.bmi} kg/m²
           </span>
         </div>
-        <div className="flex justify-between py-1.5 px-2 rounded bg-[#f2f4f6]">
-          <span className="text-[#475569]">Ideal Body Weight (IBW)</span>
-          <span className="font-mono text-[#191c1e]">
+        <div className="flex justify-between py-1.5 px-2 rounded bg-[#F4EFE6]">
+          <span className="text-[#4B6584]">Ideal Body Weight (IBW)</span>
+          <span className="font-mono text-[#1E3A8A]">
             {biometrics.ibwKg} kg (Cockcroft-Gault basis)
           </span>
         </div>
-        <div className="flex justify-between py-1.5 px-2 rounded bg-[#f2f4f6]">
-          <span className="text-[#475569]">Active Diagnoses</span>
-          <span className="text-[11px] text-[#191c1e] text-right max-w-[200px]">
+        <div className="flex justify-between py-1.5 px-2 rounded bg-[#F4EFE6]">
+          <span className="text-[#4B6584]">Active Diagnoses</span>
+          <span className="text-[11px] text-[#1E3A8A] text-right max-w-[200px]">
             {biometrics.diagnoses.join(', ')}
           </span>
         </div>
-        <div className="flex justify-between py-1.5 px-2 rounded bg-[#f2f4f6]">
-          <span className="text-[#475569]">Known Drug Allergies</span>
+        <div className="flex justify-between py-1.5 px-2 rounded bg-[#F4EFE6]">
+          <span className="text-[#4B6584]">Known Drug Allergies</span>
           <span className="text-xs text-[#991b1b] font-bold">
             {biometrics.allergies.join(', ')}
           </span>
@@ -946,14 +946,14 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
   );
 
   const renderRecentScenariosWidget = () => (
-    <section className="bg-white rounded-xl p-3.5 shadow-2xs border border-[#e2e8f0]">
+    <section className="bg-white rounded-xl p-3.5 shadow-2xs border border-[#E5DDD0]">
       <div className="flex items-center justify-between mb-2">
-        <h3 className="font-['Plus_Jakarta_Sans'] font-semibold text-sm text-[#191c1e]">
+        <h3 className="font-['Plus_Jakarta_Sans'] font-semibold text-sm text-[#1E3A8A]">
           Recent Synthetic Scenarios
         </h3>
         <button
           onClick={() => onNavigateTab('clinical-scenarios')}
-          className="text-[11px] text-[#006a61] hover:underline cursor-pointer font-semibold"
+          className="text-[11px] text-[#15803D] hover:underline cursor-pointer font-semibold"
         >
           View All ({Object.keys(PATIENT_CASES).length})
         </button>
@@ -967,21 +967,21 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
               onClick={() => onSelectPatient(item.id)}
               className={`p-2.5 rounded-lg flex items-center justify-between transition-colors cursor-pointer border ${
                 isActive
-                  ? 'bg-[#f2f4f6] border-[#006a61]'
-                  : 'border-transparent hover:bg-[#f2f4f6]'
+                  ? 'bg-[#F4EFE6] border-[#15803D]'
+                  : 'border-transparent hover:bg-[#F4EFE6]'
               }`}
             >
               <div className="flex flex-col min-w-0 pr-2">
                 <div className="flex items-center gap-1.5">
-                  <span className={`w-2 h-2 rounded-full ${isActive ? 'bg-[#14b8a6]' : 'bg-[#cbd5e1]'}`}></span>
-                  <span className="font-bold text-xs text-[#191c1e]">{item.id}</span>
+                  <span className={`w-2 h-2 rounded-full ${isActive ? 'bg-[#15803D]' : 'bg-[#cbd5e1]'}`}></span>
+                  <span className="font-bold text-xs text-[#1E3A8A]">{item.id}</span>
                   {isActive && (
-                    <span className="text-[10px] px-1 rounded bg-[#006a61]/10 text-[#006a61] font-semibold">
+                    <span className="text-[10px] px-1 rounded bg-[#15803D]/10 text-[#15803D] font-semibold">
                       Active
                     </span>
                   )}
                 </div>
-                <span className="text-[11px] text-[#475569] truncate">
+                <span className="text-[11px] text-[#4B6584] truncate">
                   {item.summary}
                 </span>
               </div>
@@ -1038,7 +1038,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
       <div key={id} className="flex flex-col gap-2">
         {/* Visual Drop Target Indicator before widget */}
         {isOverThis && (
-          <div className="h-10 rounded-xl border-2 border-dashed border-teal-500 bg-[#E6F4F1]0/10 flex items-center justify-center gap-2 text-[#0F766E] text-xs font-bold animate-pulse shadow-2xs">
+          <div className="h-10 rounded-xl border-2 border-dashed border-teal-500 bg-[#EEF7EE]0/10 flex items-center justify-center gap-2 text-[#15803D] text-xs font-bold animate-pulse shadow-2xs">
             <span className="material-symbols-outlined text-[17px]">south</span>
             <span>Drop "{meta.shortLabel}" Here</span>
           </div>
@@ -1060,14 +1060,14 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
           {/* Clinician Drag Handle & Layout Customization Bar */}
           <div className="bg-slate-100/95 hover:bg-slate-200/90 px-3 py-1.5 rounded-t-xl border-t border-x border-slate-200/90 flex items-center justify-between text-xs transition-colors select-none">
             <div
-              className="flex items-center gap-2 cursor-grab active:cursor-grabbing font-bold text-slate-700 hover:text-[#0F766E]"
+              className="flex items-center gap-2 cursor-grab active:cursor-grabbing font-bold text-slate-700 hover:text-[#15803D]"
               title="Click and drag by this handle to reposition widget anywhere on your workspace"
             >
-              <span className="material-symbols-outlined text-[18px] text-slate-400 group-hover:text-[#14B8A6] transition-colors">
+              <span className="material-symbols-outlined text-[18px] text-slate-400 group-hover:text-[#15803D] transition-colors">
                 drag_indicator
               </span>
               <div className="flex items-center gap-1.5">
-                <span className="material-symbols-outlined text-[15px] text-[#0F766E]">
+                <span className="material-symbols-outlined text-[15px] text-[#15803D]">
                   {meta.icon}
                 </span>
                 <span className="text-[11px] font-semibold tracking-tight text-slate-800">
@@ -1106,7 +1106,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
               <button
                 type="button"
                 onClick={() => moveWidgetToOtherCol(id, column)}
-                className="h-6 px-1.5 rounded hover:bg-white flex items-center gap-0.5 text-[10px] font-semibold text-slate-600 hover:text-[#0F766E] cursor-pointer transition-colors"
+                className="h-6 px-1.5 rounded hover:bg-white flex items-center gap-0.5 text-[10px] font-semibold text-slate-600 hover:text-[#15803D] cursor-pointer transition-colors"
                 title={`Move to ${column === 'left' ? 'Right' : 'Left'} Column`}
               >
                 <span className="material-symbols-outlined text-[14px]">
@@ -1135,13 +1135,13 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
           {isCollapsed ? (
             <div className="p-3 bg-white border border-slate-200 rounded-b-xl flex items-center justify-between text-xs text-slate-500">
               <span className="italic flex items-center gap-1.5">
-                <span className="material-symbols-outlined text-[16px] text-[#14B8A6]">visibility_off</span>
+                <span className="material-symbols-outlined text-[16px] text-[#15803D]">visibility_off</span>
                 Widget collapsed ({meta.title})
               </span>
               <button
                 type="button"
                 onClick={() => toggleCollapse(id)}
-                className="text-[11px] font-bold text-[#0F766E] hover:underline cursor-pointer"
+                className="text-[11px] font-bold text-[#15803D] hover:underline cursor-pointer"
               >
                 Expand view
               </button>
@@ -1160,12 +1160,12 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
     <div className="flex flex-col w-full space-y-5">
       {/* Triage Hero & Status Context Strip */}
       <section className="relative bg-[#0d1c32] text-white rounded-xl p-4 shadow-md overflow-hidden">
-        <div className="absolute -right-16 -top-24 w-80 h-80 rounded-full bg-[#006a61]/15 blur-3xl pointer-events-none"></div>
+        <div className="absolute -right-16 -top-24 w-80 h-80 rounded-full bg-[#15803D]/15 blur-3xl pointer-events-none"></div>
         <div className="relative z-10 flex flex-col xl:flex-row xl:items-center justify-between gap-4">
           <div className="flex flex-col gap-1.5 max-w-3xl">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-[#006a61] text-white text-[11px] font-bold uppercase tracking-wider">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#14b8a6] animate-pulse"></span>
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-[#15803D] text-white text-[11px] font-bold uppercase tracking-wider">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#15803D] animate-pulse"></span>
                 Tier-4 Educational Simulation Workspace
               </span>
               <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-white/10 text-[#89f5e7] text-xs font-mono font-medium">
@@ -1190,7 +1190,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
                 onClick={() => setDropdownOpen(!dropdownOpen)}
                 className="h-9 px-3 rounded bg-white/10 hover:bg-white/20 text-white text-xs font-semibold flex items-center gap-1.5 shadow-sm transition-colors cursor-pointer"
               >
-                <span className="material-symbols-outlined text-[18px] text-[#14b8a6]">
+                <span className="material-symbols-outlined text-[18px] text-[#15803D]">
                   switch_account
                 </span>
                 <span>Switch Synthetic Case</span>
@@ -1198,8 +1198,8 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
               </button>
 
               {dropdownOpen && (
-                <div className="absolute right-0 mt-1 w-72 bg-white text-[#191c1e] rounded-lg shadow-xl py-1 z-50 border border-[#e2e8f0]">
-                  <div className="px-3 py-1 text-[10px] font-bold text-[#475569] uppercase tracking-wider border-b border-[#f1f5f9]">
+                <div className="absolute right-0 mt-1 w-72 bg-white text-[#1E3A8A] rounded-lg shadow-xl py-1 z-50 border border-[#E5DDD0]">
+                  <div className="px-3 py-1 text-[10px] font-bold text-[#4B6584] uppercase tracking-wider border-b border-[#f1f5f9]">
                     Validated Test Cohorts
                   </div>
                   {Object.values(PATIENT_CASES).map((caseItem) => (
@@ -1209,21 +1209,21 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
                         onSelectPatient(caseItem.id);
                         setDropdownOpen(false);
                       }}
-                      className={`w-full text-left px-3 py-2 hover:bg-[#f2f4f6] transition-colors flex flex-col ${
-                        caseItem.id === patient.id ? 'bg-[#006a61]/5 border-l-2 border-[#006a61]' : ''
+                      className={`w-full text-left px-3 py-2 hover:bg-[#F4EFE6] transition-colors flex flex-col ${
+                        caseItem.id === patient.id ? 'bg-[#15803D]/5 border-l-2 border-[#15803D]' : ''
                       }`}
                     >
                       <div className="flex items-center justify-between">
                         <span className={`text-xs font-bold ${
-                          caseItem.id === patient.id ? 'text-[#006a61]' : 'text-[#191c1e]'
+                          caseItem.id === patient.id ? 'text-[#15803D]' : 'text-[#1E3A8A]'
                         }`}>
                           {caseItem.id} {caseItem.id === patient.id ? '(Active)' : ''}
                         </span>
-                        <span className="text-[10px] text-[#64748b]">
+                        <span className="text-[10px] text-[#4B6584]">
                           {caseItem.tier}
                         </span>
                       </div>
-                      <span className="text-[11px] text-[#475569] truncate">
+                      <span className="text-[11px] text-[#4B6584] truncate">
                         {caseItem.summary}
                       </span>
                     </button>
@@ -1236,17 +1236,17 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
               <button
                 onClick={onExportPdf}
                 type="button"
-                className="h-9 px-3 rounded bg-white text-slate-800 border border-[#e2e8f0] hover:bg-[#E6F4F1] hover:border-[#14B8A6] text-xs font-semibold flex items-center gap-1.5 shadow-2xs transition-all cursor-pointer"
+                className="h-9 px-3 rounded bg-white text-slate-800 border border-[#E5DDD0] hover:bg-[#EEF7EE] hover:border-[#14B8A6] text-xs font-semibold flex items-center gap-1.5 shadow-2xs transition-all cursor-pointer"
                 title="Export Structured Clinical PDF"
               >
-                <span className="material-symbols-outlined text-[18px] text-[#006a61]">picture_as_pdf</span>
+                <span className="material-symbols-outlined text-[18px] text-[#15803D]">picture_as_pdf</span>
                 <span>Export PDF</span>
               </button>
             )}
 
             <button
               onClick={onOpenNewAssessment}
-              className="h-9 px-3 rounded bg-[#006a61] text-white hover:bg-[#006f66] text-xs font-semibold flex items-center gap-1.5 shadow-sm transition-all cursor-pointer"
+              className="h-9 px-3 rounded bg-[#15803D] text-white hover:bg-[#006f66] text-xs font-semibold flex items-center gap-1.5 shadow-sm transition-all cursor-pointer"
             >
               <span className="material-symbols-outlined text-[18px]">add_circle</span>
               <span>New Twin Assessment</span>
@@ -1258,34 +1258,34 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
       {/* High-Density Clinical KPI Quad */}
       <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Card 1: Active Regimen */}
-        <div className="bg-white rounded-xl p-3 border border-[#e2e8f0] shadow-2xs flex flex-col justify-between">
+        <div className="bg-white rounded-xl p-3 border border-[#E5DDD0] shadow-2xs flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between mb-2">
-              <span className="text-[11px] font-bold text-[#475569] uppercase tracking-wider">
+              <span className="text-[11px] font-bold text-[#4B6584] uppercase tracking-wider">
                 Active Regimen
               </span>
-              <div className="w-7 h-7 rounded bg-[#006a61]/10 flex items-center justify-center text-[#006a61]">
+              <div className="w-7 h-7 rounded bg-[#15803D]/10 flex items-center justify-center text-[#15803D]">
                 <span className="material-symbols-outlined text-[18px]">prescriptions</span>
               </div>
             </div>
             <div className="flex items-baseline gap-1 mb-1">
-              <span className="font-['Plus_Jakarta_Sans'] text-2xl font-bold text-[#191c1e]">
+              <span className="font-['Plus_Jakarta_Sans'] text-2xl font-bold text-[#1E3A8A]">
                 0{patient.kpis.activeAgentsCount}
               </span>
-              <span className="text-xs text-[#475569]">concurrent agents</span>
+              <span className="text-xs text-[#4B6584]">concurrent agents</span>
             </div>
-            <div className="flex items-center gap-1.5 text-[#006a61] text-[11px] font-semibold">
-              <span className="w-2 h-2 rounded-full bg-[#006a61]"></span>
+            <div className="flex items-center gap-1.5 text-[#15803D] text-[11px] font-semibold">
+              <span className="w-2 h-2 rounded-full bg-[#15803D]"></span>
               <span>Reconciliation Synced ({patient.kpis.reconciliationSynced})</span>
             </div>
           </div>
-          <div className="mt-2 pt-1.5 bg-[#f2f4f6] rounded p-2 text-[#44474d] text-xs truncate">
+          <div className="mt-2 pt-1.5 bg-[#F4EFE6] rounded p-2 text-[#44474d] text-xs truncate">
             {patient.medications.map((m) => m.name.split(' ')[0]).join(' • ')}
           </div>
         </div>
 
         {/* Card 2: Critical Signals */}
-        <div className="bg-white rounded-xl p-3 border border-[#e2e8f0] shadow-2xs flex flex-col justify-between">
+        <div className="bg-white rounded-xl p-3 border border-[#E5DDD0] shadow-2xs flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between mb-2">
               <span className="text-[11px] font-bold text-[#92400e] uppercase tracking-wider">
@@ -1312,10 +1312,10 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
         </div>
 
         {/* Card 3: Monitoring Protocol */}
-        <div className="bg-white rounded-xl p-3 border border-[#e2e8f0] shadow-2xs flex flex-col justify-between">
+        <div className="bg-white rounded-xl p-3 border border-[#E5DDD0] shadow-2xs flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between mb-2">
-              <span className="text-[11px] font-bold text-[#475569] uppercase tracking-wider">
+              <span className="text-[11px] font-bold text-[#4B6584] uppercase tracking-wider">
                 Monitoring Protocol
               </span>
               <div className="w-7 h-7 rounded bg-[#162a36]/10 flex items-center justify-center text-[#0f2b38]">
@@ -1323,17 +1323,17 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
               </div>
             </div>
             <div className="flex items-baseline gap-1 mb-1">
-              <span className="font-['Plus_Jakarta_Sans'] text-2xl font-bold text-[#191c1e]">
+              <span className="font-['Plus_Jakarta_Sans'] text-2xl font-bold text-[#1E3A8A]">
                 0{patient.kpis.pendingLabsCount}
               </span>
-              <span className="text-xs text-[#475569]">pending serial labs</span>
+              <span className="text-xs text-[#4B6584]">pending serial labs</span>
             </div>
-            <div className="flex items-center gap-1.5 text-[#475569] text-[11px]">
+            <div className="flex items-center gap-1.5 text-[#4B6584] text-[11px]">
               <span className="w-2 h-2 rounded-full bg-[#cbd5e1]"></span>
               <span>Next Draw: {patient.kpis.nextDraw}</span>
             </div>
           </div>
-          <div className="mt-2 pt-1.5 bg-[#f2f4f6] rounded p-2 text-[#44474d] text-xs flex justify-between font-mono">
+          <div className="mt-2 pt-1.5 bg-[#F4EFE6] rounded p-2 text-[#44474d] text-xs flex justify-between font-mono">
             <span>K+ (14d)</span>
             <span>SCr/eGFR (30d)</span>
             <span>A1c (90d)</span>
@@ -1341,28 +1341,28 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
         </div>
 
         {/* Card 4: Traceable Guidelines */}
-        <div className="bg-white rounded-xl p-3 border border-[#e2e8f0] shadow-2xs flex flex-col justify-between">
+        <div className="bg-white rounded-xl p-3 border border-[#E5DDD0] shadow-2xs flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between mb-2">
-              <span className="text-[11px] font-bold text-[#475569] uppercase tracking-wider">
+              <span className="text-[11px] font-bold text-[#4B6584] uppercase tracking-wider">
                 Traceable Guidelines
               </span>
-              <div className="w-7 h-7 rounded bg-[#86f2e4]/30 flex items-center justify-center text-[#006a61]">
+              <div className="w-7 h-7 rounded bg-[#86f2e4]/30 flex items-center justify-center text-[#15803D]">
                 <span className="material-symbols-outlined text-[18px]">verified</span>
               </div>
             </div>
             <div className="flex items-baseline gap-1 mb-1">
-              <span className="font-['Plus_Jakarta_Sans'] text-2xl font-bold text-[#191c1e]">
+              <span className="font-['Plus_Jakarta_Sans'] text-2xl font-bold text-[#1E3A8A]">
                 {patient.kpis.evidenceLinksCount}
               </span>
-              <span className="text-xs text-[#475569]">evidence links</span>
+              <span className="text-xs text-[#4B6584]">evidence links</span>
             </div>
-            <div className="flex items-center gap-1.5 text-[#006a61] text-[11px] font-semibold">
+            <div className="flex items-center gap-1.5 text-[#15803D] text-[11px] font-semibold">
               <span className="material-symbols-outlined text-[14px]">fact_check</span>
               <span>{patient.kpis.guidelinesSummary}</span>
             </div>
           </div>
-          <div className="mt-2 pt-1.5 bg-[#f2f4f6] rounded p-2 text-[#44474d] text-xs truncate">
+          <div className="mt-2 pt-1.5 bg-[#F4EFE6] rounded p-2 text-[#44474d] text-xs truncate">
             Level-A evidence matched to renal profile
           </div>
         </div>
@@ -1373,7 +1373,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
         {/* Workspace Customizer Toolbar (Spanning full width) */}
         <div className="lg:col-span-12 bg-white rounded-xl p-3 border border-slate-200 shadow-2xs flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-[#E6F4F1] border border-[#BEE3DB] flex items-center justify-center text-[#0F766E]">
+            <div className="w-8 h-8 rounded-lg bg-[#EEF7EE] border border-[#CBE4CB] flex items-center justify-center text-[#15803D]">
               <span className="material-symbols-outlined text-[19px]">dashboard_customize</span>
             </div>
             <div>
@@ -1381,8 +1381,8 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
                 <h3 className="font-['Plus_Jakarta_Sans'] font-bold text-xs text-slate-900">
                   Clinician Workspace Customization
                 </h3>
-                <span className="inline-flex items-center gap-1 text-[10px] font-bold font-mono px-2 py-0.5 rounded bg-[#E6F4F1] text-[#0F766E] border border-[#BEE3DB]">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#E6F4F1]0 animate-pulse"></span>
+                <span className="inline-flex items-center gap-1 text-[10px] font-bold font-mono px-2 py-0.5 rounded bg-[#EEF7EE] text-[#15803D] border border-[#CBE4CB]">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#EEF7EE]0 animate-pulse"></span>
                   Drag &amp; Drop Active
                 </span>
               </div>
@@ -1402,7 +1402,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
                 }}
                 className={`px-2.5 py-1 rounded text-[11px] font-semibold transition-all cursor-pointer flex items-center gap-1 ${
                   layoutMode === 'asymmetric'
-                    ? 'bg-white text-[#0F766E] shadow-xs font-bold'
+                    ? 'bg-white text-[#15803D] shadow-xs font-bold'
                     : 'text-slate-600 hover:text-slate-900'
                 }`}
                 title="Standard (8 / 4) Column Split"
@@ -1418,7 +1418,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
                 }}
                 className={`px-2.5 py-1 rounded text-[11px] font-semibold transition-all cursor-pointer flex items-center gap-1 ${
                   layoutMode === 'balanced'
-                    ? 'bg-white text-[#0F766E] shadow-xs font-bold'
+                    ? 'bg-white text-[#15803D] shadow-xs font-bold'
                     : 'text-slate-600 hover:text-slate-900'
                 }`}
                 title="Balanced (6 / 6) Equal Split"
@@ -1434,7 +1434,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
                 }}
                 className={`px-2.5 py-1 rounded text-[11px] font-semibold transition-all cursor-pointer flex items-center gap-1 ${
                   layoutMode === 'inverted'
-                    ? 'bg-white text-[#0F766E] shadow-xs font-bold'
+                    ? 'bg-white text-[#15803D] shadow-xs font-bold'
                     : 'text-slate-600 hover:text-slate-900'
                 }`}
                 title="Priority First (4 / 8) Split"
@@ -1489,7 +1489,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
               onDrop={(e) => handleDropOnColumnEnd(e, 'left')}
               className={`rounded-xl border-2 border-dashed transition-all duration-200 ${
                 dragOverCol === 'left' && dragOverIndex === null
-                  ? 'h-14 border-teal-500 bg-[#E6F4F1]/80 flex items-center justify-center text-[#0F766E] text-xs font-bold gap-2 animate-pulse'
+                  ? 'h-14 border-teal-500 bg-[#EEF7EE]/80 flex items-center justify-center text-[#15803D] text-xs font-bold gap-2 animate-pulse'
                   : 'h-4 border-transparent'
               }`}
             >
@@ -1536,7 +1536,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
               onDrop={(e) => handleDropOnColumnEnd(e, 'right')}
               className={`rounded-xl border-2 border-dashed transition-all duration-200 ${
                 dragOverCol === 'right' && dragOverIndex === null
-                  ? 'h-14 border-teal-500 bg-[#E6F4F1]/80 flex items-center justify-center text-[#0F766E] text-xs font-bold gap-2 animate-pulse'
+                  ? 'h-14 border-teal-500 bg-[#EEF7EE]/80 flex items-center justify-center text-[#15803D] text-xs font-bold gap-2 animate-pulse'
                   : 'h-4 border-transparent'
               }`}
             >
@@ -1552,23 +1552,23 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
       </div>
 
       {/* Bottom Workspace Metadata & Clinical Disclaimers */}
-      <section className="mt-4 mb-2 p-3 rounded-xl bg-[#f2f4f6] border border-[#e2e8f0] flex flex-col md:flex-row items-center justify-between gap-3">
+      <section className="mt-4 mb-2 p-3 rounded-xl bg-[#F4EFE6] border border-[#E5DDD0] flex flex-col md:flex-row items-center justify-between gap-3">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded bg-[#162a36] text-white flex items-center justify-center font-bold text-xs tracking-wider">
             SYN
           </div>
           <div className="flex flex-col">
-            <span className="font-semibold text-xs text-[#191c1e]">
+            <span className="font-semibold text-xs text-[#1E3A8A]">
               SYNTHOS Clinical Twin Verification Protocol v3.8.2
             </span>
-            <span className="text-[11px] text-[#475569] font-mono">
+            <span className="text-[11px] text-[#4B6584] font-mono">
               Deterministic Rule ID: CDS-REN-4209 • Engine Hash: 8f9b2d3e • Generated with Synthetic Patient Data
             </span>
           </div>
         </div>
-        <div className="flex items-center gap-2 text-[#475569] text-xs">
+        <div className="flex items-center gap-2 text-[#4B6584] text-xs">
           <span className="inline-flex items-center gap-1 font-medium">
-            <span className="material-symbols-outlined text-[16px] text-[#14b8a6]">lock</span>
+            <span className="material-symbols-outlined text-[16px] text-[#15803D]">lock</span>
             HIPAA-Free Synthetic Data
           </span>
           <span>•</span>

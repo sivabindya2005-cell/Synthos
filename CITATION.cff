@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use this software in clinical research or pharmacometric education, please cite it as below."
+authors:
+  - family-names: "SYNTHOS"
+    given-names: "Contributors"
+title: "SYNTHOS: Clinical Decision Support Matrix & Pharmacokinetic Digital Twin"
+version: 1.0.0
+date-released: 2026-11-05
+url: "https://github.com/sivasyam05/synthos"
+keywords:
+  - pharmacokinetics
+  - clinical decision support
+  - digital twin
+  - precision medicine
+  - renal clearance
+  - CKD-EPI
+  - therapeutic drug monitoring
+license: MIT

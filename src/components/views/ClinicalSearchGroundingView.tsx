@@ -194,7 +194,7 @@ ${searchResponse.groundingChunks.map((c) => `- ${c.title}: ${c.url}`).join('\n')
         {onLaunchTwin && (
           <button
             onClick={onLaunchTwin}
-            className="px-4 py-2.5 rounded-xl bg-[#14B8A6] hover:bg-[#E6F4F1]0 text-white text-xs font-bold flex items-center gap-2 shadow-sm transition-all cursor-pointer shrink-0"
+            className="px-4 py-2.5 rounded-xl bg-[#15803D] hover:bg-[#EEF7EE]0 text-white text-xs font-bold flex items-center gap-2 shadow-sm transition-all cursor-pointer shrink-0"
           >
             <span className="material-symbols-outlined text-[18px]">tune</span>
             <span>Return to Digital Twin</span>
@@ -239,7 +239,7 @@ ${searchResponse.groundingChunks.map((c) => `- ${c.title}: ${c.url}`).join('\n')
                 className={`px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-all shadow-xs cursor-pointer ${
                   isLoading || !query.trim()
                     ? 'bg-slate-200 dark:bg-slate-800 text-slate-400 cursor-not-allowed'
-                    : 'bg-[#0F766E] hover:bg-[#0F766E] text-white'
+                    : 'bg-[#15803D] hover:bg-[#15803D] text-white'
                 }`}
               >
                 <span className={`material-symbols-outlined text-[16px] ${isLoading ? 'animate-spin' : ''}`}>
@@ -258,13 +258,13 @@ ${searchResponse.groundingChunks.map((c) => `- ${c.title}: ${c.url}`).join('\n')
                   type="checkbox"
                   checked={includePatientContext}
                   onChange={(e) => setIncludePatientContext(e.target.checked)}
-                  className="rounded text-[#0F766E] focus:ring-teal-700 w-4 h-4"
+                  className="rounded text-[#15803D] focus:ring-teal-700 w-4 h-4"
                 />
                 <span>Include Active Patient Biometrics &amp; Genotype</span>
               </label>
 
               {activePatient && includePatientContext && (
-                <span className="text-[11px] font-mono text-[#0F766E] dark:text-teal-300">
+                <span className="text-[11px] font-mono text-[#15803D] dark:text-teal-300">
                   {activePatient.id} · eGFR {activePatient.organStatus.renal.egfr} mL/min · {activePatient.organStatus.hepatic.cypStatus}
                 </span>
               )}
@@ -314,7 +314,7 @@ ${searchResponse.groundingChunks.map((c) => `- ${c.title}: ${c.url}`).join('\n')
         <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
           <div className="space-y-0.5">
             <h3 className="font-['Plus_Jakarta_Sans'] font-bold text-sm text-slate-900 dark:text-slate-100 flex items-center gap-2">
-              <span className="material-symbols-outlined text-[#0F766E] dark:text-teal-400 text-[18px]">travel_explore</span>
+              <span className="material-symbols-outlined text-[#15803D] dark:text-teal-400 text-[18px]">travel_explore</span>
               <span>Authoritative Biomedical Search Engines (Free · No Sign-in)</span>
             </h3>
             <p className="text-xs text-slate-500 dark:text-slate-400">
@@ -338,8 +338,8 @@ ${searchResponse.groundingChunks.map((c) => `- ${c.title}: ${c.url}`).join('\n')
               >
                 <div className="space-y-1">
                   <div className="flex items-center justify-between">
-                    <span className="font-bold text-xs text-slate-900 dark:text-slate-100 flex items-center gap-1.5 group-hover:text-[#0F766E] dark:group-hover:text-teal-300">
-                      <span className="material-symbols-outlined text-[17px] text-[#0F766E] dark:text-teal-400">{engine.icon}</span>
+                    <span className="font-bold text-xs text-slate-900 dark:text-slate-100 flex items-center gap-1.5 group-hover:text-[#15803D] dark:group-hover:text-teal-300">
+                      <span className="material-symbols-outlined text-[17px] text-[#15803D] dark:text-teal-400">{engine.icon}</span>
                       <span>{engine.name}</span>
                     </span>
                     <span className="text-[10px] font-mono text-slate-500 dark:text-slate-400">
@@ -351,7 +351,7 @@ ${searchResponse.groundingChunks.map((c) => `- ${c.title}: ${c.url}`).join('\n')
                   </p>
                 </div>
 
-                <div className="pt-2 mt-2 border-t border-slate-200/60 dark:border-slate-700 flex items-center justify-between text-[11px] font-semibold text-[#0F766E] dark:text-teal-400">
+                <div className="pt-2 mt-2 border-t border-slate-200/60 dark:border-slate-700 flex items-center justify-between text-[11px] font-semibold text-[#15803D] dark:text-teal-400">
                   <span>Open search in new tab</span>
                   <span className="material-symbols-outlined text-[14px] group-hover:translate-x-0.5 transition-transform">
                     open_in_new
@@ -398,7 +398,7 @@ ${searchResponse.groundingChunks.map((c) => `- ${c.title}: ${c.url}`).join('\n')
           {/* Response Title & Executed Queries */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200 dark:border-slate-800 pb-4">
             <div>
-              <div className="flex items-center gap-2 text-[10px] font-mono text-[#0F766E] dark:text-teal-400 font-bold uppercase tracking-wider">
+              <div className="flex items-center gap-2 text-[10px] font-mono text-[#15803D] dark:text-teal-400 font-bold uppercase tracking-wider">
                 <span>Grounded Clinical Synthesis</span>
                 {searchResponse.cached && <span>· Cached (Fast-Trace)</span>}
               </div>
@@ -419,7 +419,7 @@ ${searchResponse.groundingChunks.map((c) => `- ${c.title}: ${c.url}`).join('\n')
 
               <button
                 onClick={handleDownloadMarkdown}
-                className="px-3 py-1.5 rounded-lg bg-[#0F766E] hover:bg-[#0F766E] text-white text-xs font-bold flex items-center gap-1 cursor-pointer transition-colors shadow-2xs"
+                className="px-3 py-1.5 rounded-lg bg-[#15803D] hover:bg-[#15803D] text-white text-xs font-bold flex items-center gap-1 cursor-pointer transition-colors shadow-2xs"
                 title="Export as Markdown Dossier"
               >
                 <span className="material-symbols-outlined text-[16px]">download</span>
@@ -453,7 +453,7 @@ ${searchResponse.groundingChunks.map((c) => `- ${c.title}: ${c.url}`).join('\n')
           {searchResponse.groundingChunks.length > 0 && (
             <div className="pt-4 border-t border-slate-200 dark:border-slate-800 space-y-2.5">
               <div className="flex items-center gap-1.5 text-slate-900 dark:text-slate-100 font-bold text-xs">
-                <span className="material-symbols-outlined text-[#0F766E] dark:text-teal-400 text-[18px]">verified</span>
+                <span className="material-symbols-outlined text-[#15803D] dark:text-teal-400 text-[18px]">verified</span>
                 <span>Verified Evidence Sources &amp; Literature Citations ({searchResponse.groundingChunks.length})</span>
               </div>
 
@@ -475,14 +475,14 @@ ${searchResponse.groundingChunks.map((c) => `- ${c.title}: ${c.url}`).join('\n')
                       className="p-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/60 hover:bg-white dark:hover:bg-slate-800 hover:border-[#14B8A6] hover:shadow-2xs transition-all flex items-start justify-between gap-2 group"
                     >
                       <div className="space-y-0.5 min-w-0">
-                        <span className="font-semibold text-xs text-slate-900 dark:text-slate-100 block truncate group-hover:text-[#0F766E] dark:group-hover:text-teal-300">
+                        <span className="font-semibold text-xs text-slate-900 dark:text-slate-100 block truncate group-hover:text-[#15803D] dark:group-hover:text-teal-300">
                           {chunk.title}
                         </span>
-                        <span className="text-[10px] font-mono text-[#0F766E] dark:text-teal-400 block truncate">
+                        <span className="text-[10px] font-mono text-[#15803D] dark:text-teal-400 block truncate">
                           {hostname}
                         </span>
                       </div>
-                      <span className="material-symbols-outlined text-slate-400 group-hover:text-[#14B8A6] text-[16px] shrink-0 mt-0.5">
+                      <span className="material-symbols-outlined text-slate-400 group-hover:text-[#15803D] text-[16px] shrink-0 mt-0.5">
                         open_in_new
                       </span>
                     </a>

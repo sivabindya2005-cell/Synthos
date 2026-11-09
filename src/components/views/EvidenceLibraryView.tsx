@@ -49,7 +49,7 @@ export const EvidenceLibraryView: React.FC<EvidenceLibraryViewProps> = ({ onOpen
       <div className="bg-[#0d1c32] text-white rounded-xl p-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="w-2 h-2 rounded-full bg-[#14b8a6]"></span>
+            <span className="w-2 h-2 rounded-full bg-[#15803D]"></span>
             <span className="text-xs font-mono text-[#86f2e4] font-bold">CLINICAL GUIDELINE CITATION REPOSITORY</span>
           </div>
           <h2 className="font-['Plus_Jakarta_Sans'] text-xl font-bold">
@@ -62,9 +62,9 @@ export const EvidenceLibraryView: React.FC<EvidenceLibraryViewProps> = ({ onOpen
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="bg-white rounded-xl border border-[#e2e8f0] p-4 shadow-2xs flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 text-xs">
+      <div className="bg-white rounded-xl border border-[#E5DDD0] p-4 shadow-2xs flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 text-xs">
         <div className="relative flex-1">
-          <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#64748b] text-[18px]">
+          <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#4B6584] text-[18px]">
             search
           </span>
           <input
@@ -72,7 +72,7 @@ export const EvidenceLibraryView: React.FC<EvidenceLibraryViewProps> = ({ onOpen
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Search guidelines by drug, rule code, condition, or keyword..."
-            className="w-full pl-9 pr-3 py-2 rounded border border-[#cbd5e1] outline-none focus:border-[#006a61]"
+            className="w-full pl-9 pr-3 py-2 rounded border border-[#cbd5e1] outline-none focus:border-[#15803D]"
           />
         </div>
 
@@ -83,8 +83,8 @@ export const EvidenceLibraryView: React.FC<EvidenceLibraryViewProps> = ({ onOpen
               onClick={() => setSelectedCategory(cat)}
               className={`px-3 py-1.5 rounded text-xs font-semibold cursor-pointer transition-colors ${
                 selectedCategory === cat
-                  ? 'bg-[#006a61] text-white'
-                  : 'bg-[#f2f4f6] text-[#475569] hover:bg-[#e2e8f0]'
+                  ? 'bg-[#15803D] text-white'
+                  : 'bg-[#F4EFE6] text-[#4B6584] hover:bg-[#e2e8f0]'
               }`}
             >
               {cat}
@@ -103,22 +103,22 @@ export const EvidenceLibraryView: React.FC<EvidenceLibraryViewProps> = ({ onOpen
             <div
               key={rule.id}
               className={`rounded-xl border p-4 bg-white shadow-2xs flex flex-col justify-between space-y-3 ${
-                isFda ? 'border-[#fecaca]' : 'border-[#e2e8f0]'
+                isFda ? 'border-[#fecaca]' : 'border-[#E5DDD0]'
               }`}
             >
               <div>
                 <div className="flex items-center justify-between mb-1.5">
                   <span className={`text-[10px] font-bold px-2 py-0.5 rounded ${
-                    isFda ? 'bg-[#fee2e2] text-[#991b1b]' : 'bg-[#006a61]/10 text-[#006a61]'
+                    isFda ? 'bg-[#fee2e2] text-[#991b1b]' : 'bg-[#15803D]/10 text-[#15803D]'
                   }`}>
                     {rule.code}
                   </span>
-                  <span className="text-[11px] text-[#64748b] font-medium">
+                  <span className="text-[11px] text-[#4B6584] font-medium">
                     {rule.organization} ({rule.year})
                   </span>
                 </div>
 
-                <h3 className="font-['Plus_Jakarta_Sans'] font-semibold text-sm text-[#191c1e] mb-1">
+                <h3 className="font-['Plus_Jakarta_Sans'] font-semibold text-sm text-[#1E3A8A] mb-1">
                   {rule.title}
                 </h3>
                 <span className="inline-block text-[10px] font-bold text-[#065f46] bg-[#d1fae5] px-2 py-0.2 rounded mb-2">
@@ -133,7 +133,7 @@ export const EvidenceLibraryView: React.FC<EvidenceLibraryViewProps> = ({ onOpen
               <div className="pt-2 border-t border-[#f1f5f9] flex items-center justify-between gap-2 flex-wrap">
                 <div className="flex flex-wrap gap-1">
                   {rule.appliedConditions.map((cond, i) => (
-                    <span key={i} className="text-[10px] bg-[#f2f4f6] text-[#475569] px-2 py-0.5 rounded">
+                    <span key={i} className="text-[10px] bg-[#F4EFE6] text-[#4B6584] px-2 py-0.5 rounded">
                       {cond}
                     </span>
                   ))}
@@ -142,7 +142,7 @@ export const EvidenceLibraryView: React.FC<EvidenceLibraryViewProps> = ({ onOpen
                 {onOpenProvenance && (
                   <button
                     onClick={() => onOpenProvenance(provId)}
-                    className="text-[11px] font-semibold text-[#006a61] hover:underline flex items-center gap-1 cursor-pointer pt-0.5"
+                    className="text-[11px] font-semibold text-[#15803D] hover:underline flex items-center gap-1 cursor-pointer pt-0.5"
                   >
                     <span className="material-symbols-outlined text-[14px]">verified</span>
                     <span>Audit Provenance &amp; DOI</span>

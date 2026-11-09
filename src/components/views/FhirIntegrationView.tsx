@@ -248,7 +248,7 @@ export const FhirIntegrationView: React.FC<FhirIntegrationViewProps> = ({
         <div className="flex items-center gap-2 shrink-0">
           <button
             onClick={handleGenerateFhirImpression}
-            className="px-3.5 py-2 rounded-lg bg-[#0F766E] hover:bg-[#0F766E] text-white text-xs font-semibold flex items-center gap-1.5 cursor-pointer shadow-sm transition-colors"
+            className="px-3.5 py-2 rounded-lg bg-[#15803D] hover:bg-[#15803D] text-white text-xs font-semibold flex items-center gap-1.5 cursor-pointer shadow-sm transition-colors"
           >
             <span className="material-symbols-outlined text-[16px]">file_download</span>
             <span>Export FHIR ClinicalImpression</span>
@@ -268,7 +268,7 @@ export const FhirIntegrationView: React.FC<FhirIntegrationViewProps> = ({
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200 pb-3">
           <div>
             <h3 className="font-['Plus_Jakarta_Sans'] font-semibold text-sm text-slate-900 flex items-center gap-2">
-              <span className="material-symbols-outlined text-[#0F766E] text-[18px]">cloud_sync</span>
+              <span className="material-symbols-outlined text-[#15803D] text-[18px]">cloud_sync</span>
               <span>SMART on FHIR Endpoint Connector</span>
             </h3>
             <p className="text-xs text-slate-500">
@@ -332,7 +332,7 @@ export const FhirIntegrationView: React.FC<FhirIntegrationViewProps> = ({
         <div className="lg:col-span-6 bg-white rounded-xl border border-slate-200 p-5 shadow-2xs space-y-3">
           <div className="flex items-center justify-between border-b border-slate-200 pb-2">
             <div className="flex items-center gap-1.5">
-              <span className="material-symbols-outlined text-[#0F766E] text-[18px]">data_object</span>
+              <span className="material-symbols-outlined text-[#15803D] text-[18px]">data_object</span>
               <span className="font-bold text-slate-900 text-xs">FHIR R4 Bundle Payload (JSON)</span>
             </div>
             <span className="text-[10px] font-mono text-slate-500">Live Validator</span>
@@ -347,7 +347,7 @@ export const FhirIntegrationView: React.FC<FhirIntegrationViewProps> = ({
 
           <button
             onClick={handleParseAndImport}
-            className="w-full py-2.5 rounded-lg bg-[#0F766E] hover:bg-teal-900 text-white text-xs font-bold flex items-center justify-center gap-2 cursor-pointer shadow-sm transition-colors"
+            className="w-full py-2.5 rounded-lg bg-[#15803D] hover:bg-teal-900 text-white text-xs font-bold flex items-center justify-center gap-2 cursor-pointer shadow-sm transition-colors"
           >
             <span className="material-symbols-outlined text-[16px]">sync</span>
             <span>Parse &amp; Construct SYNTHOS Patient Digital Twin</span>
@@ -373,7 +373,7 @@ export const FhirIntegrationView: React.FC<FhirIntegrationViewProps> = ({
               <div className="p-3 rounded-lg bg-slate-50 border border-slate-200 space-y-1">
                 <div className="flex items-center justify-between">
                   <span className="font-bold text-slate-900">Patient Resource</span>
-                  <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-teal-100 text-[#0F766E] font-semibold">
+                  <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-teal-100 text-[#15803D] font-semibold">
                     Mapped
                   </span>
                 </div>
@@ -385,7 +385,7 @@ export const FhirIntegrationView: React.FC<FhirIntegrationViewProps> = ({
               <div className="p-3 rounded-lg bg-slate-50 border border-slate-200 space-y-1">
                 <div className="flex items-center justify-between">
                   <span className="font-bold text-slate-900">Observation Resources (LOINC)</span>
-                  <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-teal-100 text-[#0F766E] font-semibold">
+                  <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-teal-100 text-[#15803D] font-semibold">
                     Active Telemetry
                   </span>
                 </div>
@@ -400,7 +400,7 @@ export const FhirIntegrationView: React.FC<FhirIntegrationViewProps> = ({
               <div className="p-3 rounded-lg bg-slate-50 border border-slate-200 space-y-1">
                 <div className="flex items-center justify-between">
                   <span className="font-bold text-slate-900">MedicationRequest Resources (RxNorm)</span>
-                  <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-teal-100 text-[#0F766E] font-semibold">
+                  <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-teal-100 text-[#15803D] font-semibold">
                     Regimen Sync
                   </span>
                 </div>
@@ -430,7 +430,7 @@ export const FhirIntegrationView: React.FC<FhirIntegrationViewProps> = ({
                       setCopyNotice('Copied to clipboard!');
                       setTimeout(() => setCopyNotice(null), 3000);
                     }}
-                    className="px-2 py-0.5 rounded bg-[#0F766E] hover:bg-[#14B8A6] text-[10px] font-semibold cursor-pointer"
+                    className="px-2 py-0.5 rounded bg-[#15803D] hover:bg-[#15803D] text-[10px] font-semibold cursor-pointer"
                   >
                     Copy JSON
                   </button>

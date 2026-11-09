@@ -20,16 +20,16 @@ export const VideoIntroHeroCard: React.FC<VideoIntroHeroCardProps> = ({ onPlayVi
   const activeChapter = VIDEO_CHAPTERS[activeChapterIndex];
 
   return (
-    <div className="relative w-full max-w-5xl mx-auto my-8 rounded-2xl overflow-hidden border border-slate-200 shadow-xl bg-[#07151e] text-white">
+    <div className="relative w-full max-w-5xl mx-auto my-4 sm:my-6 rounded-2xl overflow-hidden border border-cyan-500/30 shadow-2xl bg-[#07151e]/80 backdrop-blur-xl text-white">
       {/* Decorative Background Grid & Glow */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-teal-900/30 via-[#07151e] to-black pointer-events-none" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-teal-900/30 via-[#07151e]/70 to-black/80 pointer-events-none" />
       <div className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#14b8a6_1px,transparent_1px),linear-gradient(to_bottom,#14b8a6_1px,transparent_1px)] bg-[size:3rem_3rem] pointer-events-none" />
 
       {/* Content Grid */}
       <div className="relative p-6 sm:p-8 flex flex-col lg:flex-row items-center justify-between gap-8">
         {/* Left: Teaser Info */}
         <div className="flex-1 space-y-4 text-left">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E6F4F1]0/15 border border-teal-500/30 text-teal-300 font-mono text-xs font-semibold">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#EEF7EE]0/15 border border-teal-500/30 text-teal-300 font-mono text-xs font-semibold">
             <span className="w-2 h-2 rounded-full bg-teal-400 animate-ping"></span>
             <span>PLATFORM VIDEO TOUR · 60 FPS</span>
           </div>
@@ -52,7 +52,7 @@ export const VideoIntroHeroCard: React.FC<VideoIntroHeroCardProps> = ({ onPlayVi
                 }}
                 className={`px-2.5 py-1 rounded-lg text-xs font-mono font-medium transition-all cursor-pointer ${
                   activeChapterIndex === idx
-                    ? 'bg-[#E6F4F1]0/30 text-teal-300 border border-teal-500/60 font-semibold'
+                    ? 'bg-[#EEF7EE]0/30 text-teal-300 border border-teal-500/60 font-semibold'
                     : 'bg-white/5 text-slate-400 hover:text-white hover:bg-white/10'
                 }`}
               >
@@ -78,18 +78,23 @@ export const VideoIntroHeroCard: React.FC<VideoIntroHeroCardProps> = ({ onPlayVi
         </div>
 
         {/* Right: Interactive Video Thumbnail Screen */}
-        <div className="relative w-full max-w-md aspect-video rounded-xl overflow-hidden border border-teal-500/40 shadow-2xl bg-black group shrink-0">
-          {/* Animated Stylized Background */}
-          <div className="absolute inset-0 bg-gradient-to-tr from-slate-950 via-[#0a2330] to-teal-950 flex flex-col items-center justify-center p-6 text-center">
+        <div className="relative w-full max-w-md aspect-video rounded-xl overflow-hidden border border-cyan-500/40 shadow-2xl bg-black group shrink-0">
+          {/* Animated Stylized Background with DNA Artwork */}
+          <img
+            src="/assets/aistudio/image_1ef853ca.png"
+            alt="SYNTHOS Video Platform Preview"
+            className="absolute inset-0 w-full h-full object-cover opacity-65 group-hover:scale-105 group-hover:opacity-85 transition-all duration-500"
+          />
+          <div className="absolute inset-0 bg-gradient-to-tr from-slate-950/85 via-[#0a2330]/50 to-teal-950/40 flex flex-col items-center justify-center p-6 text-center">
             {/* Official SYNTHOS Emblem */}
-            <div className="w-16 h-16 rounded-2xl bg-slate-900/80 border border-teal-400/40 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform shadow-xl">
+            <div className="w-16 h-16 rounded-2xl bg-slate-900/85 border border-cyan-400/50 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform shadow-xl backdrop-blur-xs">
               <SynthosLogo size={42} variant="icon" theme="dark" />
             </div>
 
-            <span className="font-['Plus_Jakarta_Sans'] font-bold text-white text-base tracking-wide">
+            <span className="font-['Plus_Jakarta_Sans'] font-bold text-white text-base tracking-wide drop-shadow-sm">
               SYNTHOS PLATFORM VIDEO TOUR
             </span>
-            <span className="font-mono text-xs text-teal-400 mt-1">
+            <span className="font-mono text-xs text-cyan-300 mt-1 drop-shadow-xs">
               Duration: 01:05 · Spatial Sound · HD Download
             </span>
           </div>
@@ -100,7 +105,7 @@ export const VideoIntroHeroCard: React.FC<VideoIntroHeroCardProps> = ({ onPlayVi
             className="absolute inset-0 flex items-center justify-center bg-black/40 group-hover:bg-black/20 transition-all cursor-pointer"
             aria-label="Play Video Intro"
           >
-            <div className="w-16 h-16 rounded-full bg-[#14B8A6] group-hover:bg-[#E6F4F1]0 text-white flex items-center justify-center shadow-xl shadow-teal-950/80 group-hover:scale-110 transition-all">
+            <div className="w-16 h-16 rounded-full bg-[#15803D] group-hover:bg-[#EEF7EE]0 text-white flex items-center justify-center shadow-xl shadow-teal-950/80 group-hover:scale-110 transition-all">
               <span className="material-symbols-outlined text-[36px] ml-1">play_arrow</span>
             </div>
           </button>

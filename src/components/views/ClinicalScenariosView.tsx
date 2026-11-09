@@ -18,7 +18,7 @@ export const ClinicalScenariosView: React.FC<ClinicalScenariosViewProps> = ({
       <div className="bg-[#0d1c32] text-white rounded-xl p-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="w-2 h-2 rounded-full bg-[#14b8a6]"></span>
+            <span className="w-2 h-2 rounded-full bg-[#15803D]"></span>
             <span className="text-xs font-mono text-[#86f2e4] font-bold">EDUCATIONAL &amp; CLINICAL SIMULATION BENCH</span>
           </div>
           <h2 className="font-['Plus_Jakarta_Sans'] text-xl font-bold">
@@ -30,7 +30,7 @@ export const ClinicalScenariosView: React.FC<ClinicalScenariosViewProps> = ({
         </div>
         <button
           onClick={onOpenSimulator}
-          className="px-4 py-2 rounded bg-[#006a61] hover:bg-[#006f66] text-white text-xs font-semibold flex items-center gap-1.5 cursor-pointer shadow-xs"
+          className="px-4 py-2 rounded bg-[#15803D] hover:bg-[#006f66] text-white text-xs font-semibold flex items-center gap-1.5 cursor-pointer shadow-xs"
         >
           <span className="material-symbols-outlined text-[16px]">tune</span>
           <span>Open Live Simulator</span>
@@ -45,49 +45,49 @@ export const ClinicalScenariosView: React.FC<ClinicalScenariosViewProps> = ({
               key={caseItem.id}
               className={`rounded-xl border p-5 flex flex-col justify-between transition-all ${
                 isActive
-                  ? 'bg-white border-[#006a61] shadow-md ring-2 ring-[#006a61]/20'
-                  : 'bg-white border-[#e2e8f0] hover:border-[#cbd5e1] hover:shadow-xs'
+                  ? 'bg-white border-[#15803D] shadow-md ring-2 ring-[#15803D]/20'
+                  : 'bg-white border-[#E5DDD0] hover:border-[#cbd5e1] hover:shadow-xs'
               }`}
             >
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-1.5">
-                    <span className={`w-2 h-2 rounded-full ${isActive ? 'bg-[#14b8a6]' : 'bg-[#cbd5e1]'}`}></span>
-                    <span className="font-bold text-sm text-[#191c1e]">{caseItem.id}</span>
+                    <span className={`w-2 h-2 rounded-full ${isActive ? 'bg-[#15803D]' : 'bg-[#cbd5e1]'}`}></span>
+                    <span className="font-bold text-sm text-[#1E3A8A]">{caseItem.id}</span>
                   </div>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#f2f4f6] text-[#475569]">
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#F4EFE6] text-[#4B6584]">
                     {caseItem.tier}
                   </span>
                 </div>
 
-                <h3 className="font-['Plus_Jakarta_Sans'] font-semibold text-sm text-[#191c1e] mb-1">
+                <h3 className="font-['Plus_Jakarta_Sans'] font-semibold text-sm text-[#1E3A8A] mb-1">
                   {caseItem.nameAlias}
                 </h3>
-                <p className="text-xs text-[#475569] mb-3">
+                <p className="text-xs text-[#4B6584] mb-3">
                   {caseItem.summary}
                 </p>
 
-                <div className="space-y-1.5 text-xs bg-[#f8fafc] p-3 rounded-lg border border-[#e2e8f0]">
+                <div className="space-y-1.5 text-xs bg-[#FAF7F2] p-3 rounded-lg border border-[#E5DDD0]">
                   <div className="flex justify-between">
-                    <span className="text-[#64748b]">Primary Flag:</span>
+                    <span className="text-[#4B6584]">Primary Flag:</span>
                     <span className="font-semibold text-[#92400e] text-right truncate max-w-[150px]">
                       {caseItem.priorityTriage.title.split('(')[0]}
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-[#64748b]">eGFR / CrCl:</span>
-                    <span className="font-mono text-[#191c1e]">{caseItem.organStatus.renal.egfr} / {caseItem.organStatus.renal.crcl} mL/min</span>
+                    <span className="text-[#4B6584]">eGFR / CrCl:</span>
+                    <span className="font-mono text-[#1E3A8A]">{caseItem.organStatus.renal.egfr} / {caseItem.organStatus.renal.crcl} mL/min</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-[#64748b]">Regimen Agents:</span>
-                    <span className="text-[#191c1e] font-mono">{caseItem.kpis.activeAgentsCount} drugs</span>
+                    <span className="text-[#4B6584]">Regimen Agents:</span>
+                    <span className="text-[#1E3A8A] font-mono">{caseItem.kpis.activeAgentsCount} drugs</span>
                   </div>
                 </div>
               </div>
 
-              <div className="mt-4 pt-3 border-t border-[#e2e8f0]">
+              <div className="mt-4 pt-3 border-t border-[#E5DDD0]">
                 {isActive ? (
-                  <div className="text-center py-1.5 text-xs font-bold text-[#006a61] bg-[#006a61]/10 rounded">
+                  <div className="text-center py-1.5 text-xs font-bold text-[#15803D] bg-[#15803D]/10 rounded">
                     Currently Active Workspace
                   </div>
                 ) : (

@@ -3,41 +3,49 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  /* SYNTHOS Professional Clinical Palette */
-  --color-deep-teal: #0f766e;
-  --color-navy-headings: #0b2545;
-  --color-bright-teal: #14b8a6;
-  --color-offwhite: #f8fafc;
-  --color-surface: #ffffff;
-  --color-pale-mint: #e6f4f1;
-  --color-body-slate: #334155;
+  /* Pastel Cream & Blue / Spam Green Palette */
+  --color-cream-canvas: #faf7f2;
+  --color-cream-surface: #ffffff;
+  --color-cream-soft: #fffdf9;
+  --color-cream-tint: #f4efe6;
+  --color-cream-border: #e5ddd0;
+  
+  --color-deep-blue: #1e3a8a;
+  --color-navy-headings: #0f2f57;
+  --color-spam-green: #15803d;
+  --color-spam-green-hover: #166534;
+  --color-spam-green-light: #eef7ee;
+  --color-spam-green-border: #cbe4cb;
+  --color-text-blue: #1e3a5f;
+  --color-text-muted-blue: #4b6584;
+  --color-accent-blue: #2563eb;
   --color-alert-coral: #dc2626;
 
-  /* Theme Tokens */
-  --color-canvas-light: #f8fafc;
+  /* Global Theme Tokens */
+  --color-canvas-light: #faf7f2;
   --color-surface-light: #ffffff;
-  --color-border-light: #e2e8f0;
-  --color-brand-primary: #0f766e;
-  --color-brand-secondary: #0b2545;
-  --color-brand-accent: #14b8a6;
-  --color-text-heading: #0b2545;
-  --color-text-main: #334155;
-  --color-text-muted: #64748b;
-  --color-section-tint: #e6f4f1;
+  --color-border-light: #e5ddd0;
+  --color-brand-primary: #15803d;
+  --color-brand-secondary: #1e3a8a;
+  --color-brand-accent: #2563eb;
+  --color-text-heading: #1e3a8a;
+  --color-text-main: #1e3a5f;
+  --color-text-muted: #4b6584;
+  --color-section-tint: #f4efe6;
 
   /* Dark Theme Tokens */
-  --color-canvas-dark: #071321;
-  --color-surface-dark: #0f2137;
-  --color-border-dark: #1e3a5a;
-  --color-brand-dark-accent: #14b8a6;
-  --color-text-heading-dark: #f8fafc;
-  --color-text-dark: #cbd5e1;
-  --color-text-muted-dark: #94a3b8;
-  --color-section-tint-dark: #132b42;
+  --color-canvas-dark: #0d1926;
+  --color-surface-dark: #13253a;
+  --color-border-dark: #1f3b5c;
+  --color-brand-dark-accent: #34d399;
+  --color-text-heading-dark: #faf7f2;
+  --color-text-dark: #d8e2ed;
+  --color-text-muted-dark: #8da4be;
+  --color-section-tint-dark: #172d47;
 
   /* Clinical Risk Tier Badges */
-  --color-tier-low-bg: #e6f4f1;
-  --color-tier-low-text: #0f766e;
+  --color-tier-low-bg: #eef7ee;
+  --color-tier-low-text: #15803d;
   --color-tier-mod-bg: #fef3c7;
   --color-tier-mod-text: #92400e;
   --color-tier-high-bg: #ffedd5;
@@ -51,30 +59,30 @@
 }
 
 :root {
-  --bg-canvas: #f8fafc;
+  --bg-canvas: #faf7f2;
   --bg-surface: #ffffff;
-  --bg-tint: #e6f4f1;
-  --border-color: #e2e8f0;
-  --text-heading: #0b2545;
-  --text-main: #334155;
-  --text-muted: #64748b;
-  --primary-deep-teal: #0f766e;
-  --secondary-navy: #0b2545;
-  --accent-bright-teal: #14b8a6;
+  --bg-tint: #f4efe6;
+  --border-color: #e5ddd0;
+  --text-heading: #1e3a8a;
+  --text-main: #1e3a5f;
+  --text-muted: #4b6584;
+  --primary-deep-teal: #15803d; /* mapped to spam green */
+  --secondary-navy: #1e3a8a; /* mapped to deep blue */
+  --accent-bright-teal: #2563eb; /* mapped to accent blue */
   --alert-coral: #dc2626;
 }
 
 html.dark {
-  --bg-canvas: #071321;
-  --bg-surface: #0f2137;
-  --bg-tint: #132b42;
-  --border-color: #1e3a5a;
-  --text-heading: #f8fafc;
-  --text-main: #cbd5e1;
-  --text-muted: #94a3b8;
-  --primary-deep-teal: #14b8a6;
-  --secondary-navy: #94a3b8;
-  --accent-bright-teal: #2dd4bf;
+  --bg-canvas: #0d1926;
+  --bg-surface: #13253a;
+  --bg-tint: #172d47;
+  --border-color: #1f3b5c;
+  --text-heading: #faf7f2;
+  --text-main: #d8e2ed;
+  --text-muted: #8da4be;
+  --primary-deep-teal: #34d399;
+  --secondary-navy: #8da4be;
+  --accent-bright-teal: #60a5fa;
   --alert-coral: #ef4444;
 }
 
@@ -106,7 +114,7 @@ h1, h2, h3, h4, h5, h6 {
   font-variant-numeric: tabular-nums;
 }
 
-/* Clean clinical scrollbars */
+/* Clean clinical scrollbars in warm parchment style */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -115,19 +123,19 @@ h1, h2, h3, h4, h5, h6 {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: #d5cbbe;
   border-radius: 3px;
 }
 html.dark ::-webkit-scrollbar-thumb {
-  background: #1e3a5a;
+  background: #1f3b5c;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: #b5a999;
 }
 
-/* Accessible focus ring using bright teal */
+/* Accessible focus ring using spam green */
 :focus-visible {
-  outline: 2px solid #14b8a6;
+  outline: 2px solid #15803d;
   outline-offset: 2px;
 }
 

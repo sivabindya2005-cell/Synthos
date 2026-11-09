@@ -25,7 +25,7 @@ export const PathwayExplorerView: React.FC<PathwayExplorerViewProps> = ({
       case 'drug':
         return {
           fill: '#0f2b38',
-          border: '#006a61',
+          border: '#15803D',
           text: '#ffffff',
           badge: 'Therapeutic Agent'
         };
@@ -74,7 +74,7 @@ export const PathwayExplorerView: React.FC<PathwayExplorerViewProps> = ({
         <div className="flex items-center gap-2">
           <button
             onClick={onLaunchTwin}
-            className="px-3 py-1.5 rounded bg-[#006a61] hover:bg-[#006f66] text-white text-xs font-semibold flex items-center gap-1.5 cursor-pointer shadow-xs transition-colors"
+            className="px-3 py-1.5 rounded bg-[#15803D] hover:bg-[#006f66] text-white text-xs font-semibold flex items-center gap-1.5 cursor-pointer shadow-xs transition-colors"
           >
             <span className="material-symbols-outlined text-[16px]">person</span>
             <span>Simulate in Patient Twin</span>
@@ -143,7 +143,7 @@ export const PathwayExplorerView: React.FC<PathwayExplorerViewProps> = ({
             </div>
           </div>
 
-          <div className="relative w-full h-[460px] bg-[#f8fafc] rounded-lg border border-slate-200 overflow-x-auto overflow-y-hidden">
+          <div className="relative w-full h-[460px] bg-[#FAF7F2] rounded-lg border border-slate-200 overflow-x-auto overflow-y-hidden">
             <svg
               className="min-w-[960px] w-full h-full"
               viewBox="0 0 980 460"
@@ -285,7 +285,7 @@ export const PathwayExplorerView: React.FC<PathwayExplorerViewProps> = ({
               Scientific Node Inspector
             </span>
             {selectedNode && (
-              <span className="text-[10px] font-mono text-[#0F766E] bg-[#E6F4F1] px-2 py-0.5 rounded font-bold">
+              <span className="text-[10px] font-mono text-[#15803D] bg-[#EEF7EE] px-2 py-0.5 rounded font-bold">
                 {selectedNode.type.toUpperCase()}
               </span>
             )}
@@ -317,7 +317,7 @@ export const PathwayExplorerView: React.FC<PathwayExplorerViewProps> = ({
                 <div className="pt-2">
                   <button
                     onClick={() => onOpenProvenance(selectedNode.provenanceId!)}
-                    className="w-full py-2 px-3 rounded-lg bg-[#0F766E] hover:bg-[#0F766E] text-white font-semibold flex items-center justify-center gap-1.5 cursor-pointer shadow-xs transition-colors"
+                    className="w-full py-2 px-3 rounded-lg bg-[#15803D] hover:bg-[#15803D] text-white font-semibold flex items-center justify-center gap-1.5 cursor-pointer shadow-xs transition-colors"
                   >
                     <span className="material-symbols-outlined text-[16px]">verified</span>
                     <span>Audit Provenance &amp; PubMed Citation</span>

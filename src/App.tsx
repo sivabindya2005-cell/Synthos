@@ -33,10 +33,12 @@ import { SimulationVaultView } from './components/views/SimulationVaultView';
 import { ClinicalSearchGroundingView } from './components/views/ClinicalSearchGroundingView';
 import { GuidedSimulationWizard } from './components/views/GuidedSimulationWizard';
 import { PersonalizeRegimenModal } from './components/modals/PersonalizeRegimenModal';
+import { PersonalizedCasesModal } from './components/modals/PersonalizedCasesModal';
 
 import { PATIENT_CASES } from './data/patientCases';
 import { PatientCase } from './types/clinical';
 import { AuthProvider, useClinicianAuth } from './context/AuthContext';
+import { AnonymousCaseRecord } from './firebase';
 import { ThemeProvider } from './context/ThemeContext';
 import { exportPatientTwinToPdf } from './utils/clinicalPdfExport';
 
@@ -60,7 +62,7 @@ function AppContent() {
   const [searchInitialQuery, setSearchInitialQuery] = useState<string>('');
 
   // Authentication hook
-  const { requireAuthForAction, clinician } = useClinicianAuth();
+  const { requireAuthForAction, clinician, openAuthModal, saveCaseRecord, openPersonalizedModal } = useClinicianAuth();
 
   const activePatient = patientRegistry[activePatientId] || PATIENT_CASES['DEMO-PT-0241'];
 
@@ -220,16 +222,94 @@ function AppContent() {
     });
   };
 
+  const handleLoadSavedCaseIntoTwin = (savedCase: AnonymousCaseRecord) => {
+    const baseline = PATIENT_CASES['DEMO-PT-0241'];
+    const customCaseId = savedCase.anonymousCaseId || `SAVED-${Date.now().toString().slice(-4)}`;
+    const restoredCase: PatientCase = {
+      ...baseline,
+      id: customCaseId,
+      nameAlias: `Patient Twin (${savedCase.anonymousCaseId})`,
+      summary: `Personalized digital twin loaded from cloud vault. ${savedCase.demographicDecade} ${savedCase.biologicalSex}.`,
+      biometrics: {
+        ...baseline.biometrics,
+        age: savedCase.inputs.age,
+        sex: (savedCase.biologicalSex as any) === 'Female' ? 'Female' : 'Male',
+        weightKg: savedCase.inputs.weightKg,
+        heightCm: savedCase.inputs.heightCm || 175,
+        bmi: Math.round((savedCase.inputs.weightKg / Math.pow((savedCase.inputs.heightCm || 175) / 100, 2)) * 10) / 10
+      },
+      organStatus: {
+        ...baseline.organStatus,
+        renal: {
+          ...baseline.organStatus.renal,
+          scr: savedCase.inputs.scr,
+          egfr: savedCase.outputs.egfr,
+          crcl: savedCase.outputs.crcl,
+          status: savedCase.outputs.egfr < 30 ? 'compromised' : savedCase.outputs.egfr < 60 ? 'caution' : 'normal',
+          stage: savedCase.outputs.egfr < 15 ? 'Stage 5' : savedCase.outputs.egfr < 30 ? 'Stage 4' : savedCase.outputs.egfr < 60 ? 'Stage 3' : 'Stage 1-2'
+        },
+        hepatic: {
+          ...baseline.organStatus.hepatic,
+          cypStatus: savedCase.inputs.cypGenotype || baseline.organStatus.hepatic.cypStatus
+        },
+        cardiovascular: {
+          ...baseline.organStatus.cardiovascular,
+          potassium: savedCase.inputs.potassium || baseline.organStatus.cardiovascular.potassium
+        }
+      }
+    };
+
+    setPatientRegistry((prev) => ({
+      ...prev,
+      [customCaseId]: restoredCase
+    }));
+    setActivePatientId(customCaseId);
+    setCurrentTab('digital-twin');
+  };
+
+  const handleSaveCurrentActiveTwin = async (title?: string) => {
+    const anonCaseId = `CASE-${Math.floor(1000 + Math.random() * 9000)}`;
+    const firstMed = activePatient.medications[0];
+    await saveCaseRecord({
+      anonymousCaseId: anonCaseId,
+      demographicDecade: `${Math.floor(activePatient.biometrics.age / 10) * 10}-${Math.floor(activePatient.biometrics.age / 10) * 10 + 9} Y`,
+      biologicalSex: activePatient.biometrics.sex,
+      inputs: {
+        age: activePatient.biometrics.age,
+        weightKg: activePatient.biometrics.weightKg,
+        heightCm: activePatient.biometrics.heightCm,
+        scr: activePatient.organStatus.renal.scr,
+        potassium: activePatient.organStatus.cardiovascular.potassium || 4.2,
+        cypGenotype: activePatient.organStatus.hepatic.cypStatus,
+        selectedDrug: firstMed?.name || 'Enoxaparin',
+        doseMg: parseFloat(firstMed?.dose || '40') || 40,
+        intervalHours: 12
+      },
+      outputs: {
+        egfr: activePatient.organStatus.renal.egfr,
+        crcl: activePatient.organStatus.renal.crcl,
+        simulatedHalfLife: 7.2,
+        halfLifeChangeFactor: 1.0,
+        predictedPeakCss: 1.2,
+        upperSafetyCeiling: 2.0,
+        safetyCeilingExceeded: false,
+        primarySafetyFinding: 'Personalized clinical regimen snapshot'
+      },
+      clinicianNotes: title || `Patient ${activePatient.id} snapshot`
+    });
+  };
+
   // Dedicated full-bleed Public Homepage
   if (currentTab === 'home') {
     return (
-      <div className="min-h-screen bg-[#f8fafc] text-slate-900 font-sans antialiased">
+      <div className="min-h-screen bg-[#FAF7F2] text-[#1E3A5F] font-sans antialiased">
         <PublicHomeView
           onLaunchTwin={() => setCurrentTab('guided-wizard')}
           onOpenPathways={() => setCurrentTab('pathway-network')}
           onOpenDrugIntelligence={() => setCurrentTab('drug-explorer')}
           onOpenEvidence={() => setCurrentTab('methodology')}
           onOpenVideoIntro={() => setIsVideoIntroOpen(true)}
+          onOpenAuth={() => openAuthModal()}
         />
 
         {/* Video Tour Modal */}
@@ -249,6 +329,13 @@ function AppContent() {
         {/* Clinician Authentication Modal */}
         <ClinicianAuthModal />
 
+        {/* Personalized Cases & Workspace Modal */}
+        <PersonalizedCasesModal
+          onLoadCaseIntoTwin={handleLoadSavedCaseIntoTwin}
+          onSaveCurrentTwin={handleSaveCurrentActiveTwin}
+          activePatientName={activePatient.nameAlias || activePatient.id}
+        />
+
         {/* Clinical Disclaimer Acceptance Modal */}
         <DisclaimerModal />
       </div>
@@ -256,7 +343,7 @@ function AppContent() {
   }
 
   return (
-    <div className="min-h-screen bg-[#f7f9fb] dark:bg-[#0b151b] text-[#191c1e] dark:text-[#e2e8f0] font-sans antialiased transition-colors">
+    <div className="min-h-screen bg-[#FAF7F2] dark:bg-[#0D1926] text-[#1E3A5F] dark:text-[#D8E2ED] font-sans antialiased transition-colors">
       {/* Responsive Sidebar */}
       <Sidebar
         currentTab={currentTab}
@@ -270,7 +357,7 @@ function AppContent() {
       />
 
       {/* Main App Container */}
-      <div className="pl-0 lg:pl-72 flex flex-col min-h-screen bg-[#f7f9fb] dark:bg-[#0b151b] transition-colors">
+      <div className="pl-0 lg:pl-72 flex flex-col min-h-screen bg-[#FAF7F2] dark:bg-[#0D1926] transition-colors">
         {/* Fixed Header */}
         <Header
           activePatient={activePatient}
@@ -288,7 +375,7 @@ function AppContent() {
         />
 
         {/* Dynamic View Canvas */}
-        <main className="flex-1 pt-20 pb-14 w-full px-4 sm:px-6 bg-[#f7f9fb] dark:bg-[#0b151b] overflow-y-auto transition-colors">
+        <main className="flex-1 pt-20 pb-14 w-full px-4 sm:px-6 bg-[#FAF7F2] dark:bg-[#0D1926] overflow-y-auto transition-colors">
           {currentTab === 'guided-wizard' && (
             <GuidedSimulationWizard
               onSwitchToWorkstation={() => setCurrentTab('digital-twin')}
@@ -296,7 +383,7 @@ function AppContent() {
             />
           )}
 
-          {currentTab === 'digital-twin' && (
+          {(currentTab === 'twin' || currentTab === 'digital-twin' || currentTab === 'patient-twin') && (
             <DigitalTwinSimulationView
               patient={activePatient}
               onOpenRenalMath={() => setIsRenalMathOpen(true)}
@@ -305,21 +392,21 @@ function AppContent() {
             />
           )}
 
-          {currentTab === 'drug-explorer' && (
+          {(currentTab === 'drug-intelligence' || currentTab === 'drug-explorer') && (
             <DrugIntelligenceView
               onOpenProvenance={(id) => setActiveProvenanceId(id)}
               onLaunchTwin={() => setCurrentTab('digital-twin')}
             />
           )}
 
-          {currentTab === 'pathway-network' && (
+          {(currentTab === 'pathways' || currentTab === 'pathway-network') && (
             <PathwayExplorerView
               onOpenProvenance={(id) => setActiveProvenanceId(id)}
               onLaunchTwin={() => setCurrentTab('digital-twin')}
             />
           )}
 
-          {currentTab === 'methodology' && (
+          {(currentTab === 'limitations' || currentTab === 'methodology') && (
             <MethodologyLimitationsView
               onOpenProvenance={(id) => setActiveProvenanceId(id)}
             />
@@ -343,15 +430,7 @@ function AppContent() {
             />
           )}
 
-          {currentTab === 'patient-twin' && (
-            <PatientTwinView
-              patient={activePatient}
-              onOpenRenalMath={() => setIsRenalMathOpen(true)}
-              onOpenSimulator={() => setIsSimulatorOpen(true)}
-            />
-          )}
-
-          {currentTab === 'medication-review' && (
+          {(currentTab === 'medications' || currentTab === 'medication-review') && (
             <MedicationReviewView
               patient={activePatient}
               onOpenRenalMath={() => setIsRenalMathOpen(true)}
@@ -361,11 +440,11 @@ function AppContent() {
             />
           )}
 
-          {currentTab === 'interaction-checker' && (
+          {(currentTab === 'interactions' || currentTab === 'interaction-checker') && (
             <InteractionCheckerView patient={activePatient} />
           )}
 
-          {currentTab === 'genomic-scanner' && (
+          {(currentTab === 'genomics' || currentTab === 'genomic-scanner') && (
             <GenomicScannerView
               activePatient={activePatient}
               onApplyGenomicProfile={handleApplyGenomicProfile}
@@ -373,14 +452,14 @@ function AppContent() {
             />
           )}
 
-          {currentTab === 'fhir-integration' && (
+          {(currentTab === 'fhir' || currentTab === 'fhir-integration') && (
             <FhirIntegrationView
               activePatient={activePatient}
               onImportPatientFromFhir={handleImportPatientFromFhir}
             />
           )}
 
-          {currentTab === 'clinical-scenarios' && (
+          {(currentTab === 'scenarios' || currentTab === 'clinical-scenarios') && (
             <ClinicalScenariosView
               activePatient={activePatient}
               onSelectPatient={handleSelectPatient}
@@ -388,22 +467,30 @@ function AppContent() {
             />
           )}
 
-          {currentTab === 'monitoring-plan' && (
+          {(currentTab === 'monitoring' || currentTab === 'monitoring-plan') && (
             <MonitoringPlanView patient={activePatient} />
           )}
 
-          {currentTab === 'evidence-library' && (
+          {(currentTab === 'evidence' || currentTab === 'evidence-library') && (
             <EvidenceLibraryView
               onOpenProvenance={(id) => setActiveProvenanceId(id)}
             />
           )}
 
-          {currentTab === 'clinical-search' && (
+          {(currentTab === 'search-grounding' || currentTab === 'clinical-search') && (
             <ClinicalSearchGroundingView
               activePatient={activePatient}
               initialQuery={searchInitialQuery}
               onOpenProvenance={(id) => setActiveProvenanceId(id)}
               onLaunchTwin={() => setCurrentTab('digital-twin')}
+            />
+          )}
+
+          {(currentTab === 'vault' || currentTab === 'simulation-vault') && (
+            <SimulationVaultView
+              onOpenProvenance={(id) => setActiveProvenanceId(id)}
+              onLaunchTwin={() => setCurrentTab('digital-twin')}
+              onOpenPersonalizeRegimen={() => setIsPersonalizeRegimenOpen(true)}
             />
           )}
 
@@ -463,12 +550,12 @@ function AppContent() {
 
       {/* Private Admin Simulation Telemetry Database Tracker Modal */}
       {isAdminDatabaseOpen && (
-        <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6 animate-fade-in">
-          <div className="bg-[#f7f9fb] w-full max-w-6xl max-h-[92vh] rounded-2xl shadow-2xl border border-slate-700/60 overflow-hidden flex flex-col animate-scale-in">
+        <div className="fixed inset-0 z-50 bg-[#0D1926]/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6 animate-fade-in">
+          <div className="bg-[#FAF7F2] dark:bg-[#0D1926] w-full max-w-6xl max-h-[92vh] rounded-2xl shadow-2xl border border-[#E5DDD0] dark:border-[#1F3B5C] overflow-hidden flex flex-col animate-scale-in">
             {/* Header */}
-            <div className="bg-[#0f2b38] px-6 py-4 border-b border-slate-700 flex items-center justify-between text-white shrink-0">
+            <div className="bg-[#1E3A8A] px-6 py-4 border-b border-[#0F2F57] flex items-center justify-between text-white shrink-0">
               <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-teal-500/20 border border-teal-400/40 flex items-center justify-center text-teal-300">
+                <div className="w-9 h-9 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center text-[#34D399]">
                   <span className="material-symbols-outlined text-[20px]">database</span>
                 </div>
                 <div>
@@ -476,11 +563,11 @@ function AppContent() {
                     <h2 className="font-['Plus_Jakarta_Sans'] font-bold text-sm tracking-tight">
                       Simulation Telemetry Database Tracker
                     </h2>
-                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-teal-900/90 text-teal-300 border border-teal-500/30 font-bold">
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#15803D] text-white border border-[#CBE4CB]/40 font-bold">
                       Owner &amp; Admin Private Store
                     </span>
                   </div>
-                  <p className="text-[11px] text-slate-300">
+                  <p className="text-[11px] text-blue-100">
                     Confidential audit log of simulations and titrations provided by users. Zero names/PHI stored (HIPAA Safe Harbor).
                   </p>
                 </div>
@@ -523,6 +610,11 @@ function AppContent() {
       )}
 
       <ClinicianAuthModal />
+      <PersonalizedCasesModal
+        onLoadCaseIntoTwin={handleLoadSavedCaseIntoTwin}
+        onSaveCurrentTwin={handleSaveCurrentActiveTwin}
+        activePatientName={activePatient.nameAlias || activePatient.id}
+      />
       <DisclaimerModal />
 
       {/* Video Tour Modal */}

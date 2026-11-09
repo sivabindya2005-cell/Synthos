@@ -54,7 +54,7 @@ export const MonitoringPlanView: React.FC<MonitoringPlanViewProps> = ({ patient 
       <div className="bg-[#0d1c32] text-white rounded-xl p-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="w-2 h-2 rounded-full bg-[#14b8a6]"></span>
+            <span className="w-2 h-2 rounded-full bg-[#15803D]"></span>
             <span className="text-xs font-mono text-[#86f2e4] font-bold">SAFETY &amp; SURVEILLANCE PROTOCOL</span>
           </div>
           <h2 className="font-['Plus_Jakarta_Sans'] text-xl font-bold">
@@ -66,15 +66,15 @@ export const MonitoringPlanView: React.FC<MonitoringPlanViewProps> = ({ patient 
         </div>
       </div>
 
-      <div className="bg-white rounded-xl border border-[#e2e8f0] p-5 shadow-2xs space-y-4">
+      <div className="bg-white rounded-xl border border-[#E5DDD0] p-5 shadow-2xs space-y-4">
         <div className="flex items-center justify-between">
-          <h3 className="font-['Plus_Jakarta_Sans'] font-semibold text-sm text-[#191c1e] flex items-center gap-2">
-            <span className="material-symbols-outlined text-[#006a61] text-[20px]">checklist</span>
+          <h3 className="font-['Plus_Jakarta_Sans'] font-semibold text-sm text-[#1E3A8A] flex items-center gap-2">
+            <span className="material-symbols-outlined text-[#15803D] text-[20px]">checklist</span>
             <span>Surveillance Lab Checklist ({labs.filter(l => l.ordered).length}/{labs.length} Ordered)</span>
           </h3>
           <button
             onClick={() => setLabs(labs.map(l => ({ ...l, ordered: true })))}
-            className="text-xs text-[#006a61] font-bold hover:underline cursor-pointer"
+            className="text-xs text-[#15803D] font-bold hover:underline cursor-pointer"
           >
             Order All Pending
           </button>
@@ -87,17 +87,17 @@ export const MonitoringPlanView: React.FC<MonitoringPlanViewProps> = ({ patient 
               className={`p-4 rounded-xl border transition-all flex flex-col md:flex-row md:items-center justify-between gap-3 ${
                 lab.ordered
                   ? 'bg-[#d1fae5]/30 border-[#a7f3d0]'
-                  : 'bg-[#f8fafc] border-[#e2e8f0]'
+                  : 'bg-[#FAF7F2] border-[#E5DDD0]'
               }`}
             >
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
-                  <span className="font-bold text-sm text-[#191c1e]">{lab.name}</span>
-                  <span className="px-2 py-0.5 rounded bg-white text-[#475569] font-mono text-xs font-semibold border border-[#cbd5e1]">
+                  <span className="font-bold text-sm text-[#1E3A8A]">{lab.name}</span>
+                  <span className="px-2 py-0.5 rounded bg-white text-[#4B6584] font-mono text-xs font-semibold border border-[#cbd5e1]">
                     {lab.timeline}
                   </span>
                 </div>
-                <p className="text-xs text-[#475569]">{lab.indication}</p>
+                <p className="text-xs text-[#4B6584]">{lab.indication}</p>
                 <div className="text-[11px] font-semibold text-[#92400e] flex items-center gap-1">
                   <span className="material-symbols-outlined text-[14px]">crisis_alert</span>
                   <span>Safety Stop Threshold: {lab.threshold}</span>
@@ -110,7 +110,7 @@ export const MonitoringPlanView: React.FC<MonitoringPlanViewProps> = ({ patient 
                   className={`px-3 py-1.5 rounded text-xs font-semibold flex items-center gap-1.5 cursor-pointer transition-colors ${
                     lab.ordered
                       ? 'bg-[#065f46] text-white'
-                      : 'bg-[#006a61] text-white hover:bg-[#006f66]'
+                      : 'bg-[#15803D] text-white hover:bg-[#006f66]'
                   }`}
                 >
                   <span className="material-symbols-outlined text-[16px]">

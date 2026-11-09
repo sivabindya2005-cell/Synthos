@@ -506,19 +506,19 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] dark:bg-[#071321] text-[#0B2545] dark:text-[#F8FAFC] pb-16 transition-colors">
+    <div className="min-h-screen bg-[#FAF7F2] dark:bg-[#0D1926] text-[#1E3A8A] dark:text-[#F8FAFC] pb-16 transition-colors">
       {/* 3-Step Guided Progress Header */}
-      <div className="bg-white/90 dark:bg-[#0F2137]/90 border-b border-[#E2E8F0] dark:border-[#1E3A5A] sticky top-0 z-30 backdrop-blur-md">
+      <div className="bg-white/90 dark:bg-[#13253A]/90 border-b border-[#E5DDD0] dark:border-[#1F3B5C] sticky top-0 z-30 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <span className="w-8 h-8 rounded-full bg-[#14B8A6] text-[#0B2545] flex items-center justify-center font-bold font-mono text-sm shadow-xs">
+            <span className="w-8 h-8 rounded-full bg-[#15803D] text-[#1E3A8A] flex items-center justify-center font-bold font-mono text-sm shadow-xs">
               S
             </span>
             <div>
-              <div className="text-sm font-bold tracking-tight text-[#0B2545] dark:text-[#F8FAFC]">
+              <div className="text-sm font-bold tracking-tight text-[#1E3A8A] dark:text-[#F8FAFC]">
                 Guided 3-Step Simulation Wizard
               </div>
-              <div className="text-xs text-[#64748B] dark:text-[#94A3B8]">
+              <div className="text-xs text-[#4B6584] dark:text-[#94A3B8]">
                 Deterministic Pharmacometrics &amp; Decision Support Matrix
               </div>
             </div>
@@ -530,32 +530,32 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
               onClick={() => setCurrentStep(1)}
               className={`px-3 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${
                 currentStep === 1
-                  ? 'bg-[#0F766E] text-white shadow-xs'
-                  : 'bg-white dark:bg-[#071321] border border-[#E2E8F0] dark:border-[#1E3A5A] text-[#64748B] dark:text-[#94A3B8]'
+                  ? 'bg-[#15803D] text-white shadow-xs'
+                  : 'bg-white dark:bg-[#0D1926] border border-[#E5DDD0] dark:border-[#1F3B5C] text-[#4B6584] dark:text-[#94A3B8]'
               }`}
             >
               <span className="w-4 h-4 rounded-full bg-white/20 flex items-center justify-center text-[10px]">1</span>
               <span>1. Patient Covariates</span>
             </button>
-            <span className="text-xs text-[#14B8A6]">→</span>
+            <span className="text-xs text-[#15803D]">→</span>
             <button
               onClick={() => setCurrentStep(2)}
               className={`px-3 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${
                 currentStep === 2
-                  ? 'bg-[#0F766E] text-white shadow-xs'
-                  : 'bg-white dark:bg-[#071321] border border-[#E2E8F0] dark:border-[#1E3A5A] text-[#64748B] dark:text-[#94A3B8]'
+                  ? 'bg-[#15803D] text-white shadow-xs'
+                  : 'bg-white dark:bg-[#0D1926] border border-[#E5DDD0] dark:border-[#1F3B5C] text-[#4B6584] dark:text-[#94A3B8]'
               }`}
             >
               <span className="w-4 h-4 rounded-full bg-white/20 flex items-center justify-center text-[10px]">2</span>
               <span>2. Drug &amp; Regimen</span>
             </button>
-            <span className="text-xs text-[#14B8A6]">→</span>
+            <span className="text-xs text-[#15803D]">→</span>
             <button
               onClick={() => setCurrentStep(3)}
               className={`px-3 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${
                 currentStep === 3
-                  ? 'bg-[#0F766E] text-white shadow-xs'
-                  : 'bg-white dark:bg-[#071321] border border-[#E2E8F0] dark:border-[#1E3A5A] text-[#64748B] dark:text-[#94A3B8]'
+                  ? 'bg-[#15803D] text-white shadow-xs'
+                  : 'bg-white dark:bg-[#0D1926] border border-[#E5DDD0] dark:border-[#1F3B5C] text-[#4B6584] dark:text-[#94A3B8]'
               }`}
             >
               <span className="w-4 h-4 rounded-full bg-white/20 flex items-center justify-center text-[10px]">3</span>
@@ -567,16 +567,16 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
           <div className="flex items-center gap-2">
             <button
               onClick={handleExecuteTests}
-              className="px-2.5 py-1.5 rounded-lg border border-[#E2E8F0] dark:border-[#1E3A5A] bg-white dark:bg-[#071321] text-xs font-medium text-[#0B2545] dark:text-[#F8FAFC] hover:border-[#0F766E] transition-colors flex items-center gap-1 cursor-pointer"
+              className="px-2.5 py-1.5 rounded-lg border border-[#E5DDD0] dark:border-[#1F3B5C] bg-white dark:bg-[#0D1926] text-xs font-medium text-[#1E3A8A] dark:text-[#F8FAFC] hover:border-[#0F766E] transition-colors flex items-center gap-1 cursor-pointer"
               title="Run Automated Mathematical Unit Tests"
             >
-              <span className="material-symbols-outlined text-[15px] text-[#0F766E]">verified</span>
+              <span className="material-symbols-outlined text-[15px] text-[#15803D]">verified</span>
               <span className="hidden sm:inline">Unit Tests</span>
             </button>
             {onSwitchToWorkstation && (
               <button
                 onClick={onSwitchToWorkstation}
-                className="px-3 py-1.5 rounded-lg bg-[#14B8A6]/40 hover:bg-[#14B8A6]/60 border border-[#14B8A6] text-xs font-semibold text-[#0B2545] dark:text-[#F8FAFC] transition-colors flex items-center gap-1 cursor-pointer"
+                className="px-3 py-1.5 rounded-lg bg-[#15803D]/40 hover:bg-[#15803D]/60 border border-[#14B8A6] text-xs font-semibold text-[#1E3A8A] dark:text-[#F8FAFC] transition-colors flex items-center gap-1 cursor-pointer"
                 title="Switch to 16-view Full Clinical Workstation"
               >
                 <span className="material-symbols-outlined text-[15px]">space_dashboard</span>
@@ -590,47 +590,47 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
       {/* Main Content Stage */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-6">
         {/* Synthetic Data Guardrail Banner */}
-        <div className="bg-[#E6F4F1]/30 dark:bg-[#E6F4F1]/10 border border-[#E6F4F1] rounded-2xl p-3.5 flex items-start gap-3">
-          <span className="material-symbols-outlined text-[#0F766E] text-[20px] shrink-0 mt-0.5">security</span>
-          <div className="text-xs text-[#0B2545] dark:text-[#F8FAFC] leading-relaxed">
+        <div className="bg-[#EEF7EE]/30 dark:bg-[#EEF7EE]/10 border border-[#CBE4CB] rounded-2xl p-3.5 flex items-start gap-3">
+          <span className="material-symbols-outlined text-[#15803D] text-[20px] shrink-0 mt-0.5">security</span>
+          <div className="text-xs text-[#1E3A8A] dark:text-[#F8FAFC] leading-relaxed">
             <span className="font-bold">Synthetic / De-identified Safe Harbor:</span> Use synthetic or de-identified data only. Do not enter patient names, telephone numbers, emails, addresses, or hospital medical record numbers (MRNs). All free-text inputs are actively scanned and sanitized.
           </div>
         </div>
 
         {/* Example Cases Ribbon */}
-        <div className="bg-white dark:bg-[#0F2137] rounded-2xl border border-[#E2E8F0] dark:border-[#1E3A5A] p-3 shadow-2xs">
-          <div className="text-[11px] font-bold uppercase tracking-wider text-[#64748B] dark:text-[#94A3B8] mb-2 font-mono flex items-center justify-between">
+        <div className="bg-white dark:bg-[#13253A] rounded-2xl border border-[#E5DDD0] dark:border-[#1F3B5C] p-3 shadow-2xs">
+          <div className="text-[11px] font-bold uppercase tracking-wider text-[#4B6584] dark:text-[#94A3B8] mb-2 font-mono flex items-center justify-between">
             <span>One-Click Clinical Example Profiles</span>
-            <span className="text-[10px] lowercase text-[#0F766E]">click to populate covariates</span>
+            <span className="text-[10px] lowercase text-[#15803D]">click to populate covariates</span>
           </div>
           <div className="flex flex-wrap gap-2">
             <button
               onClick={() => handleLoadExample('vancomycin_ckd')}
-              className="px-2.5 py-1 rounded-lg bg-[#E6F4F1]/30 hover:bg-[#E6F4F1]/50 text-xs font-medium text-[#0B2545] dark:text-[#F8FAFC] border border-[#E6F4F1] transition-colors cursor-pointer"
+              className="px-2.5 py-1 rounded-lg bg-[#EEF7EE]/30 hover:bg-[#EEF7EE]/50 text-xs font-medium text-[#1E3A8A] dark:text-[#F8FAFC] border border-[#CBE4CB] transition-colors cursor-pointer"
             >
               72yo Male · CKD Stage 4 · Vancomycin Infusion
             </button>
             <button
               onClick={() => handleLoadExample('gentamicin_icu')}
-              className="px-2.5 py-1 rounded-lg bg-[#E6F4F1]/40 hover:bg-[#E6F4F1]/60 text-xs font-medium text-[#0B2545] dark:text-[#F8FAFC] border border-[#E6F4F1] transition-colors cursor-pointer"
+              className="px-2.5 py-1 rounded-lg bg-[#EEF7EE]/40 hover:bg-[#EEF7EE]/60 text-xs font-medium text-[#1E3A8A] dark:text-[#F8FAFC] border border-[#CBE4CB] transition-colors cursor-pointer"
             >
               58yo Female · Sepsis · Gentamicin IV Bolus
             </button>
             <button
               onClick={() => handleLoadExample('digoxin_elderly')}
-              className="px-2.5 py-1 rounded-lg bg-[#E6F4F1]/50 hover:bg-[#E6F4F1]/70 text-xs font-medium text-[#0B2545] dark:text-[#F8FAFC] border border-[#E6F4F1] transition-colors cursor-pointer"
+              className="px-2.5 py-1 rounded-lg bg-[#EEF7EE]/50 hover:bg-[#EEF7EE]/70 text-xs font-medium text-[#1E3A8A] dark:text-[#F8FAFC] border border-[#CBE4CB] transition-colors cursor-pointer"
             >
               84yo Female · Afib/HFrEF · Digoxin NTI
             </button>
             <button
               onClick={() => handleLoadExample('phenytoin_saturable')}
-              className="px-2.5 py-1 rounded-lg bg-[#E6F4F1]/40 hover:bg-[#E6F4F1]/60 text-xs font-medium text-[#0B2545] dark:text-[#F8FAFC] border border-[#E6F4F1] transition-colors cursor-pointer"
+              className="px-2.5 py-1 rounded-lg bg-[#EEF7EE]/40 hover:bg-[#EEF7EE]/60 text-xs font-medium text-[#1E3A8A] dark:text-[#F8FAFC] border border-[#CBE4CB] transition-colors cursor-pointer"
             >
               42yo Male · Epilepsy · Phenytoin Non-Linear
             </button>
             <button
               onClick={() => handleLoadExample('paracetamol_hepatic')}
-              className="px-2.5 py-1 rounded-lg bg-[#E6F4F1]/40 hover:bg-[#E6F4F1]/60 text-xs font-medium text-[#0B2545] dark:text-[#F8FAFC] border border-[#E6F4F1] transition-colors cursor-pointer"
+              className="px-2.5 py-1 rounded-lg bg-[#EEF7EE]/40 hover:bg-[#EEF7EE]/60 text-xs font-medium text-[#1E3A8A] dark:text-[#F8FAFC] border border-[#CBE4CB] transition-colors cursor-pointer"
             >
               54yo Male · Cirrhosis · Paracetamol Bounds
             </button>
@@ -641,17 +641,17 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
         {currentStep === 1 && (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 animate-fade-in">
             {/* Input Form Column */}
-            <div className="lg:col-span-7 bg-white dark:bg-[#0F2137] rounded-2xl border border-[#E2E8F0] dark:border-[#1E3A5A] p-6 shadow-xs space-y-5">
-              <div className="flex items-center justify-between pb-3 border-b border-[#E2E8F0] dark:border-[#1E3A5A]">
+            <div className="lg:col-span-7 bg-white dark:bg-[#13253A] rounded-2xl border border-[#E5DDD0] dark:border-[#1F3B5C] p-6 shadow-xs space-y-5">
+              <div className="flex items-center justify-between pb-3 border-b border-[#E5DDD0] dark:border-[#1F3B5C]">
                 <div>
-                  <h2 className="text-base font-bold text-[#0B2545] dark:text-[#F8FAFC]">
+                  <h2 className="text-base font-bold text-[#1E3A8A] dark:text-[#F8FAFC]">
                     Step 1: Patient Covariates &amp; Biological Markers
                   </h2>
-                  <p className="text-xs text-[#64748B] dark:text-[#94A3B8]">
+                  <p className="text-xs text-[#4B6584] dark:text-[#94A3B8]">
                     Enter physiological covariates to derive renal clearance and distribution volumes.
                   </p>
                 </div>
-                <span className="text-xs font-mono font-bold px-2 py-0.5 rounded-full bg-[#14B8A6]/40 text-[#0B2545] dark:text-[#F8FAFC]">
+                <span className="text-xs font-mono font-bold px-2 py-0.5 rounded-full bg-[#15803D]/40 text-[#1E3A8A] dark:text-[#F8FAFC]">
                   Adult Protocol (18-120Y)
                 </span>
               </div>
@@ -659,7 +659,7 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
               {/* Demographics Row */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-[#64748B] dark:text-[#94A3B8] mb-1">
+                  <label className="block text-xs font-semibold text-[#4B6584] dark:text-[#94A3B8] mb-1">
                     Age (Years)
                   </label>
                   <input
@@ -668,18 +668,18 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
                     max={120}
                     value={age}
                     onChange={(e) => setAge(Number(e.target.value))}
-                    className="w-full px-3 py-2 text-sm rounded-xl border border-[#E2E8F0] dark:border-[#1E3A5A] bg-[#F8FAFC] dark:bg-[#071321] text-[#0B2545] dark:text-[#F8FAFC] focus:ring-2 focus:ring-[#0F766E] focus:outline-hidden font-mono"
+                    className="w-full px-3 py-2 text-sm rounded-xl border border-[#E5DDD0] dark:border-[#1F3B5C] bg-[#FAF7F2] dark:bg-[#0D1926] text-[#1E3A8A] dark:text-[#F8FAFC] focus:ring-2 focus:ring-[#15803D] focus:outline-hidden font-mono"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-[#64748B] dark:text-[#94A3B8] mb-1">
+                  <label className="block text-xs font-semibold text-[#4B6584] dark:text-[#94A3B8] mb-1">
                     Biological Sex
                   </label>
                   <select
                     value={sex}
                     onChange={(e) => setSex(e.target.value as 'Male' | 'Female')}
-                    className="w-full px-3 py-2 text-sm rounded-xl border border-[#E2E8F0] dark:border-[#1E3A5A] bg-[#F8FAFC] dark:bg-[#071321] text-[#0B2545] dark:text-[#F8FAFC] focus:ring-2 focus:ring-[#0F766E] focus:outline-hidden"
+                    className="w-full px-3 py-2 text-sm rounded-xl border border-[#E5DDD0] dark:border-[#1F3B5C] bg-[#FAF7F2] dark:bg-[#0D1926] text-[#1E3A8A] dark:text-[#F8FAFC] focus:ring-2 focus:ring-[#15803D] focus:outline-hidden"
                   >
                     <option value="Male">Male (Factor 1.0)</option>
                     <option value="Female">Female (Factor 0.85)</option>
@@ -687,7 +687,7 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-[#64748B] dark:text-[#94A3B8] mb-1">
+                  <label className="block text-xs font-semibold text-[#4B6584] dark:text-[#94A3B8] mb-1">
                     Weight (kg)
                   </label>
                   <input
@@ -697,12 +697,12 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
                     step="0.5"
                     value={weightKg}
                     onChange={(e) => setWeightKg(Number(e.target.value))}
-                    className="w-full px-3 py-2 text-sm rounded-xl border border-[#E2E8F0] dark:border-[#1E3A5A] bg-[#F8FAFC] dark:bg-[#071321] text-[#0B2545] dark:text-[#F8FAFC] focus:ring-2 focus:ring-[#0F766E] focus:outline-hidden font-mono"
+                    className="w-full px-3 py-2 text-sm rounded-xl border border-[#E5DDD0] dark:border-[#1F3B5C] bg-[#FAF7F2] dark:bg-[#0D1926] text-[#1E3A8A] dark:text-[#F8FAFC] focus:ring-2 focus:ring-[#15803D] focus:outline-hidden font-mono"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-[#64748B] dark:text-[#94A3B8] mb-1">
+                  <label className="block text-xs font-semibold text-[#4B6584] dark:text-[#94A3B8] mb-1">
                     Height (cm)
                   </label>
                   <input
@@ -711,7 +711,7 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
                     max={240}
                     value={heightCm}
                     onChange={(e) => setHeightCm(Number(e.target.value))}
-                    className="w-full px-3 py-2 text-sm rounded-xl border border-[#E2E8F0] dark:border-[#1E3A5A] bg-[#F8FAFC] dark:bg-[#071321] text-[#0B2545] dark:text-[#F8FAFC] focus:ring-2 focus:ring-[#0F766E] focus:outline-hidden font-mono"
+                    className="w-full px-3 py-2 text-sm rounded-xl border border-[#E5DDD0] dark:border-[#1F3B5C] bg-[#FAF7F2] dark:bg-[#0D1926] text-[#1E3A8A] dark:text-[#F8FAFC] focus:ring-2 focus:ring-[#15803D] focus:outline-hidden font-mono"
                   />
                 </div>
               </div>
@@ -719,7 +719,7 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
               {/* Renal & Electrolytes Row */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
                 <div>
-                  <label className="block text-xs font-semibold text-[#64748B] dark:text-[#94A3B8] mb-1">
+                  <label className="block text-xs font-semibold text-[#4B6584] dark:text-[#94A3B8] mb-1">
                     Serum Creatinine (mg/dL)
                   </label>
                   <input
@@ -729,15 +729,15 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
                     step="0.05"
                     value={scr}
                     onChange={(e) => setScr(Number(e.target.value))}
-                    className="w-full px-3 py-2 text-sm rounded-xl border border-[#E2E8F0] dark:border-[#1E3A5A] bg-[#F8FAFC] dark:bg-[#071321] text-[#0B2545] dark:text-[#F8FAFC] focus:ring-2 focus:ring-[#0F766E] focus:outline-hidden font-mono"
+                    className="w-full px-3 py-2 text-sm rounded-xl border border-[#E5DDD0] dark:border-[#1F3B5C] bg-[#FAF7F2] dark:bg-[#0D1926] text-[#1E3A8A] dark:text-[#F8FAFC] focus:ring-2 focus:ring-[#15803D] focus:outline-hidden font-mono"
                   />
-                  <span className="text-[10px] text-[#64748B] dark:text-[#94A3B8] mt-1 block">
+                  <span className="text-[10px] text-[#4B6584] dark:text-[#94A3B8] mt-1 block">
                     Normal reference: 0.6–1.2 mg/dL
                   </span>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-[#64748B] dark:text-[#94A3B8] mb-1">
+                  <label className="block text-xs font-semibold text-[#4B6584] dark:text-[#94A3B8] mb-1">
                     Serum Potassium (mEq/L)
                   </label>
                   <input
@@ -747,63 +747,63 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
                     step="0.1"
                     value={potassium}
                     onChange={(e) => setPotassium(Number(e.target.value))}
-                    className="w-full px-3 py-2 text-sm rounded-xl border border-[#E2E8F0] dark:border-[#1E3A5A] bg-[#F8FAFC] dark:bg-[#071321] text-[#0B2545] dark:text-[#F8FAFC] focus:ring-2 focus:ring-[#0F766E] focus:outline-hidden font-mono"
+                    className="w-full px-3 py-2 text-sm rounded-xl border border-[#E5DDD0] dark:border-[#1F3B5C] bg-[#FAF7F2] dark:bg-[#0D1926] text-[#1E3A8A] dark:text-[#F8FAFC] focus:ring-2 focus:ring-[#15803D] focus:outline-hidden font-mono"
                   />
-                  <span className="text-[10px] text-[#64748B] dark:text-[#94A3B8] mt-1 block">
+                  <span className="text-[10px] text-[#4B6584] dark:text-[#94A3B8] mt-1 block">
                     Normal: 3.5–5.0 mEq/L
                   </span>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-[#64748B] dark:text-[#94A3B8] mb-1">
+                  <label className="block text-xs font-semibold text-[#4B6584] dark:text-[#94A3B8] mb-1">
                     Hepatic Status
                   </label>
                   <select
                     value={hepaticStatus}
                     onChange={(e) => setHepaticStatus(e.target.value as any)}
-                    className="w-full px-3 py-2 text-sm rounded-xl border border-[#E2E8F0] dark:border-[#1E3A5A] bg-[#F8FAFC] dark:bg-[#071321] text-[#0B2545] dark:text-[#F8FAFC] focus:ring-2 focus:ring-[#0F766E] focus:outline-hidden"
+                    className="w-full px-3 py-2 text-sm rounded-xl border border-[#E5DDD0] dark:border-[#1F3B5C] bg-[#FAF7F2] dark:bg-[#0D1926] text-[#1E3A8A] dark:text-[#F8FAFC] focus:ring-2 focus:ring-[#15803D] focus:outline-hidden"
                   >
                     <option value="Normal">Normal (Class 0)</option>
                     <option value="Child-Pugh A">Child-Pugh A (Mild)</option>
                     <option value="Child-Pugh B">Child-Pugh B (Moderate)</option>
                     <option value="Child-Pugh C">Child-Pugh C (Severe)</option>
                   </select>
-                  <span className="text-[10px] text-[#64748B] dark:text-[#94A3B8] mt-1 block">
+                  <span className="text-[10px] text-[#4B6584] dark:text-[#94A3B8] mt-1 block">
                     Affects non-renal clearance
                   </span>
                 </div>
               </div>
 
               {/* Special Vulnerability Toggles */}
-              <div className="pt-2 border-t border-[#E2E8F0] dark:border-[#1E3A5A] flex flex-wrap items-center gap-6">
-                <label className="flex items-center gap-2 cursor-pointer text-xs font-semibold text-[#0B2545] dark:text-[#F8FAFC]">
+              <div className="pt-2 border-t border-[#E5DDD0] dark:border-[#1F3B5C] flex flex-wrap items-center gap-6">
+                <label className="flex items-center gap-2 cursor-pointer text-xs font-semibold text-[#1E3A8A] dark:text-[#F8FAFC]">
                   <input
                     type="checkbox"
                     checked={pregnancy}
                     onChange={(e) => setPregnancy(e.target.checked)}
-                    className="w-4 h-4 rounded text-[#0F766E] focus:ring-[#0F766E]"
+                    className="w-4 h-4 rounded text-[#15803D] focus:ring-[#15803D]"
                   />
                   <span>Pregnancy (Gestational Expansion)</span>
                 </label>
 
-                <label className="flex items-center gap-2 cursor-pointer text-xs font-semibold text-[#0B2545] dark:text-[#F8FAFC]">
+                <label className="flex items-center gap-2 cursor-pointer text-xs font-semibold text-[#1E3A8A] dark:text-[#F8FAFC]">
                   <input
                     type="checkbox"
                     checked={lactation}
                     onChange={(e) => setLactation(e.target.checked)}
-                    className="w-4 h-4 rounded text-[#0F766E] focus:ring-[#0F766E]"
+                    className="w-4 h-4 rounded text-[#15803D] focus:ring-[#15803D]"
                   />
                   <span>Lactation (Breastfeeding Hazard)</span>
                 </label>
 
                 <div className="flex items-center gap-2">
-                  <span className="text-xs font-semibold text-[#64748B] dark:text-[#94A3B8]">
+                  <span className="text-xs font-semibold text-[#4B6584] dark:text-[#94A3B8]">
                     CrCl Weight Choice:
                   </span>
                   <select
                     value={weightChoice}
                     onChange={(e) => setWeightChoice(e.target.value as any)}
-                    className="px-2 py-1 text-xs rounded-lg border border-[#E2E8F0] dark:border-[#1E3A5A] bg-[#F8FAFC] dark:bg-[#071321]"
+                    className="px-2 py-1 text-xs rounded-lg border border-[#E5DDD0] dark:border-[#1F3B5C] bg-[#FAF7F2] dark:bg-[#0D1926]"
                   >
                     <option value="Auto">Auto-Selected</option>
                     <option value="Actual">Actual Weight</option>
@@ -815,7 +815,7 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
 
               {/* Clinical Notes & Real-Time PHI Scanner */}
               <div className="pt-2">
-                <label className="block text-xs font-semibold text-[#64748B] dark:text-[#94A3B8] mb-1">
+                <label className="block text-xs font-semibold text-[#4B6584] dark:text-[#94A3B8] mb-1">
                   Synthetic Case Context &amp; Clinical Notes
                 </label>
                 <textarea
@@ -823,7 +823,7 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
                   value={patientNotes}
                   onChange={(e) => setPatientNotes(e.target.value)}
                   placeholder="Enter synthetic notes. No patient identifiers allowed."
-                  className="w-full px-3 py-2 text-xs rounded-xl border border-[#E2E8F0] dark:border-[#1E3A5A] bg-[#F8FAFC] dark:bg-[#071321] text-[#0B2545] dark:text-[#F8FAFC] focus:ring-2 focus:ring-[#0F766E] focus:outline-hidden"
+                  className="w-full px-3 py-2 text-xs rounded-xl border border-[#E5DDD0] dark:border-[#1F3B5C] bg-[#FAF7F2] dark:bg-[#0D1926] text-[#1E3A8A] dark:text-[#F8FAFC] focus:ring-2 focus:ring-[#15803D] focus:outline-hidden"
                 />
                 {phiWarning && (
                   <div className="mt-1.5 p-2 rounded-lg bg-[#F4A6B8]/30 border border-[#F4A6B8] text-[11px] font-semibold text-[#701124] flex items-center gap-2">
@@ -837,7 +837,7 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
               <div className="pt-3 flex justify-end">
                 <button
                   onClick={() => setCurrentStep(2)}
-                  className="px-6 py-2.5 rounded-full bg-[#0F766E] hover:bg-[#0D645D] text-white text-xs font-bold transition-all shadow-xs flex items-center gap-2 cursor-pointer"
+                  className="px-6 py-2.5 rounded-full bg-[#15803D] hover:bg-[#166534] text-white text-xs font-bold transition-all shadow-xs flex items-center gap-2 cursor-pointer"
                 >
                   <span>Proceed to Step 2: Drug Selection</span>
                   <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
@@ -846,16 +846,16 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
             </div>
 
             {/* Derived Biometrics Summary Card */}
-            <div className="lg:col-span-5 bg-white dark:bg-[#0F2137] rounded-2xl border border-[#E2E8F0] dark:border-[#1E3A5A] p-6 shadow-xs space-y-4">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-[#64748B] dark:text-[#94A3B8] font-mono">
+            <div className="lg:col-span-5 bg-white dark:bg-[#13253A] rounded-2xl border border-[#E5DDD0] dark:border-[#1F3B5C] p-6 shadow-xs space-y-4">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-[#4B6584] dark:text-[#94A3B8] font-mono">
                 Real-Time Derived Clearances
               </h3>
 
               {/* eGFR 2021 CKD-EPI Highlight */}
-              <div className="p-4 rounded-xl bg-[#E6F4F1]/30 dark:bg-[#E6F4F1]/15 border border-[#E6F4F1]">
+              <div className="p-4 rounded-xl bg-[#EEF7EE]/30 dark:bg-[#EEF7EE]/15 border border-[#CBE4CB]">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold text-[#134e3f]">2021 Race-Free CKD-EPI eGFR</span>
-                  <span className="text-xs font-mono font-bold px-2 py-0.5 rounded-md bg-[#E6F4F1] text-[#134e3f]">
+                  <span className="text-xs font-mono font-bold px-2 py-0.5 rounded-md bg-[#EEF7EE] text-[#134e3f]">
                     {ckdResult.stageCode}
                   </span>
                 </div>
@@ -868,7 +868,7 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
               </div>
 
               {/* Cockcroft-Gault CrCl */}
-              <div className="p-4 rounded-xl bg-[#E6F4F1]/30 dark:bg-[#E6F4F1]/15 border border-[#E6F4F1]">
+              <div className="p-4 rounded-xl bg-[#EEF7EE]/30 dark:bg-[#EEF7EE]/15 border border-[#CBE4CB]">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold text-[#1e3a8a]">Cockcroft-Gault CrCl</span>
                   <span className="text-[10px] font-mono text-[#1e3a8a]/70">
@@ -885,30 +885,30 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
 
               {/* Key Anthropometrics Grid */}
               <div className="grid grid-cols-2 gap-3 pt-1">
-                <div className="p-3 rounded-xl bg-[#F8FAFC] dark:bg-[#071321] border border-[#E2E8F0] dark:border-[#1E3A5A]">
-                  <span className="text-[11px] text-[#64748B] dark:text-[#94A3B8] block">BMI (Body Mass Index)</span>
-                  <span className="text-lg font-bold font-mono text-[#0B2545] dark:text-[#F8FAFC]">
+                <div className="p-3 rounded-xl bg-[#FAF7F2] dark:bg-[#0D1926] border border-[#E5DDD0] dark:border-[#1F3B5C]">
+                  <span className="text-[11px] text-[#4B6584] dark:text-[#94A3B8] block">BMI (Body Mass Index)</span>
+                  <span className="text-lg font-bold font-mono text-[#1E3A8A] dark:text-[#F8FAFC]">
                     {bmiInfo.bmi} <span className="text-xs font-normal">kg/m²</span>
                   </span>
-                  <span className="text-[10px] text-[#0F766E] block truncate font-medium">
+                  <span className="text-[10px] text-[#15803D] block truncate font-medium">
                     {bmiInfo.classification}
                   </span>
                 </div>
 
-                <div className="p-3 rounded-xl bg-[#F8FAFC] dark:bg-[#071321] border border-[#E2E8F0] dark:border-[#1E3A5A]">
-                  <span className="text-[11px] text-[#64748B] dark:text-[#94A3B8] block">BSA (Mosteller)</span>
-                  <span className="text-lg font-bold font-mono text-[#0B2545] dark:text-[#F8FAFC]">
+                <div className="p-3 rounded-xl bg-[#FAF7F2] dark:bg-[#0D1926] border border-[#E5DDD0] dark:border-[#1F3B5C]">
+                  <span className="text-[11px] text-[#4B6584] dark:text-[#94A3B8] block">BSA (Mosteller)</span>
+                  <span className="text-lg font-bold font-mono text-[#1E3A8A] dark:text-[#F8FAFC]">
                     {bsa} <span className="text-xs font-normal">m²</span>
                   </span>
-                  <span className="text-[10px] text-[#64748B] dark:text-[#94A3B8] block">
+                  <span className="text-[10px] text-[#4B6584] dark:text-[#94A3B8] block">
                     √((Ht × Wt)/3600)
                   </span>
                 </div>
               </div>
 
               {/* Equations & Citations Box */}
-              <div className="p-3 rounded-xl bg-[#F8FAFC] dark:bg-[#071321] border border-[#E2E8F0] dark:border-[#1E3A5A] text-[10px] text-[#64748B] dark:text-[#94A3B8] space-y-1">
-                <div className="font-semibold text-[#0B2545] dark:text-[#F8FAFC]">Mathematical Formulations:</div>
+              <div className="p-3 rounded-xl bg-[#FAF7F2] dark:bg-[#0D1926] border border-[#E5DDD0] dark:border-[#1F3B5C] text-[10px] text-[#4B6584] dark:text-[#94A3B8] space-y-1">
+                <div className="font-semibold text-[#1E3A8A] dark:text-[#F8FAFC]">Mathematical Formulations:</div>
                 <div>• CKD-EPI: Inker LA, et al. N Engl J Med 2021;385:1737-1749.</div>
                 <div>• CrCl: Cockcroft DW, Gault MH. Nephron 1976;16(1):31-41.</div>
                 <div>• Ideal Body Weight: Devine BJ. Drug Intell Clin Pharm 1974;8:650-5.</div>
@@ -921,19 +921,19 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
         {currentStep === 2 && (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 animate-fade-in">
             {/* Drug Selection Column */}
-            <div className="lg:col-span-7 bg-white dark:bg-[#0F2137] rounded-2xl border border-[#E2E8F0] dark:border-[#1E3A5A] p-6 shadow-xs space-y-5">
-              <div className="flex items-center justify-between pb-3 border-b border-[#E2E8F0] dark:border-[#1E3A5A]">
+            <div className="lg:col-span-7 bg-white dark:bg-[#13253A] rounded-2xl border border-[#E5DDD0] dark:border-[#1F3B5C] p-6 shadow-xs space-y-5">
+              <div className="flex items-center justify-between pb-3 border-b border-[#E5DDD0] dark:border-[#1F3B5C]">
                 <div>
-                  <h2 className="text-base font-bold text-[#0B2545] dark:text-[#F8FAFC]">
+                  <h2 className="text-base font-bold text-[#1E3A8A] dark:text-[#F8FAFC]">
                     Step 2: Drug Monograph &amp; Dosing Regimen
                   </h2>
-                  <p className="text-xs text-[#64748B] dark:text-[#94A3B8]">
+                  <p className="text-xs text-[#4B6584] dark:text-[#94A3B8]">
                     Select target agent, route, dose, and inspect automated pharmacokinetic model assignment.
                   </p>
                 </div>
                 <button
                   onClick={() => setCurrentStep(1)}
-                  className="text-xs text-[#0F766E] hover:underline font-semibold flex items-center gap-1 cursor-pointer"
+                  className="text-xs text-[#15803D] hover:underline font-semibold flex items-center gap-1 cursor-pointer"
                 >
                   <span className="material-symbols-outlined text-[14px]">arrow_back</span>
                   <span>Back to Patient</span>
@@ -942,7 +942,7 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
 
               {/* 7 Core Validated NTI Starter Drugs */}
               <div>
-                <label className="block text-xs font-semibold text-[#64748B] dark:text-[#94A3B8] mb-1.5">
+                <label className="block text-xs font-semibold text-[#4B6584] dark:text-[#94A3B8] mb-1.5">
                   Core Validated NTI &amp; Clearance Agents
                 </label>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -952,12 +952,12 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
                       onClick={() => handleSelectDrug(d.id)}
                       className={`p-2.5 rounded-xl border text-left transition-all cursor-pointer ${
                         selectedDrugId === d.id
-                          ? 'border-[#0F766E] bg-[#14B8A6]/25 text-[#0B2545] dark:text-[#F8FAFC] ring-2 ring-[#0F766E]/40 font-bold'
-                          : 'border-[#E2E8F0] dark:border-[#1E3A5A] bg-[#F8FAFC] dark:bg-[#071321] text-[#64748B] dark:text-[#94A3B8] hover:border-[#14B8A6]'
+                          ? 'border-[#0F766E] bg-[#15803D]/25 text-[#1E3A8A] dark:text-[#F8FAFC] ring-2 ring-[#0F766E]/40 font-bold'
+                          : 'border-[#E5DDD0] dark:border-[#1F3B5C] bg-[#FAF7F2] dark:bg-[#0D1926] text-[#4B6584] dark:text-[#94A3B8] hover:border-[#14B8A6]'
                       }`}
                     >
                       <div className="text-xs truncate">{d.name}</div>
-                      <div className="text-[10px] text-[#0F766E] truncate font-mono">
+                      <div className="text-[10px] text-[#15803D] truncate font-mono">
                         {d.drugClass}
                       </div>
                     </button>
@@ -968,7 +968,7 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
               {/* Regimen Inputs */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
                 <div>
-                  <label className="block text-xs font-semibold text-[#64748B] dark:text-[#94A3B8] mb-1">
+                  <label className="block text-xs font-semibold text-[#4B6584] dark:text-[#94A3B8] mb-1">
                     Dose per Administration (mg)
                   </label>
                   <input
@@ -977,12 +977,12 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
                     step="5"
                     value={doseMg}
                     onChange={(e) => setDoseMg(Number(e.target.value))}
-                    className="w-full px-3 py-2 text-sm rounded-xl border border-[#E2E8F0] dark:border-[#1E3A5A] bg-[#F8FAFC] dark:bg-[#071321] text-[#0B2545] dark:text-[#F8FAFC] focus:ring-2 focus:ring-[#0F766E] focus:outline-hidden font-mono"
+                    className="w-full px-3 py-2 text-sm rounded-xl border border-[#E5DDD0] dark:border-[#1F3B5C] bg-[#FAF7F2] dark:bg-[#0D1926] text-[#1E3A8A] dark:text-[#F8FAFC] focus:ring-2 focus:ring-[#15803D] focus:outline-hidden font-mono"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-[#64748B] dark:text-[#94A3B8] mb-1">
+                  <label className="block text-xs font-semibold text-[#4B6584] dark:text-[#94A3B8] mb-1">
                     Dosing Interval τ (Hours)
                   </label>
                   <input
@@ -991,21 +991,21 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
                     max={96}
                     value={intervalHours}
                     onChange={(e) => setIntervalHours(Number(e.target.value))}
-                    className="w-full px-3 py-2 text-sm rounded-xl border border-[#E2E8F0] dark:border-[#1E3A5A] bg-[#F8FAFC] dark:bg-[#071321] text-[#0B2545] dark:text-[#F8FAFC] focus:ring-2 focus:ring-[#0F766E] focus:outline-hidden font-mono"
+                    className="w-full px-3 py-2 text-sm rounded-xl border border-[#E5DDD0] dark:border-[#1F3B5C] bg-[#FAF7F2] dark:bg-[#0D1926] text-[#1E3A8A] dark:text-[#F8FAFC] focus:ring-2 focus:ring-[#15803D] focus:outline-hidden font-mono"
                   />
-                  <span className="text-[10px] text-[#64748B] dark:text-[#94A3B8] mt-1 block">
+                  <span className="text-[10px] text-[#4B6584] dark:text-[#94A3B8] mt-1 block">
                     e.g. 8 (TID), 12 (BID), 24 (QD)
                   </span>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-[#64748B] dark:text-[#94A3B8] mb-1">
+                  <label className="block text-xs font-semibold text-[#4B6584] dark:text-[#94A3B8] mb-1">
                     Route of Administration
                   </label>
                   <select
                     value={routeOverride}
                     onChange={(e) => setRouteOverride(e.target.value as any)}
-                    className="w-full px-3 py-2 text-sm rounded-xl border border-[#E2E8F0] dark:border-[#1E3A5A] bg-[#F8FAFC] dark:bg-[#071321] text-[#0B2545] dark:text-[#F8FAFC] focus:ring-2 focus:ring-[#0F766E] focus:outline-hidden"
+                    className="w-full px-3 py-2 text-sm rounded-xl border border-[#E5DDD0] dark:border-[#1F3B5C] bg-[#FAF7F2] dark:bg-[#0D1926] text-[#1E3A8A] dark:text-[#F8FAFC] focus:ring-2 focus:ring-[#15803D] focus:outline-hidden"
                   >
                     <option value="IV Bolus">IV Bolus</option>
                     <option value="IV Infusion">IV Infusion</option>
@@ -1018,7 +1018,7 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
                 {routeOverride === 'IV Infusion' && (
                   <div>
-                    <label className="block text-xs font-semibold text-[#64748B] dark:text-[#94A3B8] mb-1">
+                    <label className="block text-xs font-semibold text-[#4B6584] dark:text-[#94A3B8] mb-1">
                       Infusion Duration (Hours)
                     </label>
                     <input
@@ -1028,19 +1028,19 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
                       step="0.25"
                       value={infusionTimeHours}
                       onChange={(e) => setInfusionTimeHours(Number(e.target.value))}
-                      className="w-full px-3 py-2 text-sm rounded-xl border border-[#E2E8F0] dark:border-[#1E3A5A] bg-[#F8FAFC] dark:bg-[#071321] text-[#0B2545] dark:text-[#F8FAFC] focus:ring-2 focus:ring-[#0F766E] focus:outline-hidden font-mono"
+                      className="w-full px-3 py-2 text-sm rounded-xl border border-[#E5DDD0] dark:border-[#1F3B5C] bg-[#FAF7F2] dark:bg-[#0D1926] text-[#1E3A8A] dark:text-[#F8FAFC] focus:ring-2 focus:ring-[#15803D] focus:outline-hidden font-mono"
                     />
                   </div>
                 )}
 
                 <div>
-                  <label className="block text-xs font-semibold text-[#64748B] dark:text-[#94A3B8] mb-1">
+                  <label className="block text-xs font-semibold text-[#4B6584] dark:text-[#94A3B8] mb-1">
                     Pharmacokinetic Model
                   </label>
                   <select
                     value={modelOverride}
                     onChange={(e) => setModelOverride(e.target.value as any)}
-                    className="w-full px-3 py-2 text-sm rounded-xl border border-[#E2E8F0] dark:border-[#1E3A5A] bg-[#F8FAFC] dark:bg-[#071321] text-[#0B2545] dark:text-[#F8FAFC] focus:ring-2 focus:ring-[#0F766E] focus:outline-hidden"
+                    className="w-full px-3 py-2 text-sm rounded-xl border border-[#E5DDD0] dark:border-[#1F3B5C] bg-[#FAF7F2] dark:bg-[#0D1926] text-[#1E3A8A] dark:text-[#F8FAFC] focus:ring-2 focus:ring-[#15803D] focus:outline-hidden"
                   >
                     <option value="Auto">Auto-Selected ({activeModelType})</option>
                     <option value="One-Compartment IV Bolus">One-Compartment IV Bolus</option>
@@ -1055,13 +1055,13 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
               <div className="pt-3 flex justify-between items-center">
                 <button
                   onClick={() => setCurrentStep(1)}
-                  className="px-4 py-2 rounded-full border border-[#E2E8F0] dark:border-[#1E3A5A] text-xs font-semibold text-[#64748B] dark:text-[#94A3B8] hover:text-[#0B2545] dark:hover:text-white cursor-pointer"
+                  className="px-4 py-2 rounded-full border border-[#E5DDD0] dark:border-[#1F3B5C] text-xs font-semibold text-[#4B6584] dark:text-[#94A3B8] hover:text-[#1E3A8A] dark:hover:text-white cursor-pointer"
                 >
                   ← Previous Step
                 </button>
                 <button
                   onClick={() => setCurrentStep(3)}
-                  className="px-6 py-2.5 rounded-full bg-[#0F766E] hover:bg-[#0D645D] text-white text-xs font-bold transition-all shadow-xs flex items-center gap-2 cursor-pointer"
+                  className="px-6 py-2.5 rounded-full bg-[#15803D] hover:bg-[#166534] text-white text-xs font-bold transition-all shadow-xs flex items-center gap-2 cursor-pointer"
                 >
                   <span>Run Deterministic Simulation</span>
                   <span className="material-symbols-outlined text-[16px]">play_arrow</span>
@@ -1070,13 +1070,13 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
             </div>
 
             {/* Selected Drug Monograph Sidebar */}
-            <div className="lg:col-span-5 bg-white dark:bg-[#0F2137] rounded-2xl border border-[#E2E8F0] dark:border-[#1E3A5A] p-6 shadow-xs space-y-4">
-              <div className="flex items-center justify-between pb-2 border-b border-[#E2E8F0] dark:border-[#1E3A5A]">
+            <div className="lg:col-span-5 bg-white dark:bg-[#13253A] rounded-2xl border border-[#E5DDD0] dark:border-[#1F3B5C] p-6 shadow-xs space-y-4">
+              <div className="flex items-center justify-between pb-2 border-b border-[#E5DDD0] dark:border-[#1F3B5C]">
                 <div>
-                  <h3 className="text-sm font-bold text-[#0B2545] dark:text-[#F8FAFC]">
+                  <h3 className="text-sm font-bold text-[#1E3A8A] dark:text-[#F8FAFC]">
                     {drugMonograph.name}
                   </h3>
-                  <div className="text-xs text-[#0F766E] font-medium">{drugMonograph.brandName}</div>
+                  <div className="text-xs text-[#15803D] font-medium">{drugMonograph.brandName}</div>
                 </div>
                 {drugMonograph.narrowTherapeuticIndex && (
                   <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#F4A6B8]/30 border border-[#F4A6B8] text-[#701124]">
@@ -1086,7 +1086,7 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
               </div>
 
               {/* Target Range Box */}
-              <div className="p-3.5 rounded-xl bg-[#E6F4F1]/30 dark:bg-[#E6F4F1]/15 border border-[#E6F4F1]">
+              <div className="p-3.5 rounded-xl bg-[#EEF7EE]/30 dark:bg-[#EEF7EE]/15 border border-[#CBE4CB]">
                 <div className="text-[11px] font-bold text-[#6b5300] uppercase tracking-wider font-mono">
                   Therapeutic Target Window
                 </div>
@@ -1101,21 +1101,21 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
 
               {/* Drug Properties Table */}
               <div className="text-xs space-y-2 pt-1">
-                <div className="flex justify-between py-1 border-b border-[#E2E8F0]/60 dark:border-[#1E3A5A]/60">
-                  <span className="text-[#64748B] dark:text-[#94A3B8]">Baseline Half-Life (t½):</span>
+                <div className="flex justify-between py-1 border-b border-[#E5DDD0]/60 dark:border-[#1F3B5C]/60">
+                  <span className="text-[#4B6584] dark:text-[#94A3B8]">Baseline Half-Life (t½):</span>
                   <span className="font-mono font-bold">{drugMonograph.eliminationHalfLifeHours} hours</span>
                 </div>
-                <div className="flex justify-between py-1 border-b border-[#E2E8F0]/60 dark:border-[#1E3A5A]/60">
-                  <span className="text-[#64748B] dark:text-[#94A3B8]">Fraction Excreted Renal (fe):</span>
+                <div className="flex justify-between py-1 border-b border-[#E5DDD0]/60 dark:border-[#1F3B5C]/60">
+                  <span className="text-[#4B6584] dark:text-[#94A3B8]">Fraction Excreted Renal (fe):</span>
                   <span className="font-mono font-bold">{(drugMonograph.fractionExcretedUnchanged * 100).toFixed(0)}%</span>
                 </div>
-                <div className="flex justify-between py-1 border-b border-[#E2E8F0]/60 dark:border-[#1E3A5A]/60">
-                  <span className="text-[#64748B] dark:text-[#94A3B8]">Volume of Distribution (Vd):</span>
+                <div className="flex justify-between py-1 border-b border-[#E5DDD0]/60 dark:border-[#1F3B5C]/60">
+                  <span className="text-[#4B6584] dark:text-[#94A3B8]">Volume of Distribution (Vd):</span>
                   <span className="font-mono font-bold">{drugMonograph.volumeOfDistributionLperKg} L/kg</span>
                 </div>
-                <div className="flex justify-between py-1 border-b border-[#E2E8F0]/60 dark:border-[#1E3A5A]/60">
-                  <span className="text-[#64748B] dark:text-[#94A3B8]">Renal Adjustment Guideline:</span>
-                  <span className="font-medium text-[#0F766E] text-right truncate max-w-[200px]">{drugMonograph.renalRules.guideline}</span>
+                <div className="flex justify-between py-1 border-b border-[#E5DDD0]/60 dark:border-[#1F3B5C]/60">
+                  <span className="text-[#4B6584] dark:text-[#94A3B8]">Renal Adjustment Guideline:</span>
+                  <span className="font-medium text-[#15803D] text-right truncate max-w-[200px]">{drugMonograph.renalRules.guideline}</span>
                 </div>
               </div>
 
@@ -1141,20 +1141,20 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
         {currentStep === 3 && (
           <div className="space-y-6 animate-fade-in">
             {/* Action Bar Header */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 bg-white dark:bg-[#0F2137] rounded-2xl border border-[#E2E8F0] dark:border-[#1E3A5A] shadow-xs">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 bg-white dark:bg-[#13253A] rounded-2xl border border-[#E5DDD0] dark:border-[#1F3B5C] shadow-xs">
               <div className="flex items-center gap-3">
                 <button
                   onClick={() => setCurrentStep(2)}
-                  className="p-1.5 rounded-lg border border-[#E2E8F0] dark:border-[#1E3A5A] text-[#64748B] hover:text-[#0B2545] dark:hover:text-white cursor-pointer"
+                  className="p-1.5 rounded-lg border border-[#E5DDD0] dark:border-[#1F3B5C] text-[#4B6584] hover:text-[#1E3A8A] dark:hover:text-white cursor-pointer"
                   title="Modify Regimen"
                 >
                   <span className="material-symbols-outlined text-[18px]">edit</span>
                 </button>
                 <div>
-                  <h2 className="text-base font-bold text-[#0B2545] dark:text-[#F8FAFC]">
+                  <h2 className="text-base font-bold text-[#1E3A8A] dark:text-[#F8FAFC]">
                     Step 3: Pharmacokinetic Simulation &amp; Decision Support Matrix
                   </h2>
-                  <p className="text-xs text-[#64748B] dark:text-[#94A3B8]">
+                  <p className="text-xs text-[#4B6584] dark:text-[#94A3B8]">
                     Deterministic numbers verified. Shaded therapeutic window &amp; multi-organ risk tier.
                   </p>
                 </div>
@@ -1165,8 +1165,8 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
                   onClick={() => setShowComparison(!showComparison)}
                   className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition-all cursor-pointer flex items-center gap-1.5 ${
                     showComparison
-                      ? 'bg-[#E6F4F1] text-[#1e3a8a] border-[#E6F4F1]'
-                      : 'bg-[#F8FAFC] dark:bg-[#071321] border-[#E2E8F0] dark:border-[#1E3A5A] text-[#0B2545] dark:text-[#F8FAFC]'
+                      ? 'bg-[#EEF7EE] text-[#1e3a8a] border-[#CBE4CB]'
+                      : 'bg-[#FAF7F2] dark:bg-[#0D1926] border-[#E5DDD0] dark:border-[#1F3B5C] text-[#1E3A8A] dark:text-[#F8FAFC]'
                   }`}
                 >
                   <span className="material-symbols-outlined text-[16px]">compare</span>
@@ -1175,7 +1175,7 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
 
                 <button
                   onClick={handleExportCSV}
-                  className="px-3 py-1.5 rounded-full bg-[#F8FAFC] dark:bg-[#071321] border border-[#E2E8F0] dark:border-[#1E3A5A] text-xs font-semibold text-[#0B2545] dark:text-[#F8FAFC] hover:border-[#0F766E] transition-colors flex items-center gap-1 cursor-pointer"
+                  className="px-3 py-1.5 rounded-full bg-[#FAF7F2] dark:bg-[#0D1926] border border-[#E5DDD0] dark:border-[#1F3B5C] text-xs font-semibold text-[#1E3A8A] dark:text-[#F8FAFC] hover:border-[#0F766E] transition-colors flex items-center gap-1 cursor-pointer"
                 >
                   <span className="material-symbols-outlined text-[16px]">table_view</span>
                   <span>CSV</span>
@@ -1183,7 +1183,7 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
 
                 <button
                   onClick={handleExportPDF}
-                  className="px-3.5 py-1.5 rounded-full bg-[#0F766E] hover:bg-[#0D645D] text-white text-xs font-bold transition-all shadow-xs flex items-center gap-1 cursor-pointer"
+                  className="px-3.5 py-1.5 rounded-full bg-[#15803D] hover:bg-[#166534] text-white text-xs font-bold transition-all shadow-xs flex items-center gap-1 cursor-pointer"
                 >
                   <span className="material-symbols-outlined text-[16px]">picture_as_pdf</span>
                   <span>Export PDF</span>
@@ -1192,28 +1192,28 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
             </div>
 
             {/* Interactive Concentration-Time Curve Canvas */}
-            <div className="bg-white dark:bg-[#0F2137] rounded-2xl border border-[#E2E8F0] dark:border-[#1E3A5A] p-6 shadow-xs">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 gap-2 border-b border-[#E2E8F0] dark:border-[#1E3A5A]">
+            <div className="bg-white dark:bg-[#13253A] rounded-2xl border border-[#E5DDD0] dark:border-[#1F3B5C] p-6 shadow-xs">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 gap-2 border-b border-[#E5DDD0] dark:border-[#1F3B5C]">
                 <div>
-                  <h3 className="text-sm font-bold text-[#0B2545] dark:text-[#F8FAFC] flex items-center gap-2">
+                  <h3 className="text-sm font-bold text-[#1E3A8A] dark:text-[#F8FAFC] flex items-center gap-2">
                     <span>Multi-Dose Concentration-Time Trajectory</span>
-                    <span className="text-[11px] font-mono px-2 py-0.5 rounded-full bg-[#E6F4F1]/40 text-[#134e3f] font-semibold">
+                    <span className="text-[11px] font-mono px-2 py-0.5 rounded-full bg-[#EEF7EE]/40 text-[#134e3f] font-semibold">
                       Steady-State Target: {pkResult.therapeuticTargetMin}–{pkResult.therapeuticTargetMax} {pkResult.therapeuticUnit}
                     </span>
                   </h3>
-                  <p className="text-xs text-[#64748B] dark:text-[#94A3B8]">
+                  <p className="text-xs text-[#4B6584] dark:text-[#94A3B8]">
                     Simulating 4 continuous dosing intervals (total {intervalHours * 4} hours) using {pkResult.modelUsed}.
                   </p>
                 </div>
 
                 <div className="flex items-center gap-4 text-xs font-mono">
                   <div className="flex items-center gap-1.5">
-                    <span className="w-3 h-0.5 bg-[#0F766E] rounded-full"></span>
-                    <span className="text-[#0B2545] dark:text-[#F8FAFC]">Active Regimen ({doseMg}mg q{intervalHours}h)</span>
+                    <span className="w-3 h-0.5 bg-[#15803D] rounded-full"></span>
+                    <span className="text-[#1E3A8A] dark:text-[#F8FAFC]">Active Regimen ({doseMg}mg q{intervalHours}h)</span>
                   </div>
                   {showComparison && (
                     <div className="flex items-center gap-1.5">
-                      <span className="w-3 h-0.5 bg-[#E6F4F1] rounded-full border border-dashed border-[#1e3a8a]"></span>
+                      <span className="w-3 h-0.5 bg-[#EEF7EE] rounded-full border border-dashed border-[#1e3a8a]"></span>
                       <span className="text-[#1e3a8a] dark:text-[#E6F4F1]">Comparison ({compDoseMg}mg q{compIntervalHours}h)</span>
                     </div>
                   )}
@@ -1221,7 +1221,7 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
               </div>
 
               {/* Shaded SVG Curve Viewport */}
-              <div className="mt-4 relative overflow-hidden bg-[#F8FAFC] dark:bg-[#071321] rounded-xl border border-[#E2E8F0] dark:border-[#1E3A5A] p-4">
+              <div className="mt-4 relative overflow-hidden bg-[#FAF7F2] dark:bg-[#0D1926] rounded-xl border border-[#E5DDD0] dark:border-[#1F3B5C] p-4">
                 <svg viewBox="0 0 700 240" className="w-full h-56 select-none">
                   {/* Grid Lines */}
                   <line x1="40" y1="20" x2="680" y2="20" stroke="currentColor" strokeOpacity="0.08" />
@@ -1323,7 +1323,7 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
 
             {/* Side-by-Side Comparison Drawer (if activated) */}
             {showComparison && (
-              <div className="p-4 rounded-2xl bg-[#E6F4F1]/20 border border-[#E6F4F1] space-y-3">
+              <div className="p-4 rounded-2xl bg-[#EEF7EE]/20 border border-[#CBE4CB] space-y-3">
                 <div className="flex items-center justify-between">
                   <h4 className="text-xs font-bold uppercase tracking-wider text-[#1e3a8a] font-mono">
                     Side-by-Side Regimen Comparison
@@ -1339,7 +1339,7 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
                       type="number"
                       value={compDoseMg}
                       onChange={(e) => setCompDoseMg(Number(e.target.value))}
-                      className="w-full px-3 py-1.5 text-xs rounded-xl border border-[#E6F4F1] bg-white dark:bg-[#071321] font-mono"
+                      className="w-full px-3 py-1.5 text-xs rounded-xl border border-[#CBE4CB] bg-white dark:bg-[#0D1926] font-mono"
                     />
                   </div>
                   <div>
@@ -1350,17 +1350,17 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
                       type="number"
                       value={compIntervalHours}
                       onChange={(e) => setCompIntervalHours(Number(e.target.value))}
-                      className="w-full px-3 py-1.5 text-xs rounded-xl border border-[#E6F4F1] bg-white dark:bg-[#071321] font-mono"
+                      className="w-full px-3 py-1.5 text-xs rounded-xl border border-[#CBE4CB] bg-white dark:bg-[#0D1926] font-mono"
                     />
                   </div>
-                  <div className="p-2 rounded-xl bg-white dark:bg-[#071321] border border-[#E6F4F1]/60">
-                    <span className="text-[10px] text-[#64748B] block">Comp Cmax,ss</span>
+                  <div className="p-2 rounded-xl bg-white dark:bg-[#0D1926] border border-[#CBE4CB]/60">
+                    <span className="text-[10px] text-[#4B6584] block">Comp Cmax,ss</span>
                     <span className="text-sm font-bold font-mono text-[#1e3a8a]">
                       {compPkResult.peakSteadyStateCss} {compPkResult.therapeuticUnit}
                     </span>
                   </div>
-                  <div className="p-2 rounded-xl bg-white dark:bg-[#071321] border border-[#E6F4F1]/60">
-                    <span className="text-[10px] text-[#64748B] block">Comp Cmin,ss</span>
+                  <div className="p-2 rounded-xl bg-white dark:bg-[#0D1926] border border-[#CBE4CB]/60">
+                    <span className="text-[10px] text-[#4B6584] block">Comp Cmin,ss</span>
                     <span className="text-sm font-bold font-mono text-[#1e3a8a]">
                       {compPkResult.troughSteadyStateCss} {compPkResult.therapeuticUnit}
                     </span>
@@ -1372,98 +1372,98 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
             {/* 2-Column Split: Deterministic PK Parameters & Decision Support Triage */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
               {/* Column 1: Deterministic Parameters Table */}
-              <div className="lg:col-span-7 bg-white dark:bg-[#0F2137] rounded-2xl border border-[#E2E8F0] dark:border-[#1E3A5A] p-6 shadow-xs space-y-4">
-                <div className="flex items-center justify-between pb-2 border-b border-[#E2E8F0] dark:border-[#1E3A5A]">
-                  <h3 className="text-xs font-bold uppercase tracking-wider text-[#64748B] dark:text-[#94A3B8] font-mono">
+              <div className="lg:col-span-7 bg-white dark:bg-[#13253A] rounded-2xl border border-[#E5DDD0] dark:border-[#1F3B5C] p-6 shadow-xs space-y-4">
+                <div className="flex items-center justify-between pb-2 border-b border-[#E5DDD0] dark:border-[#1F3B5C]">
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-[#4B6584] dark:text-[#94A3B8] font-mono">
                     Deterministic Pharmacokinetic Metrics
                   </h3>
-                  <span className="text-[10px] font-mono text-[#0F766E]">
+                  <span className="text-[10px] font-mono text-[#15803D]">
                     Formula Verified · Zero AI
                   </span>
                 </div>
 
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                  <div className="p-3 rounded-xl bg-[#F8FAFC] dark:bg-[#071321] border border-[#E2E8F0] dark:border-[#1E3A5A]">
-                    <span className="text-[10px] text-[#64748B] dark:text-[#94A3B8] block">Elimination Rate (ke)</span>
-                    <span className="text-base font-bold font-mono text-[#0B2545] dark:text-[#F8FAFC]">
+                  <div className="p-3 rounded-xl bg-[#FAF7F2] dark:bg-[#0D1926] border border-[#E5DDD0] dark:border-[#1F3B5C]">
+                    <span className="text-[10px] text-[#4B6584] dark:text-[#94A3B8] block">Elimination Rate (ke)</span>
+                    <span className="text-base font-bold font-mono text-[#1E3A8A] dark:text-[#F8FAFC]">
                       {pkResult.keHourInv} <span className="text-xs font-normal">/h</span>
                     </span>
-                    <span className="text-[9px] text-[#64748B] block">CL / Vd</span>
+                    <span className="text-[9px] text-[#4B6584] block">CL / Vd</span>
                   </div>
 
-                  <div className="p-3 rounded-xl bg-[#F8FAFC] dark:bg-[#071321] border border-[#E2E8F0] dark:border-[#1E3A5A]">
-                    <span className="text-[10px] text-[#64748B] dark:text-[#94A3B8] block">Half-Life (t½)</span>
-                    <span className="text-base font-bold font-mono text-[#0B2545] dark:text-[#F8FAFC]">
+                  <div className="p-3 rounded-xl bg-[#FAF7F2] dark:bg-[#0D1926] border border-[#E5DDD0] dark:border-[#1F3B5C]">
+                    <span className="text-[10px] text-[#4B6584] dark:text-[#94A3B8] block">Half-Life (t½)</span>
+                    <span className="text-base font-bold font-mono text-[#1E3A8A] dark:text-[#F8FAFC]">
                       {pkResult.halfLifeHours} <span className="text-xs font-normal">h</span>
                     </span>
-                    <span className="text-[9px] text-[#0F766E] block font-semibold">
+                    <span className="text-[9px] text-[#15803D] block font-semibold">
                       {pkResult.halfLifeChangeFactor}x baseline
                     </span>
                   </div>
 
-                  <div className="p-3 rounded-xl bg-[#F8FAFC] dark:bg-[#071321] border border-[#E2E8F0] dark:border-[#1E3A5A]">
-                    <span className="text-[10px] text-[#64748B] dark:text-[#94A3B8] block">Total Clearance (CL)</span>
-                    <span className="text-base font-bold font-mono text-[#0B2545] dark:text-[#F8FAFC]">
+                  <div className="p-3 rounded-xl bg-[#FAF7F2] dark:bg-[#0D1926] border border-[#E5DDD0] dark:border-[#1F3B5C]">
+                    <span className="text-[10px] text-[#4B6584] dark:text-[#94A3B8] block">Total Clearance (CL)</span>
+                    <span className="text-base font-bold font-mono text-[#1E3A8A] dark:text-[#F8FAFC]">
                       {pkResult.clearanceLperH} <span className="text-xs font-normal">L/h</span>
                     </span>
-                    <span className="text-[9px] text-[#64748B] block">Renal: {pkResult.renalClearanceLperH} L/h</span>
+                    <span className="text-[9px] text-[#4B6584] block">Renal: {pkResult.renalClearanceLperH} L/h</span>
                   </div>
 
-                  <div className="p-3 rounded-xl bg-[#F8FAFC] dark:bg-[#071321] border border-[#E2E8F0] dark:border-[#1E3A5A]">
-                    <span className="text-[10px] text-[#64748B] dark:text-[#94A3B8] block">Peak Steady-State (Cmax)</span>
-                    <span className="text-base font-bold font-mono text-[#0B2545] dark:text-[#F8FAFC]">
+                  <div className="p-3 rounded-xl bg-[#FAF7F2] dark:bg-[#0D1926] border border-[#E5DDD0] dark:border-[#1F3B5C]">
+                    <span className="text-[10px] text-[#4B6584] dark:text-[#94A3B8] block">Peak Steady-State (Cmax)</span>
+                    <span className="text-base font-bold font-mono text-[#1E3A8A] dark:text-[#F8FAFC]">
                       {pkResult.peakSteadyStateCss} <span className="text-xs font-normal">{pkResult.therapeuticUnit}</span>
                     </span>
-                    <span className="text-[9px] text-[#64748B] block">Target Max: {pkResult.therapeuticTargetMax}</span>
+                    <span className="text-[9px] text-[#4B6584] block">Target Max: {pkResult.therapeuticTargetMax}</span>
                   </div>
 
-                  <div className="p-3 rounded-xl bg-[#F8FAFC] dark:bg-[#071321] border border-[#E2E8F0] dark:border-[#1E3A5A]">
-                    <span className="text-[10px] text-[#64748B] dark:text-[#94A3B8] block">Trough Steady-State (Cmin)</span>
-                    <span className="text-base font-bold font-mono text-[#0B2545] dark:text-[#F8FAFC]">
+                  <div className="p-3 rounded-xl bg-[#FAF7F2] dark:bg-[#0D1926] border border-[#E5DDD0] dark:border-[#1F3B5C]">
+                    <span className="text-[10px] text-[#4B6584] dark:text-[#94A3B8] block">Trough Steady-State (Cmin)</span>
+                    <span className="text-base font-bold font-mono text-[#1E3A8A] dark:text-[#F8FAFC]">
                       {pkResult.troughSteadyStateCss} <span className="text-xs font-normal">{pkResult.therapeuticUnit}</span>
                     </span>
-                    <span className="text-[9px] text-[#64748B] block">Target Min: {pkResult.therapeuticTargetMin}</span>
+                    <span className="text-[9px] text-[#4B6584] block">Target Min: {pkResult.therapeuticTargetMin}</span>
                   </div>
 
-                  <div className="p-3 rounded-xl bg-[#F8FAFC] dark:bg-[#071321] border border-[#E2E8F0] dark:border-[#1E3A5A]">
-                    <span className="text-[10px] text-[#64748B] dark:text-[#94A3B8] block">Recommended Loading Dose</span>
-                    <span className="text-base font-bold font-mono text-[#0F766E]">
+                  <div className="p-3 rounded-xl bg-[#FAF7F2] dark:bg-[#0D1926] border border-[#E5DDD0] dark:border-[#1F3B5C]">
+                    <span className="text-[10px] text-[#4B6584] dark:text-[#94A3B8] block">Recommended Loading Dose</span>
+                    <span className="text-base font-bold font-mono text-[#15803D]">
                       {pkResult.loadingDoseMg} <span className="text-xs font-normal">mg</span>
                     </span>
-                    <span className="text-[9px] text-[#64748B] block">Css,target × Vd / F</span>
+                    <span className="text-[9px] text-[#4B6584] block">Css,target × Vd / F</span>
                   </div>
                 </div>
 
                 {/* Mathematical Derivations & Assumptions Accordion */}
-                <div className="p-3 rounded-xl bg-[#F8FAFC] dark:bg-[#071321] border border-[#E2E8F0] dark:border-[#1E3A5A] text-xs space-y-1.5">
-                  <div className="font-bold text-[#0B2545] dark:text-[#F8FAFC]">Calculated Formulas &amp; References:</div>
-                  <div className="font-mono text-[10px] text-[#64748B] dark:text-[#94A3B8]">
+                <div className="p-3 rounded-xl bg-[#FAF7F2] dark:bg-[#0D1926] border border-[#E5DDD0] dark:border-[#1F3B5C] text-xs space-y-1.5">
+                  <div className="font-bold text-[#1E3A8A] dark:text-[#F8FAFC]">Calculated Formulas &amp; References:</div>
+                  <div className="font-mono text-[10px] text-[#4B6584] dark:text-[#94A3B8]">
                     • Peak Formula: {pkResult.formulaMetadata.cMaxFormula}
                   </div>
-                  <div className="font-mono text-[10px] text-[#64748B] dark:text-[#94A3B8]">
+                  <div className="font-mono text-[10px] text-[#4B6584] dark:text-[#94A3B8]">
                     • Trough Formula: {pkResult.formulaMetadata.cMinFormula}
                   </div>
-                  <div className="text-[10px] text-[#0F766E]">
+                  <div className="text-[10px] text-[#15803D]">
                     Reference: {pkResult.formulaMetadata.primaryReference}
                   </div>
                 </div>
               </div>
 
               {/* Column 2: Transparent Decision Support Triage Matrix */}
-              <div className="lg:col-span-5 bg-white dark:bg-[#0F2137] rounded-2xl border border-[#E2E8F0] dark:border-[#1E3A5A] p-6 shadow-xs space-y-4">
-                <div className="flex items-center justify-between pb-2 border-b border-[#E2E8F0] dark:border-[#1E3A5A]">
-                  <h3 className="text-xs font-bold uppercase tracking-wider text-[#64748B] dark:text-[#94A3B8] font-mono">
+              <div className="lg:col-span-5 bg-white dark:bg-[#13253A] rounded-2xl border border-[#E5DDD0] dark:border-[#1F3B5C] p-6 shadow-xs space-y-4">
+                <div className="flex items-center justify-between pb-2 border-b border-[#E5DDD0] dark:border-[#1F3B5C]">
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-[#4B6584] dark:text-[#94A3B8] font-mono">
                     Decision Support Triage Matrix
                   </h3>
                   {/* Non-Hue-Only Risk Tier Badge */}
                   <div
                     className={`px-3 py-1 rounded-full text-xs font-extrabold flex items-center gap-1.5 ${
                       triageResult.tier === 'Low'
-                        ? 'bg-[#E6F4F1] text-[#134e3f]'
+                        ? 'bg-[#EEF7EE] text-[#134e3f]'
                         : triageResult.tier === 'Moderate'
-                        ? 'bg-[#E6F4F1] text-[#6b5300]'
+                        ? 'bg-[#EEF7EE] text-[#6b5300]'
                         : triageResult.tier === 'High'
-                        ? 'bg-[#E6F4F1] text-[#7c3008]'
+                        ? 'bg-[#EEF7EE] text-[#7c3008]'
                         : 'bg-[#F4A6B8] text-[#701124] border-2 border-[#701124]'
                     }`}
                   >
@@ -1481,22 +1481,22 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
                 </div>
 
                 {/* Recommended Clinical Action */}
-                <div className="p-3.5 rounded-xl bg-[#F8FAFC] dark:bg-[#071321] border border-[#E2E8F0] dark:border-[#1E3A5A]">
-                  <div className="text-[10px] font-bold uppercase tracking-wider text-[#64748B] dark:text-[#94A3B8] font-mono">
+                <div className="p-3.5 rounded-xl bg-[#FAF7F2] dark:bg-[#0D1926] border border-[#E5DDD0] dark:border-[#1F3B5C]">
+                  <div className="text-[10px] font-bold uppercase tracking-wider text-[#4B6584] dark:text-[#94A3B8] font-mono">
                     Recommended Clinical Action
                   </div>
-                  <div className="text-xs font-semibold text-[#0B2545] dark:text-[#F8FAFC] mt-1">
+                  <div className="text-xs font-semibold text-[#1E3A8A] dark:text-[#F8FAFC] mt-1">
                     {triageResult.recommendedAction}
                   </div>
                 </div>
 
                 {/* Transparent Factor Breakdown */}
                 <div className="space-y-1.5">
-                  <div className="text-[11px] font-bold text-[#64748B] dark:text-[#94A3B8]">
+                  <div className="text-[11px] font-bold text-[#4B6584] dark:text-[#94A3B8]">
                     Triggered Clinical Risk Factors:
                   </div>
                   {triageResult.factors.length === 0 ? (
-                    <div className="text-xs text-[#134e3f] bg-[#E6F4F1]/30 p-2 rounded-lg">
+                    <div className="text-xs text-[#134e3f] bg-[#EEF7EE]/30 p-2 rounded-lg">
                       No adverse risk factors identified. Normal clearance bounds.
                     </div>
                   ) : (
@@ -1504,10 +1504,10 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
                       {triageResult.factors.map((f, idx) => (
                         <div
                           key={idx}
-                          className="flex items-center justify-between p-2 rounded-lg bg-[#F8FAFC] dark:bg-[#071321] border border-[#E2E8F0]/80 dark:border-[#1E3A5A]/80 text-xs"
+                          className="flex items-center justify-between p-2 rounded-lg bg-[#FAF7F2] dark:bg-[#0D1926] border border-[#E5DDD0]/80 dark:border-[#1F3B5C]/80 text-xs"
                         >
-                          <span className="text-[#0B2545] dark:text-[#F8FAFC]">{f.description}</span>
-                          <span className="font-mono font-bold text-[#0F766E]">+{f.points} pts</span>
+                          <span className="text-[#1E3A8A] dark:text-[#F8FAFC]">{f.description}</span>
+                          <span className="font-mono font-bold text-[#15803D]">+{f.points} pts</span>
                         </div>
                       ))}
                     </div>
@@ -1515,17 +1515,17 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
                 </div>
 
                 {/* Structured Surveillance Plan */}
-                <div className="pt-2 border-t border-[#E2E8F0] dark:border-[#1E3A5A] space-y-2">
-                  <div className="text-[11px] font-bold text-[#64748B] dark:text-[#94A3B8]">
+                <div className="pt-2 border-t border-[#E5DDD0] dark:border-[#1F3B5C] space-y-2">
+                  <div className="text-[11px] font-bold text-[#4B6584] dark:text-[#94A3B8]">
                     Recommended Laboratory Surveillance Schedule:
                   </div>
                   {triageResult.monitoringPlan.map((m, i) => (
-                    <div key={i} className="text-xs p-2 rounded-lg bg-[#F8FAFC] dark:bg-[#071321]">
+                    <div key={i} className="text-xs p-2 rounded-lg bg-[#FAF7F2] dark:bg-[#0D1926]">
                       <div className="flex justify-between font-semibold">
                         <span>{m.parameter}</span>
-                        <span className="text-[#0F766E]">{m.frequency}</span>
+                        <span className="text-[#15803D]">{m.frequency}</span>
                       </div>
-                      <div className="text-[10px] text-[#64748B] dark:text-[#94A3B8] mt-0.5">
+                      <div className="text-[10px] text-[#4B6584] dark:text-[#94A3B8] mt-0.5">
                         {m.clinicalRationale}
                       </div>
                     </div>
@@ -1535,14 +1535,14 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
             </div>
 
             {/* AI Clinical Plain-Language Explanation Section */}
-            <div className="bg-white dark:bg-[#0F2137] rounded-2xl border border-[#E2E8F0] dark:border-[#1E3A5A] p-6 shadow-xs space-y-4">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-[#E2E8F0] dark:border-[#1E3A5A] gap-3">
+            <div className="bg-white dark:bg-[#13253A] rounded-2xl border border-[#E5DDD0] dark:border-[#1F3B5C] p-6 shadow-xs space-y-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-[#E5DDD0] dark:border-[#1F3B5C] gap-3">
                 <div>
-                  <h3 className="text-sm font-bold text-[#0B2545] dark:text-[#F8FAFC] flex items-center gap-2">
-                    <span className="material-symbols-outlined text-[#0F766E]">psychology</span>
+                  <h3 className="text-sm font-bold text-[#1E3A8A] dark:text-[#F8FAFC] flex items-center gap-2">
+                    <span className="material-symbols-outlined text-[#15803D]">psychology</span>
                     <span>AI Clinical Interpretation &amp; Counselling Summary (Gemini 3.8 Flash)</span>
                   </h3>
-                  <p className="text-xs text-[#64748B] dark:text-[#94A3B8]">
+                  <p className="text-xs text-[#4B6584] dark:text-[#94A3B8]">
                     Strict plain-language interpretation of deterministic math. Zero invented doses or numbers.
                   </p>
                 </div>
@@ -1550,7 +1550,7 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
                 <button
                   onClick={handleRequestAiExplanation}
                   disabled={loadingAi}
-                  className="px-4 py-2 rounded-full bg-[#0F766E] hover:bg-[#0D645D] text-white text-xs font-bold transition-all shadow-xs flex items-center gap-2 cursor-pointer disabled:opacity-50"
+                  className="px-4 py-2 rounded-full bg-[#15803D] hover:bg-[#166534] text-white text-xs font-bold transition-all shadow-xs flex items-center gap-2 cursor-pointer disabled:opacity-50"
                 >
                   <span className="material-symbols-outlined text-[16px]">
                     {loadingAi ? 'sync' : 'auto_awesome'}
@@ -1560,31 +1560,31 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
               </div>
 
               {aiError && (
-                <div className="p-3 rounded-xl bg-[#E6F4F1]/40 border border-[#E6F4F1] text-xs text-[#6b5300]">
+                <div className="p-3 rounded-xl bg-[#EEF7EE]/40 border border-[#CBE4CB] text-xs text-[#6b5300]">
                   {aiError}
                 </div>
               )}
 
               {aiExplanation ? (
                 <div className="space-y-4 text-xs">
-                  <div className="p-4 rounded-xl bg-[#E6F4F1]/20 border border-[#E6F4F1]">
+                  <div className="p-4 rounded-xl bg-[#EEF7EE]/20 border border-[#CBE4CB]">
                     <div className="font-bold text-[#1e3a8a] mb-1">Pathophysiological Rationale:</div>
-                    <p className="text-[#0B2545] dark:text-[#F8FAFC] leading-relaxed">
+                    <p className="text-[#1E3A8A] dark:text-[#F8FAFC] leading-relaxed">
                       {aiExplanation.summary}
                     </p>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="p-3.5 rounded-xl bg-[#F8FAFC] dark:bg-[#071321] border border-[#E2E8F0] dark:border-[#1E3A5A]">
-                      <div className="font-bold text-[#0F766E] mb-1">Risk Tier Attribution:</div>
-                      <p className="text-[#64748B] dark:text-[#94A3B8]">
+                    <div className="p-3.5 rounded-xl bg-[#FAF7F2] dark:bg-[#0D1926] border border-[#E5DDD0] dark:border-[#1F3B5C]">
+                      <div className="font-bold text-[#15803D] mb-1">Risk Tier Attribution:</div>
+                      <p className="text-[#4B6584] dark:text-[#94A3B8]">
                         {aiExplanation.riskTierRationale}
                       </p>
                     </div>
 
-                    <div className="p-3.5 rounded-xl bg-[#F8FAFC] dark:bg-[#071321] border border-[#E2E8F0] dark:border-[#1E3A5A]">
-                      <div className="font-bold text-[#0F766E] mb-1">Key Patient Counselling Points:</div>
-                      <ul className="list-disc pl-4 space-y-1 text-[#64748B] dark:text-[#94A3B8]">
+                    <div className="p-3.5 rounded-xl bg-[#FAF7F2] dark:bg-[#0D1926] border border-[#E5DDD0] dark:border-[#1F3B5C]">
+                      <div className="font-bold text-[#15803D] mb-1">Key Patient Counselling Points:</div>
+                      <ul className="list-disc pl-4 space-y-1 text-[#4B6584] dark:text-[#94A3B8]">
                         {aiExplanation.counsellingPoints.map((pt, idx) => (
                           <li key={idx}>{pt}</li>
                         ))}
@@ -1592,12 +1592,12 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
                     </div>
                   </div>
 
-                  <div className="text-[10px] text-[#64748B] dark:text-[#94A3B8] font-mono italic">
+                  <div className="text-[10px] text-[#4B6584] dark:text-[#94A3B8] font-mono italic">
                     {aiExplanation.disclaimer}
                   </div>
                 </div>
               ) : (
-                <div className="text-center py-6 text-xs text-[#64748B] dark:text-[#94A3B8]">
+                <div className="text-center py-6 text-xs text-[#4B6584] dark:text-[#94A3B8]">
                   Click &ldquo;Generate Clinical Explanation&rdquo; to interpret calculated pharmacokinetic values in plain clinical language.
                 </div>
               )}
@@ -1609,23 +1609,23 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
       {/* Mathematical Unit Test Runner Modal */}
       {showTestModal && unitTestResults && (
         <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white dark:bg-[#0F2137] rounded-2xl border border-[#E2E8F0] dark:border-[#1E3A5A] max-w-xl w-full p-6 space-y-4 shadow-xl">
-            <div className="flex items-center justify-between pb-2 border-b border-[#E2E8F0] dark:border-[#1E3A5A]">
+          <div className="bg-white dark:bg-[#13253A] rounded-2xl border border-[#E5DDD0] dark:border-[#1F3B5C] max-w-xl w-full p-6 space-y-4 shadow-xl">
+            <div className="flex items-center justify-between pb-2 border-b border-[#E5DDD0] dark:border-[#1F3B5C]">
               <div className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-[#0F766E]">verified</span>
-                <h3 className="text-sm font-bold text-[#0B2545] dark:text-[#F8FAFC]">
+                <span className="material-symbols-outlined text-[#15803D]">verified</span>
+                <h3 className="text-sm font-bold text-[#1E3A8A] dark:text-[#F8FAFC]">
                   Automated Deterministic Engine Unit Tests
                 </h3>
               </div>
               <button
                 onClick={() => setShowTestModal(false)}
-                className="text-[#64748B] hover:text-[#0B2545] dark:hover:text-white"
+                className="text-[#4B6584] hover:text-[#1E3A8A] dark:hover:text-white"
               >
                 ✕
               </button>
             </div>
 
-            <div className="p-3 rounded-xl bg-[#E6F4F1]/30 border border-[#E6F4F1] text-xs font-bold text-[#134e3f] flex items-center gap-2">
+            <div className="p-3 rounded-xl bg-[#EEF7EE]/30 border border-[#CBE4CB] text-xs font-bold text-[#134e3f] flex items-center gap-2">
               <span className="material-symbols-outlined text-[18px]">check_circle</span>
               <span>All 6 deterministic test suites passed with exact expected targets!</span>
             </div>
@@ -1634,18 +1634,18 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
               {unitTestResults.results.map((r, i) => (
                 <div
                   key={i}
-                  className="p-3 rounded-xl bg-[#F8FAFC] dark:bg-[#071321] border border-[#E2E8F0] dark:border-[#1E3A5A] text-xs space-y-1"
+                  className="p-3 rounded-xl bg-[#FAF7F2] dark:bg-[#0D1926] border border-[#E5DDD0] dark:border-[#1F3B5C] text-xs space-y-1"
                 >
                   <div className="flex items-center justify-between font-semibold">
                     <span>{r.name}</span>
-                    <span className="px-2 py-0.5 rounded-full bg-[#E6F4F1] text-[#134e3f] font-mono text-[10px] font-bold">
+                    <span className="px-2 py-0.5 rounded-full bg-[#EEF7EE] text-[#134e3f] font-mono text-[10px] font-bold">
                       PASSED
                     </span>
                   </div>
-                  <div className="text-[11px] text-[#64748B] dark:text-[#94A3B8]">
+                  <div className="text-[11px] text-[#4B6584] dark:text-[#94A3B8]">
                     Expected: {r.expected}
                   </div>
-                  <div className="text-[11px] font-mono text-[#0F766E]">
+                  <div className="text-[11px] font-mono text-[#15803D]">
                     Computed: {r.actual}
                   </div>
                 </div>
@@ -1655,7 +1655,7 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
             <div className="flex justify-end pt-2">
               <button
                 onClick={() => setShowTestModal(false)}
-                className="px-4 py-2 rounded-full bg-[#0F766E] text-white text-xs font-semibold cursor-pointer"
+                className="px-4 py-2 rounded-full bg-[#15803D] text-white text-xs font-semibold cursor-pointer"
               >
                 Close Verification Modal
               </button>

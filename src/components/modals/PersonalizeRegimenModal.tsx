@@ -274,7 +274,7 @@ export const PersonalizeRegimenModal: React.FC<PersonalizeRegimenModalProps> = (
         {/* Header */}
         <div className="p-5 bg-[#0f2b38] text-white flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-[#E6F4F1]0/20 border border-teal-400/40 flex items-center justify-center text-teal-300">
+            <div className="w-9 h-9 rounded-xl bg-[#EEF7EE]0/20 border border-teal-400/40 flex items-center justify-center text-teal-300">
               <span className="material-symbols-outlined text-[20px]">tune</span>
             </div>
             <div>
@@ -305,8 +305,8 @@ export const PersonalizeRegimenModal: React.FC<PersonalizeRegimenModalProps> = (
           <div className="flex items-center gap-4">
             <span>Age: <strong>{patient.biometrics.age}Y ({patient.biometrics.sex})</strong></span>
             <span>Weight: <strong>{patient.biometrics.weightKg} kg</strong></span>
-            <span>eGFR: <strong className="text-[#0F766E] font-mono">{patient.organStatus.renal.egfr} mL/min</strong></span>
-            <span>CrCl: <strong className="text-[#0F766E] font-mono">{patient.organStatus.renal.crcl} mL/min</strong></span>
+            <span>eGFR: <strong className="text-[#15803D] font-mono">{patient.organStatus.renal.egfr} mL/min</strong></span>
+            <span>CrCl: <strong className="text-[#15803D] font-mono">{patient.organStatus.renal.crcl} mL/min</strong></span>
             <span>CYP Genotype: <strong className="text-purple-800 font-mono">{patient.organStatus.hepatic.cypStatus}</strong></span>
           </div>
           <span className="text-[11px] font-semibold text-slate-500">
@@ -327,7 +327,7 @@ export const PersonalizeRegimenModal: React.FC<PersonalizeRegimenModalProps> = (
           <div className="space-y-3">
             <div className="flex items-center justify-between">
               <h3 className="font-['Plus_Jakarta_Sans'] font-bold text-sm text-slate-900 flex items-center gap-1.5">
-                <span className="material-symbols-outlined text-[#0F766E] text-[18px]">medication</span>
+                <span className="material-symbols-outlined text-[#15803D] text-[18px]">medication</span>
                 <span>Active Personalized Regimen ({medications.length} Medications)</span>
               </h3>
               <span className="text-slate-500 text-[11px]">
@@ -417,7 +417,7 @@ export const PersonalizeRegimenModal: React.FC<PersonalizeRegimenModalProps> = (
           {/* Add Drug from 305+ Drug Pharmacopeia */}
           <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
             <h4 className="font-['Plus_Jakarta_Sans'] font-bold text-xs text-slate-900 flex items-center gap-1.5">
-              <span className="material-symbols-outlined text-[#0F766E] text-[18px]">add_circle</span>
+              <span className="material-symbols-outlined text-[#15803D] text-[18px]">add_circle</span>
               <span>Add New Therapeutic Agent from 305+ Pharmacopeia</span>
             </h4>
 
@@ -489,7 +489,7 @@ export const PersonalizeRegimenModal: React.FC<PersonalizeRegimenModalProps> = (
                 disabled={!selectedDrugToAddId}
                 className={`px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer ${
                   selectedDrugToAddId
-                    ? 'bg-[#0F766E] hover:bg-[#0F766E] text-white shadow-xs'
+                    ? 'bg-[#15803D] hover:bg-[#15803D] text-white shadow-xs'
                     : 'bg-slate-200 text-slate-400 cursor-not-allowed'
                 }`}
               >
@@ -529,7 +529,7 @@ export const PersonalizeRegimenModal: React.FC<PersonalizeRegimenModalProps> = (
             </span>
             <button
               onClick={handleApplyPersonalizedRegimen}
-              className="px-5 py-2.5 rounded-xl bg-[#0F766E] hover:bg-teal-900 text-white font-bold flex items-center gap-2 shadow-sm transition-all cursor-pointer"
+              className="px-5 py-2.5 rounded-xl bg-[#15803D] hover:bg-teal-900 text-white font-bold flex items-center gap-2 shadow-sm transition-all cursor-pointer"
             >
               <span className="material-symbols-outlined text-[18px]">check_circle</span>
               <span>Apply Personalized Regimen to Twin</span>

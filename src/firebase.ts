@@ -45,19 +45,29 @@ export type UserRole = 'user' | 'reviewer' | 'admin';
 
 export interface SynthosUserProfile {
   uid: string;
+  username?: string | null;
   email: string | null;
   displayName: string | null;
+  credentials?: string | null;
+  institution?: string | null;
   role: UserRole;
   isGuest: boolean;
   disclaimerAccepted: boolean;
   disclaimerAcceptedAt: string | null;
   createdAt: string;
   lastLoginAt: string;
+  savedCaseCount?: number;
+  preferences?: {
+    theme?: 'light' | 'dark';
+    doseUnit?: string;
+  };
 }
 
 export interface AnonymousCaseRecord {
   id?: string;
+  caseId?: string;
   anonymousCaseId: string; // e.g. "ANON-PT-4821"
+  engineVersion?: string;
   ownerUid: string;
   timestamp: any;
   demographicDecade: string; // "60-69 Y"
@@ -114,28 +124,137 @@ export interface ClinicianFeedbackEntry {
 
 export async function signInWithGoogle(): Promise<FirebaseUser> {
   const result = await signInWithPopup(auth, googleProvider);
-  await ensureUserProfile(result.user);
-  await logAuditEvent(result.user.uid, 'AUTH_LOGIN', 'Signed in via Google OAuth');
+  try {
+    await ensureUserProfile(result.user);
+  } catch (e) {
+    console.warn('ensureUserProfile deferred during Google sign-in:', e);
+  }
+  try {
+    await logAuditEvent(result.user.uid, 'AUTH_LOGIN', 'Signed in via Google OAuth');
+  } catch (e) {
+    console.warn('logAuditEvent deferred:', e);
+  }
   return result.user;
 }
 
 export async function loginWithEmail(email: string, pass: string): Promise<FirebaseUser> {
   const result = await signInWithEmailAndPassword(auth, email.trim(), pass);
-  await ensureUserProfile(result.user);
-  await logAuditEvent(result.user.uid, 'AUTH_LOGIN', 'Signed in via Email/Password');
+  try {
+    await ensureUserProfile(result.user);
+  } catch (e) {
+    console.warn('ensureUserProfile deferred during email login:', e);
+  }
+  try {
+    await logAuditEvent(result.user.uid, 'AUTH_LOGIN', 'Signed in via Email/Password');
+  } catch (e) {
+    console.warn('logAuditEvent deferred:', e);
+  }
   return result.user;
 }
 
 export async function registerWithEmail(email: string, pass: string): Promise<FirebaseUser> {
   const result = await createUserWithEmailAndPassword(auth, email.trim(), pass);
-  await ensureUserProfile(result.user);
+  try {
+    await ensureUserProfile(result.user);
+  } catch (e) {
+    console.warn('ensureUserProfile deferred during email registration:', e);
+  }
   try {
     await sendEmailVerification(result.user);
   } catch (err) {
     console.warn('Verification email send deferred:', err);
   }
-  await logAuditEvent(result.user.uid, 'AUTH_LOGIN', 'Registered new user account');
+  try {
+    await logAuditEvent(result.user.uid, 'AUTH_LOGIN', 'Registered new user account');
+  } catch (e) {
+    console.warn('logAuditEvent deferred:', e);
+  }
   return result.user;
+}
+
+/**
+ * Register account with Username and Password.
+ * Supports optional email, display name, clinical credentials, and institution.
+ */
+export async function registerWithUsernameAndPassword(
+  username: string,
+  pass: string,
+  options?: { email?: string; displayName?: string; credentials?: string; institution?: string }
+): Promise<{ user: FirebaseUser; profile: SynthosUserProfile }> {
+  const cleanUsername = username.trim().toLowerCase().replace(/[^a-z0-9_.-]/g, '');
+  if (cleanUsername.length < 3) {
+    throw new Error('Username must be at least 3 characters (letters, numbers, underscores).');
+  }
+
+  // Format email for Firebase Auth provider
+  const userEmail = options?.email?.trim() || `${cleanUsername}@synthos.app`;
+  const result = await createUserWithEmailAndPassword(auth, userEmail, pass);
+
+  // Store username mapping in localStorage for instant resolution
+  try {
+    localStorage.setItem(`synthos_user_${cleanUsername}`, userEmail);
+    localStorage.setItem(`synthos_last_username`, cleanUsername);
+  } catch {
+    // non-blocking
+  }
+
+  const profile = await ensureUserProfile(result.user, {
+    username: cleanUsername,
+    displayName: options?.displayName?.trim() || username.trim(),
+    credentials: options?.credentials?.trim() || 'Clinical Pharmacist',
+    institution: options?.institution?.trim() || 'Clinical Practice Group'
+  });
+
+  try {
+    await logAuditEvent(result.user.uid, 'AUTH_LOGIN', `Created account with username @${cleanUsername}`);
+  } catch (e) {
+    console.warn('logAuditEvent deferred:', e);
+  }
+
+  return { user: result.user, profile };
+}
+
+/**
+ * Sign in using Username OR Email + Password
+ */
+export async function loginWithUsernameOrEmail(
+  identifier: string,
+  pass: string
+): Promise<{ user: FirebaseUser; profile: SynthosUserProfile }> {
+  const trimmed = identifier.trim();
+  let emailToUse = trimmed;
+
+  if (!trimmed.includes('@')) {
+    const cleanUsername = trimmed.toLowerCase().replace(/[^a-z0-9_.-]/g, '');
+    let mappedEmail: string | null = null;
+    try {
+      mappedEmail = localStorage.getItem(`synthos_user_${cleanUsername}`);
+    } catch {
+      // non-blocking
+    }
+    emailToUse = mappedEmail || `${cleanUsername}@synthos.app`;
+  }
+
+  const result = await signInWithEmailAndPassword(auth, emailToUse, pass);
+
+  // If identifier was a pure username, make sure we remember it
+  if (!trimmed.includes('@')) {
+    try {
+      localStorage.setItem(`synthos_last_username`, trimmed);
+    } catch {
+      // non-blocking
+    }
+  }
+
+  const profile = await ensureUserProfile(result.user);
+
+  try {
+    await logAuditEvent(result.user.uid, 'AUTH_LOGIN', `Signed in as @${profile.username || profile.displayName || 'user'}`);
+  } catch (e) {
+    console.warn('logAuditEvent deferred:', e);
+  }
+
+  return { user: result.user, profile };
 }
 
 export async function sendPasswordReset(email: string): Promise<void> {
@@ -154,38 +273,86 @@ export async function signOutUser(): Promise<void> {
 }
 
 // User Profile & RBAC
-export async function ensureUserProfile(user: FirebaseUser): Promise<SynthosUserProfile> {
-  const userRef = doc(db, 'users', user.uid);
-  const snap = await getDoc(userRef);
-
+export async function ensureUserProfile(
+  user: FirebaseUser,
+  initialData?: {
+    username?: string;
+    displayName?: string;
+    credentials?: string;
+    institution?: string;
+  }
+): Promise<SynthosUserProfile> {
   // Check if admin by email
   const isAdminEmail = user.email?.toLowerCase() === 'sivasyam05@gmail.com';
   const role: UserRole = isAdminEmail ? 'admin' : 'user';
 
-  if (!snap.exists()) {
-    const newProfile: SynthosUserProfile = {
-      uid: user.uid,
-      email: user.email,
-      displayName: user.displayName || user.email?.split('@')[0] || 'Clinician',
-      role,
-      isGuest: false,
-      disclaimerAccepted: false,
-      disclaimerAcceptedAt: null,
-      createdAt: new Date().toISOString(),
-      lastLoginAt: new Date().toISOString()
-    };
-    await setDoc(userRef, newProfile);
-    return newProfile;
-  } else {
-    const existing = snap.data() as SynthosUserProfile;
-    const updated = {
-      ...existing,
-      email: user.email,
-      role: isAdminEmail ? 'admin' : existing.role || 'user',
-      lastLoginAt: new Date().toISOString()
-    };
-    await setDoc(userRef, updated, { merge: true });
-    return updated;
+  const inferredUsername =
+    initialData?.username ||
+    (user.email && user.email.endsWith('@synthos.app')
+      ? user.email.replace('@synthos.app', '')
+      : user.email?.split('@')[0]) ||
+    'clinician';
+
+  const defaultProfile: SynthosUserProfile = {
+    uid: user.uid,
+    username: inferredUsername,
+    email: user.email || `${inferredUsername}@synthos.app`,
+    displayName:
+      initialData?.displayName ||
+      user.displayName ||
+      (inferredUsername ? `@${inferredUsername}` : 'Clinician'),
+    credentials: initialData?.credentials || 'Clinical Pharmacist',
+    institution: initialData?.institution || 'Clinical Practice Group',
+    role,
+    isGuest: false,
+    disclaimerAccepted: false,
+    disclaimerAcceptedAt: null,
+    createdAt: new Date().toISOString(),
+    lastLoginAt: new Date().toISOString(),
+    savedCaseCount: 0
+  };
+
+  try {
+    const userRef = doc(db, 'users', user.uid);
+    const snap = await getDoc(userRef);
+
+    if (!snap.exists()) {
+      await setDoc(userRef, defaultProfile);
+      return defaultProfile;
+    } else {
+      const existing = snap.data() as SynthosUserProfile;
+      const updated: SynthosUserProfile = {
+        ...defaultProfile,
+        ...existing,
+        username: existing.username || defaultProfile.username,
+        email: user.email || existing.email || defaultProfile.email,
+        displayName: existing.displayName || defaultProfile.displayName,
+        credentials: existing.credentials || defaultProfile.credentials,
+        institution: existing.institution || defaultProfile.institution,
+        role: isAdminEmail ? 'admin' : existing.role || 'user',
+        lastLoginAt: new Date().toISOString()
+      };
+      await setDoc(userRef, updated, { merge: true });
+      return updated;
+    }
+  } catch (err) {
+    console.warn('Firestore profile synchronization deferred (operating in resilient session mode):', err);
+    return defaultProfile;
+  }
+}
+
+export async function updateUserProfile(
+  uid: string,
+  updates: Partial<SynthosUserProfile>
+): Promise<SynthosUserProfile | null> {
+  try {
+    const userRef = doc(db, 'users', uid);
+    await setDoc(userRef, updates, { merge: true });
+    const snap = await getDoc(userRef);
+    return snap.exists() ? (snap.data() as SynthosUserProfile) : null;
+  } catch (err) {
+    console.error('Error updating user profile:', err);
+    return null;
   }
 }
 
@@ -225,10 +392,24 @@ export async function saveSimulationCase(
   const casesCollection = collection(db, 'cases');
   const payload = {
     ...caseRecord,
+    caseId: caseRecord.caseId || caseRecord.anonymousCaseId,
+    engineVersion: caseRecord.engineVersion || 'v2.4-pk-engine',
     ownerUid: uid,
     timestamp: serverTimestamp()
   };
   const docRef = await addDoc(casesCollection, payload);
+
+  // Increment user savedCaseCount in profile
+  try {
+    const userRef = doc(db, 'users', uid);
+    const snap = await getDoc(userRef);
+    if (snap.exists()) {
+      const curCount = snap.data().savedCaseCount || 0;
+      await setDoc(userRef, { savedCaseCount: curCount + 1 }, { merge: true });
+    }
+  } catch {
+    // non-blocking
+  }
 
   await logAuditEvent(
     uid,

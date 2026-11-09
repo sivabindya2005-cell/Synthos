@@ -6,27 +6,27 @@ interface FooterProps {
 
 export const Footer: React.FC<FooterProps> = ({ onOpenAdminDatabase }) => {
   return (
-    <footer className="fixed bottom-0 left-0 lg:left-72 right-0 h-8 bg-white/95 dark:bg-[#071321]/95 text-[#334155] dark:text-slate-400 z-30 border-t border-slate-200 dark:border-[#1E3A5A] flex items-center justify-between px-4 sm:px-6 text-[11px] font-medium tracking-wide transition-colors backdrop-blur-xs">
+    <footer className="fixed bottom-0 left-0 lg:left-72 right-0 h-8 bg-[#FFFDF9]/95 dark:bg-[#0D1926]/95 text-[#1E3A5F] dark:text-[#8DA4BE] z-30 border-t border-[#E5DDD0] dark:border-[#1F3B5C] flex items-center justify-between px-4 sm:px-6 text-[11px] font-medium tracking-wide transition-colors backdrop-blur-xs">
       <div className="flex items-center gap-2 sm:gap-3 truncate">
-        <span className="flex items-center gap-1.5 text-[#0F766E] dark:text-[#14B8A6] shrink-0 font-bold">
-          <span className="w-1.5 h-1.5 rounded-full bg-[#14B8A6]"></span>
+        <span className="flex items-center gap-1.5 text-[#15803D] dark:text-[#34D399] shrink-0 font-bold">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#15803D]"></span>
           Pharmacotherapy Twin
         </span>
-        <span className="text-slate-300 dark:text-[#1E3A5A] hidden sm:inline">|</span>
+        <span className="text-[#DDD4C5] dark:text-[#1F3B5C] hidden sm:inline">|</span>
         <span className="hidden sm:inline truncate">Rule-based physiological simulation</span>
-        <span className="text-slate-300 dark:text-[#1E3A5A] hidden md:inline">|</span>
+        <span className="text-[#DDD4C5] dark:text-[#1F3B5C] hidden md:inline">|</span>
         <span className="hidden md:inline truncate">Educational &amp; Decision Support</span>
       </div>
 
-      <div className="flex items-center gap-3 text-[#334155] dark:text-slate-400 font-mono text-[11px] shrink-0">
+      <div className="flex items-center gap-3 text-[#1E3A5F] dark:text-[#8DA4BE] font-mono text-[11px] shrink-0">
         {onOpenAdminDatabase && (
           <button
             type="button"
             onClick={onOpenAdminDatabase}
-            className="text-[10px] text-[#0F766E] dark:text-[#14B8A6] hover:text-[#0B2545] dark:hover:text-white flex items-center gap-1 cursor-pointer transition-colors bg-[#E6F4F1] dark:bg-[#0F2137] px-2 py-0.5 rounded border border-[#BEE3DB] dark:border-[#1E3A5A]"
+            className="text-[10px] text-[#15803D] dark:text-[#34D399] hover:text-[#1E3A8A] dark:hover:text-white flex items-center gap-1 cursor-pointer transition-colors bg-[#EEF7EE] dark:bg-[#13253A] px-2 py-0.5 rounded border border-[#CBE4CB] dark:border-[#1F3B5C]"
             title="Open Simulation Telemetry Database (Admin Tracking Only)"
           >
-            <span className="material-symbols-outlined text-[13px] text-[#14B8A6]">database</span>
+            <span className="material-symbols-outlined text-[13px] text-[#15803D]">database</span>
             <span>Admin DB</span>
           </button>
         )}

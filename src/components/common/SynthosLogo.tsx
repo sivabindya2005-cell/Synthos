@@ -6,6 +6,13 @@ export interface SynthosLogoProps {
   variant?: 'full' | 'icon' | 'horizontal' | 'stacked';
   theme?: 'dark' | 'light' | 'auto';
   showTagline?: boolean;
+  letterColors?: {
+    s1?: string;
+    y?: string;
+    nth?: string;
+    o?: string;
+    s2?: string;
+  };
 }
 
 export const SynthosLogo: React.FC<SynthosLogoProps> = ({
@@ -13,7 +20,8 @@ export const SynthosLogo: React.FC<SynthosLogoProps> = ({
   size = 'md',
   variant = 'horizontal',
   theme = 'auto',
-  showTagline = true
+  showTagline = true,
+  letterColors
 }) => {
   // Dimension presets
   const sizeMap: Record<string, { icon: number; text: string; sub: string }> = {
@@ -173,28 +181,40 @@ export const SynthosLogo: React.FC<SynthosLogoProps> = ({
     </svg>
   );
 
+  const baseTextColor =
+    theme === 'dark'
+      ? 'text-white'
+      : theme === 'light'
+      ? 'text-slate-900'
+      : 'text-slate-900 dark:text-white';
+
+  const baseTaglineColor =
+    theme === 'dark'
+      ? 'text-slate-400'
+      : theme === 'light'
+      ? 'text-slate-600'
+      : 'text-slate-600 dark:text-slate-300';
+
   // Stylized Wordmark:
   // "SYNTHOS" with stylized target/iris 'O'
   const renderWordmark = () => (
     <div className="flex flex-col">
       <div className="flex items-center tracking-[0.22em] font-extrabold uppercase select-none leading-none">
-        <span className={isDarkBg ? 'text-white' : 'text-slate-900'}>S</span>
-        {/* Stylized Y with subtle cyan accent */}
-        <span className="text-[#14B8A6] font-black">Y</span>
-        <span className={isDarkBg ? 'text-white' : 'text-slate-900'}>NTH</span>
+        <span style={letterColors?.s1 ? { color: letterColors.s1 } : undefined} className={baseTextColor}>S</span>
+        {/* Stylized Y with subtle emerald/teal accent */}
+        <span style={letterColors?.y ? { color: letterColors.y } : undefined} className="text-[#15803D] dark:text-[#34D399] font-black">Y</span>
+        <span style={letterColors?.nth ? { color: letterColors.nth } : undefined} className={baseTextColor}>NTH</span>
         {/* Stylized 'O' target iris */}
         <span className="relative inline-flex items-center justify-center mx-[0.04em]">
-          <span className={isDarkBg ? 'text-white' : 'text-slate-900'}>O</span>
+          <span style={letterColors?.o ? { color: letterColors.o } : undefined} className={baseTextColor}>O</span>
           <span className="absolute w-[38%] h-[38%] rounded-full bg-gradient-to-tr from-cyan-400 to-indigo-500 shadow-[0_0_6px_rgba(6,182,212,0.8)]"></span>
         </span>
-        <span className={isDarkBg ? 'text-white' : 'text-slate-900'}>S</span>
+        <span style={letterColors?.s2 ? { color: letterColors.s2 } : undefined} className={baseTextColor}>S</span>
       </div>
 
       {showTagline && (
         <span
-          className={`font-['Plus_Jakarta_Sans'] font-medium tracking-wide mt-1 select-none leading-tight ${dim.sub} ${
-            isDarkBg ? 'text-slate-400' : 'text-slate-600'
-          }`}
+          className={`font-['Plus_Jakarta_Sans'] font-medium tracking-wide mt-1 select-none leading-tight ${dim.sub} ${baseTaglineColor}`}
         >
           Where Biology Meets Its Other Self.
         </span>

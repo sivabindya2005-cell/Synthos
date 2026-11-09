@@ -114,7 +114,7 @@ export const DrugIntelligenceView: React.FC<DrugIntelligenceViewProps> = ({
 
         <button
           onClick={onLaunchTwin}
-          className="px-3.5 py-2 rounded-lg bg-[#006a61] hover:bg-[#00524b] text-white text-xs font-semibold flex items-center gap-2 cursor-pointer shadow-sm transition-all whitespace-nowrap shrink-0"
+          className="px-3.5 py-2 rounded-lg bg-[#15803D] hover:bg-[#00524b] text-white text-xs font-semibold flex items-center gap-2 cursor-pointer shadow-sm transition-all whitespace-nowrap shrink-0"
         >
           <span className="material-symbols-outlined text-[16px]">tune</span>
           <span>Simulate in Patient Twin</span>
@@ -125,11 +125,11 @@ export const DrugIntelligenceView: React.FC<DrugIntelligenceViewProps> = ({
       <div className="bg-white rounded-xl border border-slate-200 p-3 shadow-2xs space-y-2">
         <div className="flex items-center justify-between">
           <span className="text-[11px] font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
-            <span className="material-symbols-outlined text-[#0F766E] text-[16px]">category</span>
+            <span className="material-symbols-outlined text-[#15803D] text-[16px]">category</span>
             Target-Wise Classification Superfamilies
           </span>
           <span className="text-[11px] font-mono text-slate-500">
-            Showing <strong className="text-[#0F766E] font-bold">{filteredDrugs.length}</strong> of {DRUG_MONOGRAPHS.length} Drugs
+            Showing <strong className="text-[#15803D] font-bold">{filteredDrugs.length}</strong> of {DRUG_MONOGRAPHS.length} Drugs
           </span>
         </div>
 
@@ -210,7 +210,7 @@ export const DrugIntelligenceView: React.FC<DrugIntelligenceViewProps> = ({
                     setSelectedSpecialty('all');
                     setSelectedSuperfamily('All Target Families');
                   }}
-                  className="text-[#0F766E] hover:text-teal-900 font-semibold cursor-pointer underline text-[11px]"
+                  className="text-[#15803D] hover:text-teal-900 font-semibold cursor-pointer underline text-[11px]"
                 >
                   Clear all filters
                 </button>
@@ -248,7 +248,7 @@ export const DrugIntelligenceView: React.FC<DrugIntelligenceViewProps> = ({
                       onClick={() => setActiveDrug(drug)}
                       className={`p-3 rounded-lg border transition-all cursor-pointer ${
                         isSelected
-                          ? 'bg-[#E6F4F1]/60 border-teal-600 shadow-xs ring-1 ring-teal-600/50'
+                          ? 'bg-[#EEF7EE]/60 border-teal-600 shadow-xs ring-1 ring-teal-600/50'
                           : 'bg-white border-transparent hover:border-slate-200 hover:bg-slate-50'
                       }`}
                     >
@@ -258,7 +258,7 @@ export const DrugIntelligenceView: React.FC<DrugIntelligenceViewProps> = ({
                             {drug.genericName}
                           </div>
                           {drug.brandNames.length > 0 && (
-                            <div className="text-[11px] font-semibold text-[#0F766E] mt-0.5">
+                            <div className="text-[11px] font-semibold text-[#15803D] mt-0.5">
                               Brand: <span className="font-medium text-slate-700">{drug.brandNames.join(', ')}</span>
                             </div>
                           )}
@@ -294,7 +294,7 @@ export const DrugIntelligenceView: React.FC<DrugIntelligenceViewProps> = ({
           <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 border-b border-slate-200 pb-4">
             <div className="space-y-1">
               <div className="flex flex-wrap items-center gap-2">
-                <span className="text-[10px] font-mono bg-[#E6F4F1] border border-[#BEE3DB] text-[#0F766E] font-bold px-2 py-0.5 rounded uppercase tracking-wider">
+                <span className="text-[10px] font-mono bg-[#EEF7EE] border border-[#CBE4CB] text-[#15803D] font-bold px-2 py-0.5 rounded uppercase tracking-wider">
                   {currentActiveDrug.therapeuticClass}
                 </span>
                 <span className="text-[10px] font-semibold bg-slate-100 text-slate-700 px-2 py-0.5 rounded capitalize">
@@ -317,8 +317,8 @@ export const DrugIntelligenceView: React.FC<DrugIntelligenceViewProps> = ({
               </div>
 
               {currentActiveDrug.targetSuperfamily && (
-                <div className="text-xs text-teal-900 bg-[#E6F4F1]/70 border border-[#BEE3DB]/80 px-2.5 py-1 rounded-md mt-1 inline-flex items-center gap-1.5">
-                  <span className="material-symbols-outlined text-[15px] text-[#0F766E]">hub</span>
+                <div className="text-xs text-teal-900 bg-[#EEF7EE]/70 border border-[#CBE4CB]/80 px-2.5 py-1 rounded-md mt-1 inline-flex items-center gap-1.5">
+                  <span className="material-symbols-outlined text-[15px] text-[#15803D]">hub</span>
                   <span className="font-semibold">Target Superfamily:</span>
                   <span>{currentActiveDrug.targetSuperfamily}</span>
                 </div>
@@ -328,7 +328,7 @@ export const DrugIntelligenceView: React.FC<DrugIntelligenceViewProps> = ({
             <div className="flex flex-col sm:flex-row gap-2 shrink-0">
               <button
                 onClick={() => onOpenProvenance(currentActiveDrug.id || currentActiveDrug.genericName)}
-                className="px-3 py-1.5 rounded-lg bg-[#E6F4F1] border border-[#BEE3DB] text-[#0F766E] text-xs font-semibold flex items-center gap-1.5 hover:bg-[#D4ECE6] transition-colors cursor-pointer"
+                className="px-3 py-1.5 rounded-lg bg-[#EEF7EE] border border-[#CBE4CB] text-[#15803D] text-xs font-semibold flex items-center gap-1.5 hover:bg-[#D4ECE6] transition-colors cursor-pointer"
                 title={`Audit scientific provenance & citations for ${currentActiveDrug.genericName}`}
               >
                 <span className="material-symbols-outlined text-[16px]">verified</span>
@@ -358,7 +358,7 @@ export const DrugIntelligenceView: React.FC<DrugIntelligenceViewProps> = ({
                 onClick={() => setDetailTab(tab.id as any)}
                 className={`pb-2.5 px-3 border-b-2 transition-all cursor-pointer whitespace-nowrap flex items-center gap-1.5 ${
                   detailTab === tab.id
-                    ? 'border-teal-700 text-[#0F766E] font-bold bg-[#E6F4F1]/30'
+                    ? 'border-teal-700 text-[#15803D] font-bold bg-[#EEF7EE]/30'
                     : 'border-transparent text-slate-500 hover:text-slate-800'
                 }`}
               >
@@ -377,7 +377,7 @@ export const DrugIntelligenceView: React.FC<DrugIntelligenceViewProps> = ({
                     <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">
                       Mechanism of Action (MOA)
                     </span>
-                    <span className="text-[10px] font-mono text-[#0F766E] bg-[#E6F4F1] px-2 py-0.5 rounded border border-[#BEE3DB]">
+                    <span className="text-[10px] font-mono text-[#15803D] bg-[#EEF7EE] px-2 py-0.5 rounded border border-[#CBE4CB]">
                       Molecular Specificity
                     </span>
                   </div>
@@ -396,7 +396,7 @@ export const DrugIntelligenceView: React.FC<DrugIntelligenceViewProps> = ({
                         key={i}
                         className="p-2.5 rounded-lg bg-slate-50 border border-slate-200 flex items-start gap-2 text-slate-800"
                       >
-                        <span className="material-symbols-outlined text-[#0F766E] text-[16px] shrink-0 mt-0.5">
+                        <span className="material-symbols-outlined text-[#15803D] text-[16px] shrink-0 mt-0.5">
                           check_circle
                         </span>
                         <span className="text-xs">{ind}</span>
@@ -414,7 +414,7 @@ export const DrugIntelligenceView: React.FC<DrugIntelligenceViewProps> = ({
                       {currentActiveDrug.biologicalPathways.map((pathway, idx) => (
                         <span
                           key={idx}
-                          className="px-2.5 py-1 rounded bg-[#E6F4F1] border border-[#BEE3DB] text-teal-900 font-mono text-[11px]"
+                          className="px-2.5 py-1 rounded bg-[#EEF7EE] border border-[#CBE4CB] text-teal-900 font-mono text-[11px]"
                         >
                           {pathway}
                         </span>
@@ -444,12 +444,12 @@ export const DrugIntelligenceView: React.FC<DrugIntelligenceViewProps> = ({
                           </span>
                         </div>
                         {target.bindingAffinity && (
-                          <div className="text-[11px] font-mono text-[#0F766E] mt-1">
+                          <div className="text-[11px] font-mono text-[#15803D] mt-1">
                             Affinity: <strong>{target.bindingAffinity}</strong>
                           </div>
                         )}
                       </div>
-                      <span className="px-3 py-1 rounded bg-[#E6F4F1] border border-[#BEE3DB] text-[#0F766E] font-mono text-[11px] font-bold self-start sm:self-center">
+                      <span className="px-3 py-1 rounded bg-[#EEF7EE] border border-[#CBE4CB] text-[#15803D] font-mono text-[11px] font-bold self-start sm:self-center">
                         {target.action}
                       </span>
                     </div>
@@ -566,7 +566,7 @@ export const DrugIntelligenceView: React.FC<DrugIntelligenceViewProps> = ({
                       <div className="flex items-center gap-2 shrink-0">
                         <button
                           onClick={() => onOpenProvenance(currentActiveDrug.id || currentActiveDrug.genericName)}
-                          className="px-2.5 py-1 rounded bg-[#E6F4F1] border border-[#BEE3DB] text-[#0F766E] text-[11px] font-semibold hover:bg-[#D4ECE6] flex items-center gap-1 cursor-pointer"
+                          className="px-2.5 py-1 rounded bg-[#EEF7EE] border border-[#CBE4CB] text-[#15803D] text-[11px] font-semibold hover:bg-[#D4ECE6] flex items-center gap-1 cursor-pointer"
                         >
                           <span className="material-symbols-outlined text-[13px]">verified</span>
                           <span>Provenance</span>

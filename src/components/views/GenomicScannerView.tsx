@@ -167,7 +167,7 @@ export const GenomicScannerView: React.FC<GenomicScannerViewProps> = ({
           <div className="flex gap-2">
             <button
               onClick={handleParseVcf}
-              className="flex-1 py-2.5 rounded-lg bg-[#0F766E] hover:bg-teal-900 text-white text-xs font-bold flex items-center justify-center gap-2 cursor-pointer shadow-xs transition-colors"
+              className="flex-1 py-2.5 rounded-lg bg-[#15803D] hover:bg-teal-900 text-white text-xs font-bold flex items-center justify-center gap-2 cursor-pointer shadow-xs transition-colors"
             >
               <span className="material-symbols-outlined text-[16px]">play_arrow</span>
               <span>Annotate CPIC Activity Scores</span>
@@ -187,7 +187,7 @@ export const GenomicScannerView: React.FC<GenomicScannerViewProps> = ({
             <span className="text-xs font-bold uppercase text-slate-500 font-mono tracking-wider">
               Annotated Pharmacogenes ({parsedGenes.length} Targets)
             </span>
-            <span className="text-[11px] text-[#0F766E] font-semibold">
+            <span className="text-[11px] text-[#15803D] font-semibold">
               Activity Score Algorithm (Gaedigk et al.)
             </span>
           </div>
@@ -207,7 +207,7 @@ export const GenomicScannerView: React.FC<GenomicScannerViewProps> = ({
                 <div className="flex items-center justify-between mb-1.5">
                   <div className="flex items-center gap-2">
                     <span className="font-bold text-slate-900 text-sm">{g.gene}</span>
-                    <span className="font-mono text-xs font-bold text-[#0F766E] bg-teal-100/70 px-2 py-0.5 rounded">
+                    <span className="font-mono text-xs font-bold text-[#15803D] bg-teal-100/70 px-2 py-0.5 rounded">
                       {g.diplotype}
                     </span>
                     <span className="text-[11px] font-mono text-slate-500">{g.rsId}</span>
@@ -243,7 +243,7 @@ export const GenomicScannerView: React.FC<GenomicScannerViewProps> = ({
                   {onOpenProvenance && (
                     <button
                       onClick={() => onOpenProvenance(g.provenanceId)}
-                      className="text-[11px] text-[#0F766E] hover:underline font-semibold flex items-center gap-1 cursor-pointer"
+                      className="text-[11px] text-[#15803D] hover:underline font-semibold flex items-center gap-1 cursor-pointer"
                     >
                       <span className="material-symbols-outlined text-[13px]">verified</span>
                       <span>CPIC Guideline DOI</span>
