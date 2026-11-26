@@ -1,0 +1,9 @@
+{
+  "name": "Synthos learning lab",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:22",
+  "postCreateCommand": "npx --yes bun@1.4.4 install --frozen-lockfile",
+  "forwardPorts": [3000],
+  "portsAttributes": {
+    "3000": { "label": "Synthos", "onAutoForward": "openPreview" }
+  }
+}

@@ -25,13 +25,13 @@ import { InteractionCheckerView } from './components/views/InteractionCheckerVie
 import { ClinicalScenariosView } from './components/views/ClinicalScenariosView';
 import { MonitoringPlanView } from './components/views/MonitoringPlanView';
 import { EvidenceLibraryView } from './components/views/EvidenceLibraryView';
-import { ReportsView } from './components/views/ReportsView';
+
 import { AboutLimitationsView } from './components/views/AboutLimitationsView';
 import { GenomicScannerView } from './components/views/GenomicScannerView';
 import { FhirIntegrationView } from './components/views/FhirIntegrationView';
 import { SimulationVaultView } from './components/views/SimulationVaultView';
 import { ClinicalSearchGroundingView } from './components/views/ClinicalSearchGroundingView';
-import { GuidedSimulationWizard } from './components/views/GuidedSimulationWizard';
+
 import { PersonalizeRegimenModal } from './components/modals/PersonalizeRegimenModal';
 import { PersonalizedCasesModal } from './components/modals/PersonalizedCasesModal';
 
@@ -40,10 +40,22 @@ import { PatientCase } from './types/clinical';
 import { AuthProvider, useClinicianAuth } from './context/AuthContext';
 import { AnonymousCaseRecord } from './firebase';
 import { ThemeProvider } from './context/ThemeContext';
-import { exportPatientTwinToPdf } from './utils/clinicalPdfExport';
+
+
+import { useWorkspaceView } from './utils/useWorkspaceView';
+
+const ReportsView = React.lazy(async () => {
+  const module = await import('./components/views/ReportsView');
+  return { default: module.ReportsView };
+});
+
+const GuidedSimulationWizard = React.lazy(async () => {
+  const module = await import('./components/views/GuidedSimulationWizard');
+  return { default: module.GuidedSimulationWizard };
+});
 
 function AppContent() {
-  const [currentTab, setCurrentTab] = useState<string>('home');
+  const [currentTab, setCurrentTab] = useWorkspaceView();
   const [patientRegistry, setPatientRegistry] = useState<Record<string, PatientCase>>(PATIENT_CASES);
   const [activePatientId, setActivePatientId] = useState<string>('DEMO-PT-0241');
 
@@ -214,7 +226,8 @@ function AppContent() {
   };
 
   // Structured PDF Export for current patient digital twin
-  const handleExportPdf = () => {
+  const handleExportPdf = async () => {
+    const { exportPatientTwinToPdf } = await import('./utils/clinicalPdfExport');
     exportPatientTwinToPdf(activePatient, {
       clinicianName: clinician?.name,
       clinicianCredentials: clinician?.credentials,
@@ -307,7 +320,7 @@ function AppContent() {
           onLaunchTwin={() => setCurrentTab('guided-wizard')}
           onOpenPathways={() => setCurrentTab('pathway-network')}
           onOpenDrugIntelligence={() => setCurrentTab('drug-explorer')}
-          onOpenEvidence={() => setCurrentTab('methodology')}
+          onOpenEvidence={() => setCurrentTab('evidence-library')}
           onOpenVideoIntro={() => setIsVideoIntroOpen(true)}
           onOpenAuth={() => openAuthModal()}
         />
@@ -375,12 +388,14 @@ function AppContent() {
         />
 
         {/* Dynamic View Canvas */}
-        <main className="flex-1 pt-20 pb-14 w-full px-4 sm:px-6 bg-[#FAF7F2] dark:bg-[#0D1926] overflow-y-auto transition-colors">
+        <main id="workspace-content" tabIndex={-1} className="flex-1 pt-20 pb-14 w-full px-4 sm:px-6 bg-[#FAF7F2] dark:bg-[#0D1926] overflow-y-auto transition-colors">
           {currentTab === 'guided-wizard' && (
-            <GuidedSimulationWizard
-              onSwitchToWorkstation={() => setCurrentTab('digital-twin')}
-              onOpenAdminDatabase={() => setIsAdminDatabaseOpen(true)}
-            />
+            <React.Suspense fallback={<p role="status">Opening guided case…</p>}>
+              <GuidedSimulationWizard
+                onSwitchToWorkstation={() => setCurrentTab('digital-twin')}
+                onOpenAdminDatabase={() => setIsAdminDatabaseOpen(true)}
+              />
+            </React.Suspense>
           )}
 
           {(currentTab === 'twin' || currentTab === 'digital-twin' || currentTab === 'patient-twin') && (
@@ -495,13 +510,15 @@ function AppContent() {
           )}
 
           {currentTab === 'reports' && (
-            <ReportsView
-              patient={activePatient}
-              onOpenProvenance={(id) => setActiveProvenanceId(id)}
-              onOpenSearch={handleOpenSearchWithQuery}
-              onOpenPersonalizeRegimen={() => setIsPersonalizeRegimenOpen(true)}
-              onUpdatePatientLab={handleUpdateActivePatientLabs}
-            />
+            <React.Suspense fallback={<p role="status">Opening reports…</p>}>
+              <ReportsView
+                patient={activePatient}
+                onOpenProvenance={(id) => setActiveProvenanceId(id)}
+                onOpenSearch={handleOpenSearchWithQuery}
+                onOpenPersonalizeRegimen={() => setIsPersonalizeRegimenOpen(true)}
+                onUpdatePatientLab={handleUpdateActivePatientLabs}
+              />
+            </React.Suspense>
           )}
         </main>
 

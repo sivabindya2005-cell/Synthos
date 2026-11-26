@@ -1,7 +1,37 @@
-# SYNTHOS — Where Biology Meets Its Other Self.
-### Precision Pharmacotherapy Triage & Pharmacokinetic Digital Twin
+# Synthos pharmacology learning lab
 
-SYNTHOS is an educational clinical decision support (CDS) matrix and pharmacokinetic digital twin designed for qualified healthcare professionals (clinical pharmacists, nephrologists, intensivists, and pharmacology researchers).
+Explore how a simulated patient’s characteristics affect modelled drug exposure. Clinicians and supervised learners can work through a fictional case, look up a medicine, and inspect the evidence behind the model. Use synthetic data for practice.
+
+## Try a guided case
+
+[Open this repository in GitHub Codespaces](https://codespaces.new/sivabindya2005-cell/Synthos). Create a workspace on the branch you want to try. Once setup finishes, run the following in its terminal.
+
+```sh
+npm run dev
+```
+
+Open **Synthos** on port **3000** in the Ports panel. Acknowledge the educational terms, then choose **Start a guided case**. Keep the sample inputs on your first visit and advance through patient characteristics, regimen, and model results. Account sign-in and an AI key are optional for this exercise.
+
+## Run on your computer
+
+With Node.js 22.12+ and Bun installed, run the following commands.
+
+```sh
+git clone https://github.com/sivabindya2005-cell/Synthos.git
+cd Synthos
+bun install --frozen-lockfile
+npm run dev
+```
+
+Open [Synthos locally](http://localhost:3000). Bookmark a tool or share its URL with someone using the same installation. The URL identifies the tool and excludes your patient inputs.
+
+| Start here | What you can do |
+| --- | --- |
+| [Guided case](http://localhost:3000/?view=guided-wizard) | Work through a fictional pharmacokinetic simulation. |
+| [Drug library](http://localhost:3000/?view=drug-explorer) | Explore drug targets and model inputs. |
+| [Evidence library](http://localhost:3000/?view=evidence-library) | Review source material and provenance. |
+
+Run `npm test` for the deterministic calculation suite and `npm run build` to build the frontend.
 
 ---
 

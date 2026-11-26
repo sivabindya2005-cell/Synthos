@@ -703,6 +703,6 @@ if (isProduction) {
   app.use(vite.middlewares);
 }
 
-app.listen(Number(port), '0.0.0.0', () => {
+app.listen(Number(port), process.env.HOST || '0.0.0.0', () => {
   console.log(`SYNTHOS Clinical Platform listening on port ${port}`);
 });
