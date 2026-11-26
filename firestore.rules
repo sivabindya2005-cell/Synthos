@@ -12,27 +12,23 @@ service cloud.firestore {
     }
 
     function isAdmin() {
-      return isSignedIn() && (
-        request.auth.token.email == 'sivasyam05@gmail.com' ||
-        (request.auth.token.role != null && request.auth.token.role == 'admin') ||
-        (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin')
-      );
+      return isSignedIn() && (request.auth.token.get('role', '') == 'admin' ||
+        (request.auth.token.get('email_verified', false) &&
+         request.auth.token.get('email', '') == 'sivasyam05@gmail.com'));
     }
 
     function isReviewer() {
-      return isSignedIn() && (
-        isAdmin() ||
-        (request.auth.token.role != null && request.auth.token.role == 'reviewer') ||
-        (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'reviewer')
-      );
+      return isSignedIn() && (isAdmin() || request.auth.token.get('role', '') == 'reviewer');
     }
-
     // USERS COLLECTION
     // Users can read/write their own user record; admins can view all users for auditing
     match /users/{userId} {
       allow read: if isOwner(userId) || isAdmin();
-      allow create: if isOwner(userId) && request.resource.data.keys().hasAll(['email', 'createdAt']);
-      allow update: if isOwner(userId) || isAdmin();
+      allow create: if isOwner(userId) && request.resource.data.uid == userId &&
+        request.resource.data.keys().hasAll(['email', 'createdAt']) &&
+        (request.resource.data.role == 'user' || isAdmin());
+      allow update: if isAdmin() || (isOwner(userId) &&
+        !request.resource.data.diff(resource.data).affectedKeys().hasAny(['uid', 'role', 'createdAt']));
       allow delete: if isOwner(userId) || isAdmin();
     }
 
@@ -44,7 +40,7 @@ service cloud.firestore {
         request.resource.data.ownerUid == request.auth.uid &&
         request.resource.data.caseId is string &&
         request.resource.data.engineVersion is string;
-      allow update: if isSignedIn() && resource.data.ownerUid == request.auth.uid;
+      allow update: if isOwner(resource.data.ownerUid) && request.resource.data.ownerUid == resource.data.ownerUid;
       allow delete: if isSignedIn() && (resource.data.ownerUid == request.auth.uid || isAdmin());
     }
 

@@ -1,5 +1,6 @@
 import { initializeApp, getApps, getApp } from 'firebase/app';
 import {
+  connectAuthEmulator,
   getAuth,
   GoogleAuthProvider,
   signInWithPopup,
@@ -12,6 +13,10 @@ import {
   User as FirebaseUser
 } from 'firebase/auth';
 import {
+  connectFirestoreEmulator,
+  increment,
+  writeBatch,
+  runTransaction,
   getFirestore,
   doc,
   getDoc,
@@ -29,7 +34,11 @@ import {
 import firebaseConfig from '../firebase-applet-config.json';
 
 // Initialize Firebase App
-const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+const localEmulators = import.meta.env.DEV && import.meta.env.VITE_FIREBASE_EMULATORS === 'true';
+const appConfig = localEmulators
+  ? { ...firebaseConfig, projectId: 'demo-synthos', apiKey: 'demo-api-key', authDomain: 'demo-synthos.firebaseapp.com' }
+  : firebaseConfig;
+const app = getApps().length === 0 ? initializeApp(appConfig) : getApp();
 
 // Initialize Auth
 export const auth = getAuth(app);
@@ -39,6 +48,11 @@ googleProvider.setCustomParameters({ prompt: 'select_account' });
 // Initialize Firestore
 const databaseId = (firebaseConfig as any).firestoreDatabaseId;
 export const db = databaseId ? getFirestore(app, databaseId) : getFirestore(app);
+
+if (localEmulators) {
+  connectAuthEmulator(auth, 'http://127.0.0.1:9099');
+  connectFirestoreEmulator(db, '127.0.0.1', 8080);
+}
 
 // Types
 export type UserRole = 'user' | 'reviewer' | 'admin';
@@ -124,16 +138,8 @@ export interface ClinicianFeedbackEntry {
 
 export async function signInWithGoogle(): Promise<FirebaseUser> {
   const result = await signInWithPopup(auth, googleProvider);
-  try {
-    await ensureUserProfile(result.user);
-  } catch (e) {
-    console.warn('ensureUserProfile deferred during Google sign-in:', e);
-  }
-  try {
-    await logAuditEvent(result.user.uid, 'AUTH_LOGIN', 'Signed in via Google OAuth');
-  } catch (e) {
-    console.warn('logAuditEvent deferred:', e);
-  }
+  await ensureUserProfile(result.user);
+  void logAuditEvent(result.user.uid, 'AUTH_LOGIN', 'Signed in via Google OAuth');
   return result.user;
 }
 
@@ -262,13 +268,6 @@ export async function sendPasswordReset(email: string): Promise<void> {
 }
 
 export async function signOutUser(): Promise<void> {
-  if (auth.currentUser) {
-    try {
-      await logAuditEvent(auth.currentUser.uid, 'AUTH_LOGIN', 'User signed out');
-    } catch {
-      // non-blocking
-    }
-  }
   await firebaseSignOut(auth);
 }
 
@@ -283,7 +282,7 @@ export async function ensureUserProfile(
   }
 ): Promise<SynthosUserProfile> {
   // Check if admin by email
-  const isAdminEmail = user.email?.toLowerCase() === 'sivasyam05@gmail.com';
+  const isAdminEmail = user.emailVerified && user.email?.toLowerCase() === 'sivasyam05@gmail.com';
   const role: UserRole = isAdminEmail ? 'admin' : 'user';
 
   const inferredUsername =
@@ -312,35 +311,22 @@ export async function ensureUserProfile(
     savedCaseCount: 0
   };
 
-  try {
-    const userRef = doc(db, 'users', user.uid);
-    const snap = await getDoc(userRef);
-
+  const userRef = doc(db, 'users', user.uid);
+  return runTransaction(db, async transaction => {
+    const snap = await transaction.get(userRef);
     if (!snap.exists()) {
-      await setDoc(userRef, defaultProfile);
+      transaction.set(userRef, defaultProfile);
       return defaultProfile;
-    } else {
-      const existing = snap.data() as SynthosUserProfile;
-      const updated: SynthosUserProfile = {
-        ...defaultProfile,
-        ...existing,
-        username: existing.username || defaultProfile.username,
-        email: user.email || existing.email || defaultProfile.email,
-        displayName: existing.displayName || defaultProfile.displayName,
-        credentials: existing.credentials || defaultProfile.credentials,
-        institution: existing.institution || defaultProfile.institution,
-        role: isAdminEmail ? 'admin' : existing.role || 'user',
-        lastLoginAt: new Date().toISOString()
-      };
-      await setDoc(userRef, updated, { merge: true });
-      return updated;
     }
-  } catch (err) {
-    console.warn('Firestore profile synchronization deferred (operating in resilient session mode):', err);
-    return defaultProfile;
-  }
+    const existing = snap.data() as SynthosUserProfile;
+    const changes = {
+      lastLoginAt: new Date().toISOString(),
+      ...(initialData || {})
+    };
+    transaction.update(userRef, changes);
+    return { ...defaultProfile, ...existing, ...changes };
+  });
 }
-
 export async function updateUserProfile(
   uid: string,
   updates: Partial<SynthosUserProfile>
@@ -397,20 +383,11 @@ export async function saveSimulationCase(
     ownerUid: uid,
     timestamp: serverTimestamp()
   };
-  const docRef = await addDoc(casesCollection, payload);
-
-  // Increment user savedCaseCount in profile
-  try {
-    const userRef = doc(db, 'users', uid);
-    const snap = await getDoc(userRef);
-    if (snap.exists()) {
-      const curCount = snap.data().savedCaseCount || 0;
-      await setDoc(userRef, { savedCaseCount: curCount + 1 }, { merge: true });
-    }
-  } catch {
-    // non-blocking
-  }
-
+  const docRef = doc(casesCollection);
+  const batch = writeBatch(db);
+  batch.set(docRef, payload);
+  batch.update(doc(db, 'users', uid), { savedCaseCount: increment(1) });
+  await batch.commit();
   await logAuditEvent(
     uid,
     'SIMULATION_RUN',
@@ -422,27 +399,25 @@ export async function saveSimulationCase(
 }
 
 export async function getUserSavedCases(uid: string): Promise<AnonymousCaseRecord[]> {
-  try {
-    const casesCollection = collection(db, 'cases');
-    const q = query(
-      casesCollection,
-      where('ownerUid', '==', uid),
-      orderBy('timestamp', 'desc'),
-      limit(50)
-    );
-    const snap = await getDocs(q);
-    return snap.docs.map((d) => ({
-      id: d.id,
-      ...d.data()
-    })) as AnonymousCaseRecord[];
-  } catch (err) {
-    console.error('Error loading saved cases:', err);
-    return [];
-  }
+  const casesCollection = collection(db, 'cases');
+  const q = query(
+    casesCollection,
+    where('ownerUid', '==', uid),
+    orderBy('timestamp', 'desc'),
+    limit(50)
+  );
+  const snap = await getDocs(q);
+  return snap.docs.map((d) => ({
+    ...d.data(),
+    id: d.id
+  })) as AnonymousCaseRecord[];
 }
 
 export async function deleteSimulationCase(caseId: string, uid: string): Promise<void> {
-  await deleteDoc(doc(db, 'cases', caseId));
+  const batch = writeBatch(db);
+  batch.delete(doc(db, 'cases', caseId));
+  batch.update(doc(db, 'users', uid), { savedCaseCount: increment(-1) });
+  await batch.commit();
   await logAuditEvent(uid, 'CASE_DELETED', `Deleted saved simulation case ID: ${caseId}`);
 }
 

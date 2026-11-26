@@ -35,6 +35,17 @@ Run `npm test` for the deterministic calculation suite and `npm run build` to bu
 
 ---
 
+## Google sign-in and cloud cases
+
+Choose **Clinician sign in → Continue with Google**, then open **My cases** to save a synthetic case to your account. The named Firestore database and its indexes are configured in `firebase.json`. Google sign-in requires the app hostname in Firebase Authentication’s authorized domains. Use the hosted app for Google sign-in until your local preview hostname has been authorized.
+
+For a local integration check, install the Firebase CLI and Java 21+, then run the following from the checkout. The test uses a fictional Google identity and the loopback emulators.
+
+```sh
+firebase emulators:exec --only auth,firestore --project demo-synthos "node tests/firebase-account.mjs"
+```
+
+To try the emulated sign-in flow in the browser, run the same emulators with `emulators:start` and start the development server with `VITE_FIREBASE_EMULATORS=true` and an explicit `--port`. For production, a project administrator can deploy the checked-in rules and indexes with `firebase deploy --only firestore --project mythic-pottery-w9brs`. Review any CLI prompt about existing indexes before proceeding.
 ## 1. Regulatory Positioning & Product Scope
 - **Educational Decision Support**: SYNTHOS provides educational decision support under 21 U.S.C. § 360j(o)(1)(E). It does not replace individualized clinical judgment and is not a certified medical device.
 - **De-Identified / Safe Harbor**: The platform defaults to synthetic patient cases and enforces a persistent banner: *"Use synthetic or de-identified data only. Do not enter names, phone numbers, addresses or hospital IDs."*

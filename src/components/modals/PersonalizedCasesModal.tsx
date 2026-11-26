@@ -20,6 +20,7 @@ export const PersonalizedCasesModal: React.FC<PersonalizedCasesModalProps> = ({
     profile,
     savedCases,
     isLoadingSavedCases,
+    savedCasesError,
     refreshSavedCases,
     deleteSavedCase,
     updateProfileData,
@@ -266,6 +267,11 @@ export const PersonalizedCasesModal: React.FC<PersonalizedCasesModalProps> = ({
                 <div className="p-10 text-center space-y-2">
                   <div className="w-6 h-6 border-2 border-[#15803D] border-t-transparent rounded-full animate-spin mx-auto"></div>
                   <div className="text-xs text-slate-500 dark:text-slate-400">Loading your saved patient twins...</div>
+                </div>
+              ) : savedCasesError ? (
+                <div role="alert" className="p-5">
+                  <p>{savedCasesError}</p>
+                  <button type="button" onClick={refreshSavedCases} className="mt-2 underline">Retry cloud sync</button>
                 </div>
               ) : savedCases.length === 0 ? (
                 <div className="p-8 rounded-2xl border border-dashed border-slate-300 dark:border-slate-700 text-center space-y-3">
