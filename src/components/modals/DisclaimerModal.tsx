@@ -1,16 +1,23 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useClinicianAuth } from '../../context/AuthContext';
 
 export const DisclaimerModal: React.FC = () => {
   const { disclaimerAccepted, acceptDisclaimer } = useClinicianAuth();
 
+  const dialog = useRef<HTMLDialogElement>(null);
+  useEffect(() => {
+    const element = dialog.current;
+    if (!disclaimerAccepted && element && !element.open) element.showModal();
+    return () => element?.close();
+  }, [disclaimerAccepted]);
+
   if (disclaimerAccepted) return null;
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4 animate-fade-in"
-      role="dialog"
-      aria-modal="true"
+    <dialog
+      ref={dialog}
+      onCancel={event => event.preventDefault()}
+      className="m-auto max-h-[95dvh] w-[min(36rem,94vw)] overflow-y-auto rounded-2xl border-0 p-0 backdrop:bg-slate-950/80"
       aria-label="Clinical Decision Support Terms & Disclaimer"
     >
       <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xl w-full max-w-xl overflow-hidden flex flex-col text-slate-900 dark:text-slate-100 animate-scale-in">
@@ -23,7 +30,7 @@ export const DisclaimerModal: React.FC = () => {
             </span>
           </div>
 
-          <h2 className="font-['Plus_Jakarta_Sans'] text-xl font-bold">
+          <h2 tabIndex={-1} autoFocus className="font-['Plus_Jakarta_Sans'] text-xl font-bold">
             Important Medical &amp; Regulatory Positioning
           </h2>
           <p className="text-xs text-slate-300 mt-1 leading-relaxed">
@@ -82,6 +89,6 @@ export const DisclaimerModal: React.FC = () => {
           </button>
         </div>
       </div>
-    </div>
+    </dialog>
   );
 };

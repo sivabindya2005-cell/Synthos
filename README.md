@@ -1,10 +1,60 @@
-# SYNTHOS — Where Biology Meets Its Other Self.
-### Precision Pharmacotherapy Triage & Pharmacokinetic Digital Twin
+# Synthos pharmacology learning lab
 
-SYNTHOS is an educational clinical decision support (CDS) matrix and pharmacokinetic digital twin designed for qualified healthcare professionals (clinical pharmacists, nephrologists, intensivists, and pharmacology researchers).
+Explore how a simulated patient’s characteristics affect modelled drug exposure. Clinicians and supervised learners can work through a fictional case, look up a medicine, and inspect the evidence behind the model. Use synthetic data for practice.
+
+## Try a guided case
+
+[Open this repository in GitHub Codespaces](https://codespaces.new/sivabindya2005-cell/Synthos). Create a workspace on the branch you want to try. Once setup finishes, run the following in its terminal.
+
+```sh
+npm run dev
+```
+
+Open **Synthos** on port **3000** in the Ports panel. Acknowledge the educational terms, then choose **Start a guided case**. Keep the sample inputs on your first visit and advance through patient characteristics, regimen, and model results. Account sign-in and an AI key are optional for this exercise.
+
+## Run on your computer
+
+With Node.js 22.12+ and Bun installed, run the following commands.
+
+```sh
+git clone https://github.com/sivabindya2005-cell/Synthos.git
+cd Synthos
+bun install --frozen-lockfile
+npm run dev
+```
+
+Open [Synthos locally](http://localhost:3000). Bookmark a tool or share its URL with someone using the same installation. The URL identifies the tool and excludes your patient inputs.
+
+| Start here | What you can do |
+| --- | --- |
+| [Guided case](http://localhost:3000/?view=guided-wizard) | Work through a fictional pharmacokinetic simulation. |
+| [Drug library](http://localhost:3000/?view=drug-explorer) | Explore drug targets and model inputs. |
+| [Evidence library](http://localhost:3000/?view=evidence-library) | Review source material and provenance. |
+
+Run `npm test` for the deterministic calculation suite and `npm run build` to build the frontend.
 
 ---
 
+## Google sign-in and cloud cases
+
+Choose **Clinician sign in → Continue with Google**, then open **My cases** to save a synthetic case to your account. The named Firestore database and its indexes are configured in `firebase.json`. Google sign-in requires the app hostname in Firebase Authentication’s authorized domains. Use the hosted app for Google sign-in until your local preview hostname has been authorized.
+
+For a local integration check, install the Firebase CLI and Java 21+, then run the following from the checkout. The test uses a fictional Google identity and the loopback emulators.
+
+```sh
+firebase emulators:exec --only auth,firestore --project demo-synthos "node tests/firebase-account.mjs"
+```
+
+To try the emulated sign-in flow in the browser, run the same emulators with `emulators:start` and start the development server with `VITE_FIREBASE_EMULATORS=true` and an explicit `--port`. For production, a project administrator can deploy the checked-in rules and indexes with `firebase deploy --only firestore --project mythic-pottery-w9brs`. Review any CLI prompt about existing indexes before proceeding.
+## Team handoffs and saved results
+
+Open **Care handoff** for a fictional four-role exercise. The pharmacist drafts instructions, the physician reviews them, the nurse records follow-up, and the patient describes their understanding or asks a question. The physician replies to close the handoff. Practice records last for the current view.
+
+In **My assigned cases**, each participant signs in separately. A project administrator assigns the Firebase custom claim `careRole` to staff using the values `pharmacist`, `physician`, or `nurse`. Preserve existing claims when provisioning. Staff refresh their sign-in after a role change. The pharmacist enters each participant’s assignment ID. The nurse receives access after physician approval, and the patient after nursing acknowledgement. The patient uses their ordinary signed-in account.
+
+Opening a saved simulation displays its recorded inputs and outputs. Earlier records carry a legacy label. The digital twin workstation supports metformin; the guided wizard exposes the full catalog of implemented drug models.
+
+Account deletion requires a recent sign-in. A durable request marker prevents new personal records during cleanup. Retrying finishes the remaining steps. Private cases, submitted feedback, the profile and login are deleted. Shared training handoffs, append-only audit entries and the request marker remain. Set an institutional retention policy before using connected workflows in a hospital.
 ## 1. Regulatory Positioning & Product Scope
 - **Educational Decision Support**: SYNTHOS provides educational decision support under 21 U.S.C. § 360j(o)(1)(E). It does not replace individualized clinical judgment and is not a certified medical device.
 - **De-Identified / Safe Harbor**: The platform defaults to synthetic patient cases and enforces a persistent banner: *"Use synthetic or de-identified data only. Do not enter names, phone numbers, addresses or hospital IDs."*

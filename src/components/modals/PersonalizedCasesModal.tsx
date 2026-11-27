@@ -20,6 +20,7 @@ export const PersonalizedCasesModal: React.FC<PersonalizedCasesModalProps> = ({
     profile,
     savedCases,
     isLoadingSavedCases,
+    savedCasesError,
     refreshSavedCases,
     deleteSavedCase,
     updateProfileData,
@@ -45,7 +46,7 @@ export const PersonalizedCasesModal: React.FC<PersonalizedCasesModalProps> = ({
   const handleRestoreCase = (c: AnonymousCaseRecord) => {
     if (onLoadCaseIntoTwin) {
       onLoadCaseIntoTwin(c);
-      setSuccessNote(`Loaded ${c.anonymousCaseId} into interactive Digital Twin Workstation!`);
+      setSuccessNote(`Loaded ${c.anonymousCaseId} from your saved runs.`);
       setTimeout(() => {
         setSuccessNote(null);
         closePersonalizedModal();
@@ -267,6 +268,11 @@ export const PersonalizedCasesModal: React.FC<PersonalizedCasesModalProps> = ({
                   <div className="w-6 h-6 border-2 border-[#15803D] border-t-transparent rounded-full animate-spin mx-auto"></div>
                   <div className="text-xs text-slate-500 dark:text-slate-400">Loading your saved patient twins...</div>
                 </div>
+              ) : savedCasesError ? (
+                <div role="alert" className="p-5">
+                  <p>{savedCasesError}</p>
+                  <button type="button" onClick={refreshSavedCases} className="mt-2 underline">Retry cloud sync</button>
+                </div>
               ) : savedCases.length === 0 ? (
                 <div className="p-8 rounded-2xl border border-dashed border-slate-300 dark:border-slate-700 text-center space-y-3">
                   <div className="w-12 h-12 rounded-full bg-emerald-50 dark:bg-emerald-950/60 text-[#15803D] dark:text-teal-400 flex items-center justify-center mx-auto">
@@ -311,7 +317,7 @@ export const PersonalizedCasesModal: React.FC<PersonalizedCasesModalProps> = ({
                                   : 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300'
                               }`}
                             >
-                              {isCeilingBreach ? 'Ceiling Breached' : 'Optimal Titration'}
+                              {!c.engineVersion?.startsWith('synthos-twin/') ? 'Legacy result' : isCeilingBreach ? 'Above model ceiling' : 'Within model ceiling'}
                             </span>
 
                             {/* Load into Workstation */}
@@ -323,7 +329,7 @@ export const PersonalizedCasesModal: React.FC<PersonalizedCasesModalProps> = ({
                                 title="Restore this patient into the Digital Twin Simulator"
                               >
                                 <span className="material-symbols-outlined text-[14px]">tune</span>
-                                <span>Load Twin</span>
+                                <span>Open saved run</span>
                               </button>
                             )}
 

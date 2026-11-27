@@ -12,6 +12,13 @@ interface PublicHomeViewProps {
   onOpenAuth?: () => void;
 }
 
+function follow(open: () => void) {
+  return (event: React.MouseEvent<HTMLAnchorElement>) => {
+    if (event.button || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    event.preventDefault();
+    open();
+  };
+}
 export const PublicHomeView: React.FC<PublicHomeViewProps> = ({
   onLaunchTwin,
   onOpenPathways,
@@ -31,319 +38,45 @@ export const PublicHomeView: React.FC<PublicHomeViewProps> = ({
 
   return (
     <div className="min-h-screen bg-[#FAF7F2] dark:bg-[#0D1926] text-[#1E3A5F] dark:text-slate-300 font-sans">
-      {/* 3-Zone Clean Top Bar Matching Reference */}
-      <header className="sticky top-0 z-40 bg-white/90 dark:bg-[#07111E]/90 backdrop-blur-md border-b border-[#E5DDD0]/80 dark:border-slate-800 transition-colors">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-18 flex items-center justify-between gap-4 sm:gap-8">
-          {/* Zone 1: Official SYNTHOS Logo + Clean Tracking Name */}
-          <button
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="flex items-center gap-3 text-left shrink-0 transition-opacity hover:opacity-90 cursor-pointer"
-            title="SYNTHOS — Where Biology Meets Its Other Self."
-          >
-            <SynthosLogo
-              size="md"
-              variant="horizontal"
-              theme="auto"
-              showTagline={false}
-            />
-          </button>
-
-          {/* Zone 2: 5 single-line clean text links */}
-          <nav className="hidden lg:flex items-center gap-7 text-sm font-medium text-[#1E3A5F] dark:text-slate-300">
-            <a href="#pipeline" className="hover:text-[#0284c7] transition-colors whitespace-nowrap">
-              Architecture
-            </a>
-            <a href="#why-individuality" className="hover:text-[#0284c7] transition-colors whitespace-nowrap">
-              Why Individuality?
-            </a>
-            <button onClick={onOpenPathways} className="hover:text-[#0284c7] transition-colors whitespace-nowrap cursor-pointer">
-              Pathway Explorer
-            </button>
-            <button onClick={onOpenDrugIntelligence} className="hover:text-[#0284c7] transition-colors whitespace-nowrap cursor-pointer">
-              Drug Intelligence
-            </button>
-            <a href="#limitations" className="hover:text-[#0284c7] transition-colors whitespace-nowrap">
-              Scientific Boundaries
-            </a>
-          </nav>
-
-          {/* Zone 3: Actions */}
-          <div className="flex items-center gap-3 shrink-0">
-            <button
-              onClick={onOpenVideoIntro}
-              className="px-4 py-2 text-xs font-semibold text-[#1E3A5F] dark:text-slate-200 bg-white/80 dark:bg-slate-800/80 border border-slate-300 dark:border-slate-700 rounded-full hover:bg-white transition-all whitespace-nowrap shrink-0 flex items-center gap-2 cursor-pointer shadow-2xs hover:scale-[1.02]"
-              title="Watch 65s Video Overview"
-            >
-              <span className="material-symbols-outlined text-[16px] text-cyan-500">play_circle</span>
-              <span className="hidden sm:inline">Video Intro</span>
-            </button>
-
-            {isAuthenticated && clinician ? (
-              <div className="flex items-center gap-1.5">
-                <button
-                  onClick={() => openPersonalizedModal()}
-                  className="px-3 py-1.5 text-xs font-semibold text-teal-800 dark:text-teal-300 bg-teal-50 dark:bg-teal-950/60 border border-teal-300 dark:border-teal-700 rounded-full hover:bg-teal-100 dark:hover:bg-teal-900 transition-all whitespace-nowrap shrink-0 flex items-center gap-1.5 cursor-pointer shadow-2xs hover:scale-[1.02]"
-                  title={`Personalized Workspace (${savedCases.length} saved cases)`}
-                >
-                  <span className="material-symbols-outlined text-[15px]">folder_special</span>
-                  <span className="hidden sm:inline">My Cases</span>
-                  {savedCases.length > 0 && (
-                    <span className="px-1.5 py-0.2 rounded-full text-[10px] bg-teal-600 text-white font-mono font-bold">
-                      {savedCases.length}
-                    </span>
-                  )}
-                </button>
-
-                <button
-                  onClick={() => (onOpenAuth ? onOpenAuth() : openAuthModal())}
-                  className="px-3 py-1.5 text-xs font-semibold text-[#0B1528] dark:text-slate-200 bg-white/90 dark:bg-slate-800/90 border border-teal-500/40 rounded-full hover:bg-white transition-all whitespace-nowrap shrink-0 flex items-center gap-1.5 cursor-pointer shadow-2xs hover:scale-[1.02]"
-                  title={`Signed in as @${clinician.username || clinician.name}`}
-                >
-                  <span className="w-5 h-5 rounded-full bg-[#15803D] text-white flex items-center justify-center text-[10px] font-bold">
-                    {clinician.name ? clinician.name.charAt(0).toUpperCase() : 'U'}
-                  </span>
-                  <span className="hidden md:inline font-mono text-[11px] font-bold">@{clinician.username || clinician.name}</span>
-                </button>
-              </div>
-            ) : (
-              <button
-                onClick={() => (onOpenAuth ? onOpenAuth() : openAuthModal())}
-                className="px-3.5 py-2 text-xs font-semibold text-[#1E3A5F] dark:text-slate-200 bg-white/80 dark:bg-slate-800/80 border border-slate-300 dark:border-slate-700 rounded-full hover:bg-white transition-all whitespace-nowrap shrink-0 flex items-center gap-1.5 cursor-pointer shadow-2xs hover:scale-[1.02]"
-                title="Clinician Sign-In & Verification"
-              >
-                <span className="material-symbols-outlined text-[15px] text-[#15803D] dark:text-teal-400">lock</span>
-                <span>Sign In / Register</span>
-              </button>
+      <a className="synthos-skip" href="#start-here">Skip to learning tools</a>
+      <header className="border-b border-slate-300 bg-white dark:bg-slate-950">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-3 flex-wrap">
+          <SynthosLogo size="md" variant="horizontal" theme="auto" showTagline={false} />
+          <div className="flex gap-3 items-center flex-wrap">
+            {isAuthenticated && clinician && (
+              <button className="start-link" onClick={openPersonalizedModal}>My cases ({savedCases.length})</button>
             )}
-
-            <button
-              onClick={onLaunchTwin}
-              className="px-5 py-2 text-xs font-bold text-white bg-[#0B1528] hover:bg-[#050B16] border border-cyan-400/40 rounded-full transition-all shadow-[0_0_15px_rgba(6,182,212,0.35)] hover:shadow-[0_0_22px_rgba(6,182,212,0.55)] whitespace-nowrap shrink-0 flex items-center gap-2 cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
-            >
-              <span>Launch Digital Twin</span>
-              <span className="material-symbols-outlined text-[15px] text-cyan-400">arrow_forward</span>
+            <a className="start-link" href="?view=care-handoff">Care handoff</a><button className="start-link" onClick={() => (onOpenAuth || openAuthModal)()}>
+              {isAuthenticated && clinician ? 'My account' : 'Clinician sign in'}
             </button>
           </div>
         </div>
       </header>
-
-      {/* Cinematic Hero Stage (Matches Reference Mockup) */}
-      <section className="relative min-h-[92vh] sm:min-h-[94vh] flex flex-col justify-between overflow-hidden bg-[#FAF7F2] dark:bg-[#07111E] border-b border-[#E5DDD0] dark:border-slate-800">
-        {/* Full-Bleed Artwork Backdrop */}
-        <div className="absolute inset-0 pointer-events-none select-none overflow-hidden">
-          <img
-            src="/assets/aistudio/Untitled_design__2__af2040b1.png"
-            alt="SYNTHOS Biological Human and Digital Twin Split Artwork"
-            className="w-full h-full object-cover object-center lg:object-right opacity-95 transition-opacity"
-          />
-          {/* Subtle responsive gradient overlay to ensure text contrast and legibility */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#FAF7F2]/95 via-[#FAF7F2]/65 to-transparent dark:from-[#07111E]/95 dark:via-[#07111E]/65 dark:to-transparent lg:w-3/5"></div>
-          <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#FAF7F2] dark:from-[#07111E] to-transparent"></div>
-        </div>
-
-        {/* Hero Main Content Grid */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-10 sm:pt-14 pb-8 w-full relative z-10 flex-1 flex flex-col justify-between">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start lg:items-center">
-            {/* Left Column: Typography & CTAs */}
-            <div className="lg:col-span-6 space-y-6">
-              {/* Precision Platform Badge */}
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border border-[#CBE4CB] dark:border-cyan-500/30 text-[11px] font-bold text-[#15803D] dark:text-cyan-300 font-mono tracking-wider uppercase shadow-xs">
-                <span className="w-2 h-2 rounded-full bg-[#15803D] dark:bg-cyan-400 animate-pulse"></span>
-                <span>Precision Medicine &amp; Computational Pharmacology Platform</span>
-              </div>
-
-              {/* Main Headline */}
-              <h1 className="font-['Plus_Jakarta_Sans'] text-4xl sm:text-5xl lg:text-[62px] font-extrabold text-[#0B1528] dark:text-[#F8FAFC] tracking-tight leading-[1.08] text-balance">
-                SYNTHOS —<br />
-                Where Biology<br />
-                Meets Its <span className="italic font-serif font-semibold text-[#0284c7] dark:text-[#38bdf8]">Other Self.</span>
-              </h1>
-
-              {/* Description Paragraph */}
-              <p className="text-sm sm:text-base text-[#1E3A5F] dark:text-slate-300 max-w-lg leading-relaxed font-normal">
-                Explore how individual biological characteristics, clinical laboratory parameters, and pharmaceutical science unite into an interactive digital twin simulation.
-              </p>
-
-              {/* Primary Dual CTA Buttons */}
-              <div className="flex flex-wrap items-center gap-4 pt-2">
-                <button
-                  onClick={onLaunchTwin}
-                  className="px-7 py-3.5 rounded-full bg-[#0B1528] hover:bg-[#050B16] text-white text-sm font-bold shadow-[0_0_28px_rgba(20,184,166,0.45)] hover:shadow-[0_0_35px_rgba(20,184,166,0.65)] ring-1 ring-cyan-400/50 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center gap-2.5 cursor-pointer"
-                >
-                  <span>Launch Patient Digital Twin</span>
-                  <span className="material-symbols-outlined text-[18px] text-cyan-400">arrow_forward</span>
-                </button>
-
-                <button
-                  onClick={onOpenVideoIntro}
-                  className="px-5 py-3.5 rounded-full bg-white/70 hover:bg-white dark:bg-slate-900/60 dark:hover:bg-slate-900/90 backdrop-blur-md border border-slate-300 dark:border-slate-700 text-[#1E3A5F] dark:text-slate-200 text-sm font-semibold transition-all flex items-center gap-2.5 cursor-pointer shadow-xs hover:scale-[1.02]"
-                >
-                  <span className="w-6 h-6 rounded-full bg-cyan-500/20 text-cyan-600 dark:text-cyan-400 flex items-center justify-center">
-                    <span className="material-symbols-outlined text-[16px]">play_arrow</span>
-                  </span>
-                  <span>Watch Overview</span>
-                </button>
-              </div>
-            </div>
-
-            {/* Right Column: Interactive Frosted Glass Telemetry Cards */}
-            <div className="lg:col-span-6 flex flex-col items-center lg:items-end gap-6 pt-4 lg:pt-0">
-              {/* Card 1: Patient Digital Twin Card */}
-              <div className="w-full max-w-sm rounded-2xl p-4 bg-slate-900/50 dark:bg-slate-950/60 backdrop-blur-xl border border-cyan-400/30 shadow-[0_8px_32px_rgba(2,6,23,0.45)] text-white space-y-3 transition-transform hover:scale-[1.01]">
-                <div className="flex items-center justify-between border-b border-cyan-500/20 pb-2.5">
-                  <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
-                    <span className="font-['Plus_Jakarta_Sans'] font-bold text-sm tracking-tight text-white">
-                      Patient Digital Twin
-                    </span>
-                  </div>
-                  <span className="text-[10px] font-mono font-bold text-cyan-300 uppercase px-2 py-0.5 rounded-full bg-cyan-950/70 border border-cyan-400/30">
-                    Live Telemetry
-                  </span>
-                </div>
-
-                {/* Animated Real-time ECG Waveform */}
-                <div className="h-9 w-full bg-slate-950/60 rounded-lg p-1.5 border border-cyan-500/20 flex items-center overflow-hidden">
-                  <svg className="w-full h-full text-cyan-400" viewBox="0 0 240 30" fill="none">
-                    <path
-                      d="M0,15 L40,15 L45,15 L50,6 L55,24 L60,8 L65,18 L70,15 L120,15 L125,15 L130,6 L135,24 L140,8 L145,18 L150,15 L240,15"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </div>
-
-                {/* 4 Interactive Telemetry Nodes + Wireframe Silhouette */}
-                <div className="grid grid-cols-12 gap-3 items-center pt-1">
-                  <div className="col-span-8 space-y-1.5 text-xs font-mono">
-                    {[
-                      { key: 'genomics', label: 'Genomics', val: 'CYP2C19 *2/*3 PM', icon: 'dna' },
-                      { key: 'biomarkers', label: 'Biomarkers', val: 'eGFR 42 mL/min', icon: 'vital_signs' },
-                      { key: 'clinical', label: 'Clinical Data', val: 'SCr 1.6 • K+ 4.8', icon: 'medical_information' },
-                      { key: 'prediction', label: 'Response Prediction', val: 'Peak 2.1 mcg/mL', icon: 'timeline' }
-                    ].map((item) => (
-                      <div
-                        key={item.key}
-                        className="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-cyan-500/20 flex items-center justify-between transition-colors cursor-pointer group"
-                      >
-                        <div className="flex items-center gap-1.5 truncate">
-                          <span className="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
-                          <span className="text-[11px] text-slate-300 font-sans font-medium">{item.label}</span>
-                        </div>
-                        <span className="text-[10px] text-cyan-300 font-bold font-mono group-hover:text-cyan-200">
-                          {item.val}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Wireframe Silhouette Anatomy Icon */}
-                  <div className="col-span-4 flex flex-col items-center justify-center p-2 rounded-xl bg-cyan-950/40 border border-cyan-400/20 text-cyan-300">
-                    <span className="material-symbols-outlined text-[42px] animate-pulse">
-                      accessibility_new
-                    </span>
-                    <span className="text-[9px] font-mono text-cyan-400 mt-1 uppercase">Twin Mesh</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Card 2: Therapeutic Insights Card */}
-              <div className="w-full max-w-[320px] rounded-2xl p-4 bg-slate-900/50 dark:bg-slate-950/60 backdrop-blur-xl border border-cyan-400/30 shadow-[0_8px_32px_rgba(2,6,23,0.45)] text-white space-y-2.5 transition-transform hover:scale-[1.01]">
-                <div className="flex items-center justify-between border-b border-cyan-500/20 pb-2">
-                  <span className="font-['Plus_Jakarta_Sans'] font-bold text-xs tracking-tight text-white flex items-center gap-1.5">
-                    <span className="material-symbols-outlined text-[16px] text-cyan-400">medication</span>
-                    Therapeutic Insights
-                  </span>
-                  <span className="text-[10px] font-mono text-cyan-300">Metformin 1000mg</span>
-                </div>
-
-                {/* Capsule Pill & Pharmacokinetic Sigmoidal Curve */}
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500/30 to-blue-600/30 border border-cyan-400/40 flex items-center justify-center text-cyan-300 shrink-0">
-                    <span className="material-symbols-outlined text-[20px]">pill</span>
-                  </div>
-                  <div className="flex-1 h-12 bg-slate-950/60 rounded-lg p-1.5 border border-cyan-500/20 relative overflow-hidden flex items-center">
-                    <svg className="w-full h-full text-cyan-400" viewBox="0 0 160 40" fill="none">
-                      <path
-                        d="M 5,35 C 45,35 65,8 140,6"
-                        stroke="currentColor"
-                        strokeWidth="2.5"
-                        strokeLinecap="round"
-                      />
-                      <circle cx="140" cy="6" r="3.5" fill="#38bdf8" className="animate-ping" />
-                      <circle cx="140" cy="6" r="2.5" fill="#ffffff" />
-                    </svg>
-                    <span className="absolute right-2 bottom-1 text-[9px] font-mono text-cyan-300 font-bold">
-                      Css Peak 2.1
-                    </span>
-                  </div>
-                </div>
-              </div>
+      <main id="start-here" tabIndex={-1}>
+        <section className="relative isolate overflow-hidden border-b border-slate-300 bg-[#FAF7F2] text-[#142d42]">
+          <img src="/assets/aistudio/Untitled_design__2__af2040b1.png" alt="" className="absolute inset-y-0 right-0 -z-10 hidden h-full w-1/2 object-cover object-right lg:block" />
+          <div className="max-w-7xl mx-auto px-5 sm:px-8 py-10 lg:py-20">
+            <div className="max-w-xl lg:w-1/2">
+              <p className="font-semibold text-teal-800">Pharmacology learning lab</p>
+              <h1 className="mt-3 text-4xl sm:text-5xl font-bold tracking-tight leading-tight">Explore drug behavior in a simulated patient.</h1>
+              <p className="mt-4 text-lg">Start with a fictional case. Inspect the patient inputs, choose a regimen, and see how the model calculates drug exposure.</p>
+              <a className="start-primary mt-6" href="?view=guided-wizard" onClick={follow(onLaunchTwin)}>Start a guided case</a>
+              <p className="mt-3 text-sm">For clinicians and supervised learners. The guided case opens without an account.</p>
             </div>
           </div>
-
-          {/* Bottom Floating Capsule Dock (4 Pillars from Reference) */}
-          <div className="pt-8 pb-4">
-            <div className="max-w-4xl mx-auto rounded-2xl bg-white/70 dark:bg-slate-900/60 backdrop-blur-xl border border-slate-300/80 dark:border-cyan-500/30 p-2.5 sm:p-3 shadow-xl">
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs divide-y sm:divide-y-0 sm:divide-x divide-slate-200 dark:divide-slate-800">
-                <div className="flex items-center gap-2.5 p-2 justify-center">
-                  <span className="material-symbols-outlined text-[20px] text-cyan-500 dark:text-cyan-400">dna</span>
-                  <div>
-                    <span className="font-bold text-[#0B1528] dark:text-white block leading-tight">Instant Live</span>
-                    <span className="text-[10px] text-slate-500 dark:text-slate-400">Execution</span>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-2.5 p-2 justify-center">
-                  <span className="material-symbols-outlined text-[20px] text-teal-600 dark:text-teal-400">hub</span>
-                  <div>
-                    <span className="font-bold text-[#0B1528] dark:text-white block leading-tight">No Sign-in</span>
-                    <span className="text-[10px] text-slate-500 dark:text-slate-400">Required</span>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-2.5 p-2 justify-center">
-                  <span className="material-symbols-outlined text-[20px] text-blue-600 dark:text-blue-400">verified_user</span>
-                  <div>
-                    <span className="font-bold text-[#0B1528] dark:text-white block leading-tight">De-identified &amp;</span>
-                    <span className="text-[10px] text-slate-500 dark:text-slate-400">Confidential</span>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-2.5 p-2 justify-center">
-                  <span className="material-symbols-outlined text-[20px] text-cyan-600 dark:text-cyan-400">bolt</span>
-                  <div>
-                    <span className="font-bold text-[#0B1528] dark:text-white block leading-tight">Scalable Scientific</span>
-                    <span className="text-[10px] text-slate-500 dark:text-slate-400">Precision</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Bottom Row: Teaser & Carousel Dots */}
-            <div className="max-w-5xl mx-auto pt-4 flex items-center justify-between text-xs px-2">
-              <div>
-                <span className="text-[10px] font-mono uppercase font-bold tracking-widest text-slate-400 block">
-                  PRIMARY SANDBOX
-                </span>
-                <span className="text-base sm:text-lg font-['Plus_Jakarta_Sans'] font-bold text-[#0B1528] dark:text-white">
-                  Your Biology. Simulated in <span className="italic font-serif text-[#0284c7] dark:text-[#38bdf8]">Real-Time.</span>
-                </span>
-              </div>
-
-              {/* Visual Carousel Indicators from reference */}
-              <div className="flex items-center gap-1.5">
-                <span className="w-2.5 h-2.5 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(6,182,212,0.8)]"></span>
-                <span className="w-2 h-2 rounded-full bg-slate-300 dark:bg-slate-700"></span>
-                <span className="w-2 h-2 rounded-full bg-slate-300 dark:bg-slate-700"></span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
+        </section>
+        <section aria-label="Explore learning tools" className="max-w-7xl mx-auto px-5 sm:px-8 py-8 grid gap-4 sm:grid-cols-3">
+          {[
+            { title: 'Drug library', description: 'Look up a medicine and explore its targets.', view: 'drug-explorer', open: onOpenDrugIntelligence },
+            { title: 'Pathway explorer', description: 'Trace the biological pathways behind a drug response.', view: 'pathway-network', open: onOpenPathways },
+            { title: 'Evidence library', description: 'Inspect the sources behind the simulation.', view: 'evidence-library', open: onOpenEvidence }
+          ].map(tool => (
+            <a key={tool.view} className="start-card" href={'?view=' + tool.view} onClick={follow(tool.open)}>
+              <h2 className="text-xl font-bold">{tool.title}</h2>
+              <p className="mt-2">{tool.description}</p>
+            </a>
+          ))}
+        </section>
       {/* Cinematic Video Intro Showcase Section */}
       <section
         style={{
@@ -887,6 +620,7 @@ export const PublicHomeView: React.FC<PublicHomeViewProps> = ({
         </div>
       </section>
 
+      </main>
       {/* Footer */}
       <footer style={{ backgroundColor: '#020820' }} className="py-8 bg-[#020820] text-slate-400 border-t border-cyan-500/20 text-xs">
         <div className="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">

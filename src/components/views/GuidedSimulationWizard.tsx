@@ -659,10 +659,10 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
               {/* Demographics Row */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-[#4B6584] dark:text-[#94A3B8] mb-1">
+                  <label htmlFor="wizard-age" className="block text-xs font-semibold text-[#4B6584] dark:text-[#94A3B8] mb-1">
                     Age (Years)
                   </label>
-                  <input
+                  <input id="wizard-age"
                     type="number"
                     min={18}
                     max={120}
@@ -673,10 +673,10 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-[#4B6584] dark:text-[#94A3B8] mb-1">
+                  <label htmlFor="wizard-sex" className="block text-xs font-semibold text-[#4B6584] dark:text-[#94A3B8] mb-1">
                     Biological Sex
                   </label>
-                  <select
+                  <select id="wizard-sex"
                     value={sex}
                     onChange={(e) => setSex(e.target.value as 'Male' | 'Female')}
                     className="w-full px-3 py-2 text-sm rounded-xl border border-[#E5DDD0] dark:border-[#1F3B5C] bg-[#FAF7F2] dark:bg-[#0D1926] text-[#1E3A8A] dark:text-[#F8FAFC] focus:ring-2 focus:ring-[#15803D] focus:outline-hidden"
@@ -687,10 +687,10 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-[#4B6584] dark:text-[#94A3B8] mb-1">
+                  <label htmlFor="wizard-weightKg" className="block text-xs font-semibold text-[#4B6584] dark:text-[#94A3B8] mb-1">
                     Weight (kg)
                   </label>
-                  <input
+                  <input id="wizard-weightKg"
                     type="number"
                     min={30}
                     max={300}
@@ -702,10 +702,10 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-[#4B6584] dark:text-[#94A3B8] mb-1">
+                  <label htmlFor="wizard-heightCm" className="block text-xs font-semibold text-[#4B6584] dark:text-[#94A3B8] mb-1">
                     Height (cm)
                   </label>
-                  <input
+                  <input id="wizard-heightCm"
                     type="number"
                     min={100}
                     max={240}
@@ -719,10 +719,10 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
               {/* Renal & Electrolytes Row */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
                 <div>
-                  <label className="block text-xs font-semibold text-[#4B6584] dark:text-[#94A3B8] mb-1">
+                  <label htmlFor="wizard-scr" className="block text-xs font-semibold text-[#4B6584] dark:text-[#94A3B8] mb-1">
                     Serum Creatinine (mg/dL)
                   </label>
-                  <input
+                  <input id="wizard-scr"
                     type="number"
                     min={0.2}
                     max={20.0}
@@ -737,10 +737,10 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-[#4B6584] dark:text-[#94A3B8] mb-1">
+                  <label htmlFor="wizard-potassium" className="block text-xs font-semibold text-[#4B6584] dark:text-[#94A3B8] mb-1">
                     Serum Potassium (mEq/L)
                   </label>
-                  <input
+                  <input id="wizard-potassium"
                     type="number"
                     min={1.5}
                     max={9.0}
@@ -755,10 +755,10 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-[#4B6584] dark:text-[#94A3B8] mb-1">
+                  <label htmlFor="wizard-hepaticStatus" className="block text-xs font-semibold text-[#4B6584] dark:text-[#94A3B8] mb-1">
                     Hepatic Status
                   </label>
-                  <select
+                  <select id="wizard-hepaticStatus"
                     value={hepaticStatus}
                     onChange={(e) => setHepaticStatus(e.target.value as any)}
                     className="w-full px-3 py-2 text-sm rounded-xl border border-[#E5DDD0] dark:border-[#1F3B5C] bg-[#FAF7F2] dark:bg-[#0D1926] text-[#1E3A8A] dark:text-[#F8FAFC] focus:ring-2 focus:ring-[#15803D] focus:outline-hidden"
@@ -815,10 +815,10 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
 
               {/* Clinical Notes & Real-Time PHI Scanner */}
               <div className="pt-2">
-                <label className="block text-xs font-semibold text-[#4B6584] dark:text-[#94A3B8] mb-1">
+                <label htmlFor="wizard-patientNotes" className="block text-xs font-semibold text-[#4B6584] dark:text-[#94A3B8] mb-1">
                   Synthetic Case Context &amp; Clinical Notes
                 </label>
-                <textarea
+                <textarea id="wizard-patientNotes"
                   rows={2}
                   value={patientNotes}
                   onChange={(e) => setPatientNotes(e.target.value)}
@@ -968,10 +968,10 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
               {/* Regimen Inputs */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
                 <div>
-                  <label className="block text-xs font-semibold text-[#4B6584] dark:text-[#94A3B8] mb-1">
+                  <label htmlFor="wizard-doseMg" className="block text-xs font-semibold text-[#4B6584] dark:text-[#94A3B8] mb-1">
                     Dose per Administration (mg)
                   </label>
-                  <input
+                  <input id="wizard-doseMg"
                     type="number"
                     min={0.01}
                     step="5"
@@ -982,10 +982,10 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-[#4B6584] dark:text-[#94A3B8] mb-1">
+                  <label htmlFor="wizard-intervalHours" className="block text-xs font-semibold text-[#4B6584] dark:text-[#94A3B8] mb-1">
                     Dosing Interval τ (Hours)
                   </label>
-                  <input
+                  <input id="wizard-intervalHours"
                     type="number"
                     min={1}
                     max={96}
@@ -999,10 +999,10 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-[#4B6584] dark:text-[#94A3B8] mb-1">
+                  <label htmlFor="wizard-routeOverride" className="block text-xs font-semibold text-[#4B6584] dark:text-[#94A3B8] mb-1">
                     Route of Administration
                   </label>
-                  <select
+                  <select id="wizard-routeOverride"
                     value={routeOverride}
                     onChange={(e) => setRouteOverride(e.target.value as any)}
                     className="w-full px-3 py-2 text-sm rounded-xl border border-[#E5DDD0] dark:border-[#1F3B5C] bg-[#FAF7F2] dark:bg-[#0D1926] text-[#1E3A8A] dark:text-[#F8FAFC] focus:ring-2 focus:ring-[#15803D] focus:outline-hidden"
@@ -1018,10 +1018,10 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
                 {routeOverride === 'IV Infusion' && (
                   <div>
-                    <label className="block text-xs font-semibold text-[#4B6584] dark:text-[#94A3B8] mb-1">
+                    <label htmlFor="wizard-infusionTimeHours" className="block text-xs font-semibold text-[#4B6584] dark:text-[#94A3B8] mb-1">
                       Infusion Duration (Hours)
                     </label>
-                    <input
+                    <input id="wizard-infusionTimeHours"
                       type="number"
                       min={0.25}
                       max={12}
@@ -1034,10 +1034,10 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
                 )}
 
                 <div>
-                  <label className="block text-xs font-semibold text-[#4B6584] dark:text-[#94A3B8] mb-1">
+                  <label htmlFor="wizard-modelOverride" className="block text-xs font-semibold text-[#4B6584] dark:text-[#94A3B8] mb-1">
                     Pharmacokinetic Model
                   </label>
-                  <select
+                  <select id="wizard-modelOverride"
                     value={modelOverride}
                     onChange={(e) => setModelOverride(e.target.value as any)}
                     className="w-full px-3 py-2 text-sm rounded-xl border border-[#E5DDD0] dark:border-[#1F3B5C] bg-[#FAF7F2] dark:bg-[#0D1926] text-[#1E3A8A] dark:text-[#F8FAFC] focus:ring-2 focus:ring-[#15803D] focus:outline-hidden"
@@ -1332,10 +1332,10 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
                   <div>
-                    <label className="block text-[11px] font-semibold text-[#1e3a8a] mb-1">
+                    <label htmlFor="wizard-compDoseMg" className="block text-[11px] font-semibold text-[#1e3a8a] mb-1">
                       Comparison Dose (mg)
                     </label>
-                    <input
+                    <input id="wizard-compDoseMg"
                       type="number"
                       value={compDoseMg}
                       onChange={(e) => setCompDoseMg(Number(e.target.value))}
@@ -1343,10 +1343,10 @@ export const GuidedSimulationWizard: React.FC<GuidedSimulationWizardProps> = ({
                     />
                   </div>
                   <div>
-                    <label className="block text-[11px] font-semibold text-[#1e3a8a] mb-1">
+                    <label htmlFor="wizard-compIntervalHours" className="block text-[11px] font-semibold text-[#1e3a8a] mb-1">
                       Comparison Interval (Hours)
                     </label>
-                    <input
+                    <input id="wizard-compIntervalHours"
                       type="number"
                       value={compIntervalHours}
                       onChange={(e) => setCompIntervalHours(Number(e.target.value))}

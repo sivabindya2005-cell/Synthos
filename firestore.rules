@@ -11,28 +11,28 @@ service cloud.firestore {
       return isSignedIn() && request.auth.uid == userId;
     }
 
+    function activeUser() {
+      return !exists(/databases/$(database)/documents/deletionRequests/$(request.auth.uid));
+    }
+
     function isAdmin() {
-      return isSignedIn() && (
-        request.auth.token.email == 'sivasyam05@gmail.com' ||
-        (request.auth.token.role != null && request.auth.token.role == 'admin') ||
-        (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin')
-      );
+      return isSignedIn() && (request.auth.token.get('role', '') == 'admin' ||
+        (request.auth.token.get('email_verified', false) &&
+         request.auth.token.get('email', '') == 'sivasyam05@gmail.com'));
     }
 
     function isReviewer() {
-      return isSignedIn() && (
-        isAdmin() ||
-        (request.auth.token.role != null && request.auth.token.role == 'reviewer') ||
-        (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'reviewer')
-      );
+      return isSignedIn() && (isAdmin() || request.auth.token.get('role', '') == 'reviewer');
     }
-
     // USERS COLLECTION
     // Users can read/write their own user record; admins can view all users for auditing
     match /users/{userId} {
       allow read: if isOwner(userId) || isAdmin();
-      allow create: if isOwner(userId) && request.resource.data.keys().hasAll(['email', 'createdAt']);
-      allow update: if isOwner(userId) || isAdmin();
+      allow create: if isOwner(userId) && activeUser() && request.resource.data.uid == userId &&
+        request.resource.data.keys().hasAll(['email', 'createdAt']) &&
+        (request.resource.data.role == 'user' || isAdmin());
+      allow update: if isAdmin() || (isOwner(userId) && activeUser() &&
+        !request.resource.data.diff(resource.data).affectedKeys().hasAny(['uid', 'role', 'createdAt']));
       allow delete: if isOwner(userId) || isAdmin();
     }
 
@@ -40,11 +40,11 @@ service cloud.firestore {
     // Anonymous clinical cases created by clinicians/students (Strict UID isolation, deny by default)
     match /cases/{caseId} {
       allow read: if isSignedIn() && (resource.data.ownerUid == request.auth.uid || isReviewer());
-      allow create: if isSignedIn() &&
+      allow create: if isSignedIn() && activeUser() &&
         request.resource.data.ownerUid == request.auth.uid &&
         request.resource.data.caseId is string &&
         request.resource.data.engineVersion is string;
-      allow update: if isSignedIn() && resource.data.ownerUid == request.auth.uid;
+      allow update: if isOwner(resource.data.ownerUid) && activeUser() && request.resource.data.ownerUid == resource.data.ownerUid;
       allow delete: if isSignedIn() && (resource.data.ownerUid == request.auth.uid || isAdmin());
     }
 
@@ -58,7 +58,7 @@ service cloud.firestore {
     // FEEDBACK COLLECTION
     // Clinician evaluations and guideline dispute notes
     match /feedback/{feedbackId} {
-      allow create: if isSignedIn() && request.resource.data.authorUid == request.auth.uid;
+      allow create: if isSignedIn() && activeUser() && request.resource.data.authorUid == request.auth.uid;
       allow read: if isSignedIn() && (resource.data.authorUid == request.auth.uid || isReviewer());
       allow update, delete: if isAdmin() || (isSignedIn() && resource.data.authorUid == request.auth.uid);
     }
@@ -66,10 +66,46 @@ service cloud.firestore {
     // AUDIT LOGS COLLECTION
     // Strictly append-only activity trail of simulations executed (no modification or deletion allowed)
     match /auditLogs/{logId} {
-      allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
+      allow create: if isSignedIn() && activeUser() && request.resource.data.userId == request.auth.uid;
       allow read: if isSignedIn() && (resource.data.userId == request.auth.uid || isAdmin());
       allow update, delete: if false; // Append-only audit integrity
     }
+
+    match /deletionRequests/{uid} {
+      allow get: if isOwner(uid);
+      allow create: if isOwner(uid) && request.resource.data.keys().hasOnly(['startedAt']) &&
+        request.resource.data.startedAt == request.time;
+    }
+
+    match /careHandoffs/{id} {
+      function staff(role) {
+        return request.auth.token.get('careRole', '') == role;
+      }
+      function note(text, max) { return text is string && text.size() > 0 && text.size() <= max; }
+      function step(before, after, role, field, members) {
+        let old = resource.data;
+        let next = request.resource.data;
+        return old.stage == before && next.stage == after && isOwner(old[role]) &&
+          (role == 'patient' || staff(role)) && next.updatedAt == request.time &&
+          next.members == members && note(next[field], 2000) &&
+          next.diff(old).affectedKeys().hasOnly(['stage', 'updatedAt', 'members', field]);
+      }
+      allow read: if isSignedIn() && request.auth.uid in resource.data.members;
+      allow create: if isSignedIn() && activeUser() && staff('pharmacist') &&
+        request.resource.data.keys().hasOnly(['pharmacist','physician','nurse','patient','members','title','plan','stage','updatedAt']) &&
+        isOwner(request.resource.data.pharmacist) && request.resource.data.stage == 'review' &&
+        request.resource.data.updatedAt == request.time &&
+        note(request.resource.data.title,100) && note(request.resource.data.plan,2000) &&
+        note(request.resource.data.physician,128) && note(request.resource.data.nurse,128) && note(request.resource.data.patient,128) &&
+        [request.auth.uid,request.resource.data.physician,request.resource.data.nurse,request.resource.data.patient].toSet().size() == 4 &&
+        request.resource.data.members == [request.auth.uid, request.resource.data.physician];
+      allow update: if isSignedIn() && activeUser() && (
+        step('review','acknowledge','physician','decision',resource.data.members.concat([resource.data.nurse])) ||
+        step('acknowledge','teachback','nurse','followup',resource.data.members.concat([resource.data.patient])) ||
+        step('teachback','answered','patient','understanding',resource.data.members) ||
+        step('answered','complete','physician','response',resource.data.members));
+    }
+
 
     // Default deny all other collections
     match /{document=**} {

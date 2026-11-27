@@ -1,5 +1,6 @@
 import { initializeApp, getApps, getApp } from 'firebase/app';
 import {
+  connectAuthEmulator,
   getAuth,
   GoogleAuthProvider,
   signInWithPopup,
@@ -12,6 +13,10 @@ import {
   User as FirebaseUser
 } from 'firebase/auth';
 import {
+  connectFirestoreEmulator,
+  increment,
+  writeBatch,
+  runTransaction,
   getFirestore,
   doc,
   getDoc,
@@ -29,7 +34,11 @@ import {
 import firebaseConfig from '../firebase-applet-config.json';
 
 // Initialize Firebase App
-const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+const localEmulators = import.meta.env.DEV && import.meta.env.VITE_FIREBASE_EMULATORS === 'true';
+const appConfig = localEmulators
+  ? { ...firebaseConfig, projectId: 'demo-synthos', apiKey: 'demo-api-key', authDomain: 'demo-synthos.firebaseapp.com' }
+  : firebaseConfig;
+const app = getApps().length === 0 ? initializeApp(appConfig) : getApp();
 
 // Initialize Auth
 export const auth = getAuth(app);
@@ -39,6 +48,11 @@ googleProvider.setCustomParameters({ prompt: 'select_account' });
 // Initialize Firestore
 const databaseId = (firebaseConfig as any).firestoreDatabaseId;
 export const db = databaseId ? getFirestore(app, databaseId) : getFirestore(app);
+
+if (localEmulators) {
+  connectAuthEmulator(auth, 'http://127.0.0.1:9099');
+  connectFirestoreEmulator(db, '127.0.0.1', 8080);
+}
 
 // Types
 export type UserRole = 'user' | 'reviewer' | 'admin';
@@ -124,16 +138,8 @@ export interface ClinicianFeedbackEntry {
 
 export async function signInWithGoogle(): Promise<FirebaseUser> {
   const result = await signInWithPopup(auth, googleProvider);
-  try {
-    await ensureUserProfile(result.user);
-  } catch (e) {
-    console.warn('ensureUserProfile deferred during Google sign-in:', e);
-  }
-  try {
-    await logAuditEvent(result.user.uid, 'AUTH_LOGIN', 'Signed in via Google OAuth');
-  } catch (e) {
-    console.warn('logAuditEvent deferred:', e);
-  }
+  await ensureUserProfile(result.user);
+  void logAuditEvent(result.user.uid, 'AUTH_LOGIN', 'Signed in via Google OAuth');
   return result.user;
 }
 
@@ -201,8 +207,8 @@ export async function registerWithUsernameAndPassword(
   const profile = await ensureUserProfile(result.user, {
     username: cleanUsername,
     displayName: options?.displayName?.trim() || username.trim(),
-    credentials: options?.credentials?.trim() || 'Clinical Pharmacist',
-    institution: options?.institution?.trim() || 'Clinical Practice Group'
+    credentials: options?.credentials?.trim() || '',
+    institution: options?.institution?.trim() || ''
   });
 
   try {
@@ -262,13 +268,6 @@ export async function sendPasswordReset(email: string): Promise<void> {
 }
 
 export async function signOutUser(): Promise<void> {
-  if (auth.currentUser) {
-    try {
-      await logAuditEvent(auth.currentUser.uid, 'AUTH_LOGIN', 'User signed out');
-    } catch {
-      // non-blocking
-    }
-  }
   await firebaseSignOut(auth);
 }
 
@@ -283,7 +282,7 @@ export async function ensureUserProfile(
   }
 ): Promise<SynthosUserProfile> {
   // Check if admin by email
-  const isAdminEmail = user.email?.toLowerCase() === 'sivasyam05@gmail.com';
+  const isAdminEmail = user.emailVerified && user.email?.toLowerCase() === 'sivasyam05@gmail.com';
   const role: UserRole = isAdminEmail ? 'admin' : 'user';
 
   const inferredUsername =
@@ -301,8 +300,8 @@ export async function ensureUserProfile(
       initialData?.displayName ||
       user.displayName ||
       (inferredUsername ? `@${inferredUsername}` : 'Clinician'),
-    credentials: initialData?.credentials || 'Clinical Pharmacist',
-    institution: initialData?.institution || 'Clinical Practice Group',
+    credentials: initialData?.credentials || '',
+    institution: initialData?.institution || '',
     role,
     isGuest: false,
     disclaimerAccepted: false,
@@ -312,35 +311,25 @@ export async function ensureUserProfile(
     savedCaseCount: 0
   };
 
-  try {
-    const userRef = doc(db, 'users', user.uid);
-    const snap = await getDoc(userRef);
-
-    if (!snap.exists()) {
-      await setDoc(userRef, defaultProfile);
-      return defaultProfile;
-    } else {
-      const existing = snap.data() as SynthosUserProfile;
-      const updated: SynthosUserProfile = {
-        ...defaultProfile,
-        ...existing,
-        username: existing.username || defaultProfile.username,
-        email: user.email || existing.email || defaultProfile.email,
-        displayName: existing.displayName || defaultProfile.displayName,
-        credentials: existing.credentials || defaultProfile.credentials,
-        institution: existing.institution || defaultProfile.institution,
-        role: isAdminEmail ? 'admin' : existing.role || 'user',
-        lastLoginAt: new Date().toISOString()
-      };
-      await setDoc(userRef, updated, { merge: true });
-      return updated;
+  const userRef = doc(db, 'users', user.uid);
+  return runTransaction(db, async transaction => {
+    const snap = await transaction.get(userRef);
+    if ((await transaction.get(doc(db, 'deletionRequests', user.uid))).exists()) {
+      return snap.exists() ? snap.data() as SynthosUserProfile : defaultProfile;
     }
-  } catch (err) {
-    console.warn('Firestore profile synchronization deferred (operating in resilient session mode):', err);
-    return defaultProfile;
-  }
+    if (!snap.exists()) {
+      transaction.set(userRef, defaultProfile);
+      return defaultProfile;
+    }
+    const existing = snap.data() as SynthosUserProfile;
+    const changes = {
+      lastLoginAt: new Date().toISOString(),
+      ...(initialData || {})
+    };
+    transaction.update(userRef, changes);
+    return { ...defaultProfile, ...existing, ...changes };
+  });
 }
-
 export async function updateUserProfile(
   uid: string,
   updates: Partial<SynthosUserProfile>
@@ -397,20 +386,11 @@ export async function saveSimulationCase(
     ownerUid: uid,
     timestamp: serverTimestamp()
   };
-  const docRef = await addDoc(casesCollection, payload);
-
-  // Increment user savedCaseCount in profile
-  try {
-    const userRef = doc(db, 'users', uid);
-    const snap = await getDoc(userRef);
-    if (snap.exists()) {
-      const curCount = snap.data().savedCaseCount || 0;
-      await setDoc(userRef, { savedCaseCount: curCount + 1 }, { merge: true });
-    }
-  } catch {
-    // non-blocking
-  }
-
+  const docRef = doc(casesCollection);
+  const batch = writeBatch(db);
+  batch.set(docRef, payload);
+  batch.update(doc(db, 'users', uid), { savedCaseCount: increment(1) });
+  await batch.commit();
   await logAuditEvent(
     uid,
     'SIMULATION_RUN',
@@ -422,27 +402,25 @@ export async function saveSimulationCase(
 }
 
 export async function getUserSavedCases(uid: string): Promise<AnonymousCaseRecord[]> {
-  try {
-    const casesCollection = collection(db, 'cases');
-    const q = query(
-      casesCollection,
-      where('ownerUid', '==', uid),
-      orderBy('timestamp', 'desc'),
-      limit(50)
-    );
-    const snap = await getDocs(q);
-    return snap.docs.map((d) => ({
-      id: d.id,
-      ...d.data()
-    })) as AnonymousCaseRecord[];
-  } catch (err) {
-    console.error('Error loading saved cases:', err);
-    return [];
-  }
+  const casesCollection = collection(db, 'cases');
+  const q = query(
+    casesCollection,
+    where('ownerUid', '==', uid),
+    orderBy('timestamp', 'desc'),
+    limit(50)
+  );
+  const snap = await getDocs(q);
+  return snap.docs.map((d) => ({
+    ...d.data(),
+    id: d.id
+  })) as AnonymousCaseRecord[];
 }
 
 export async function deleteSimulationCase(caseId: string, uid: string): Promise<void> {
-  await deleteDoc(doc(db, 'cases', caseId));
+  const batch = writeBatch(db);
+  batch.delete(doc(db, 'cases', caseId));
+  batch.update(doc(db, 'users', uid), { savedCaseCount: increment(-1) });
+  await batch.commit();
   await logAuditEvent(uid, 'CASE_DELETED', `Deleted saved simulation case ID: ${caseId}`);
 }
 
@@ -511,40 +489,43 @@ export async function submitFeedback(
 export async function exportUserDataDossier(userId: string): Promise<any> {
   const profileSnap = await getDoc(doc(db, 'users', userId));
   const profile = profileSnap.exists() ? profileSnap.data() : null;
-  const cases = await getUserSavedCases(userId);
-  const auditLogs = await getUserAuditLogs(userId);
-
-  const dossier = {
-    platform: 'SYNTHOS Clinical Precision Engine',
-    exportGeneratedAt: new Date().toISOString(),
-    privacyNotice: 'HIPAA Safe Harbor De-Identified Research Store',
-    userProfile: profile,
-    savedCases: cases,
-    auditTrail: auditLogs
+  const owned = async (name: string, owner: string, op: '==' | 'array-contains' = '==') => {
+    const records = await getDocs(query(collection(db, name), where(owner, op, userId)));
+    return records.docs.map(record => ({ ...record.data(), id: record.id }));
   };
+  const [cases, auditLogs, feedback, handoffs] = await Promise.all([
+    owned('cases', 'ownerUid'), owned('auditLogs', 'userId'), owned('feedback', 'authorUid'),
+    owned('careHandoffs', 'members', 'array-contains')
+  ]);
+  const dossier = { platform: 'SYNTHOS', exportGeneratedAt: new Date().toISOString(),
+    userProfile: profile, savedCases: cases, auditTrail: auditLogs, feedback, sharedHandoffs: handoffs };
 
   await logAuditEvent(userId, 'DATA_EXPORTED', 'Exported full personal clinical dossier');
   return dossier;
 }
 
 export async function deleteUserAccountAndData(userId: string): Promise<void> {
-  // 1. Delete all user's cases
-  const casesQuery = query(collection(db, 'cases'), where('ownerUid', '==', userId));
-  const casesSnap = await getDocs(casesQuery);
-  const deleteCasePromises = casesSnap.docs.map((d) => deleteDoc(d.ref));
-  await Promise.all(deleteCasePromises);
-
-  // 2. Delete all user's audit logs
-  const logsQuery = query(collection(db, 'auditLogs'), where('userId', '==', userId));
-  const logsSnap = await getDocs(logsQuery);
-  const deleteLogPromises = logsSnap.docs.map((d) => deleteDoc(d.ref));
-  await Promise.all(deleteLogPromises);
-
-  // 3. Delete user profile doc
-  await deleteDoc(doc(db, 'users', userId));
-
-  // 4. Delete auth account
-  if (auth.currentUser && auth.currentUser.uid === userId) {
-    await auth.currentUser.delete();
+  const user = auth.currentUser;
+  if (!user || user.uid !== userId) throw new Error('Sign in to your account before deleting it.');
+  const token = await user.getIdTokenResult();
+  if (Date.now() - Date.parse(token.authTime) > 3 * 60_000) {
+    throw new Error('Sign out and sign in again, then retry account deletion.');
   }
+  // A durable marker prevents a second tab from creating new private records during cleanup.
+  const marker = doc(db, 'deletionRequests', userId);
+  await runTransaction(db, async transaction => {
+    if (!(await transaction.get(marker)).exists()) transaction.set(marker, { startedAt: serverTimestamp() });
+  });
+  for (const [name, owner] of [['cases', 'ownerUid'], ['feedback', 'authorUid']]) {
+    const page = query(collection(db, name), where(owner, '==', userId), limit(200));
+    while (true) {
+      const docs = await getDocs(page);
+      if (docs.empty) break;
+      const batch = writeBatch(db);
+      docs.forEach(record => batch.delete(record.ref));
+      await batch.commit();
+    }
+  }
+  await deleteDoc(doc(db, 'users', userId));
+  await user.delete();
 }

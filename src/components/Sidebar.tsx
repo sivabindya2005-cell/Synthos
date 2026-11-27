@@ -37,6 +37,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
     { id: 'personalize', label: 'Personalize Regimen', icon: 'medication_liquid' },
     { id: 'medications', label: 'Medication Reconciliation', icon: 'medication' },
     { id: 'interactions', label: 'Drug Interaction Matrix', icon: 'swap_horiz' },
+    { id: 'care-handoff', label: 'Care team handoff', icon: 'groups' },
     { id: 'monitoring', label: 'Safety & Monitoring Plan', icon: 'event_repeat' },
     { id: 'scenarios', label: 'Clinical Scenarios (ICU/CKD)', icon: 'science' }
   ];

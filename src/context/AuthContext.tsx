@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, useRef, ReactNode } from 'react';
 import {
   auth,
   signInWithGoogle as fbSignInWithGoogle,
@@ -81,6 +81,7 @@ interface AuthContextType {
   // Personalized Features Management
   savedCases: AnonymousCaseRecord[];
   isLoadingSavedCases: boolean;
+  savedCasesError: string | null;
   refreshSavedCases: () => Promise<void>;
   saveCaseRecord: (caseRecord: Omit<AnonymousCaseRecord, 'ownerUid' | 'timestamp'>) => Promise<string>;
   deleteSavedCase: (caseId: string) => Promise<void>;
@@ -130,6 +131,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   // Synchronize Firebase auth state
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      setProfile(null);
+      setSavedCases([]);
+      setSavedCasesError(null);
       setCurrentUser(user);
       if (user) {
         setIsGuest(false);
@@ -141,12 +145,13 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
           if (!userProf) {
             userProf = await ensureUserProfile(user);
           }
+          if (auth.currentUser?.uid !== user.uid) return;
           setProfile(userProf);
           if (userProf?.disclaimerAccepted) {
             setLocalDisclaimerAccepted(true);
             localStorage.setItem('synthos_disclaimer_accepted', 'true');
           }
-          if (user.email?.toLowerCase() === 'sivasyam05@gmail.com' || userProf?.role === 'admin') {
+          if (user.emailVerified && user.email?.toLowerCase() === 'sivasyam05@gmail.com') {
             setAdminSessionToken('sivasyam05@gmail.com');
           }
         } catch (e) {
@@ -218,9 +223,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   const signInGoogle = async () => {
-    const user = await fbSignInWithGoogle();
-    const userProf = await getUserProfile(user.uid);
-    setProfile(userProf);
+    await fbSignInWithGoogle();
     setIsAuthModalOpen(false);
     if (pendingAction) {
       pendingAction();
@@ -233,32 +236,36 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [isLoadingSavedCases, setIsLoadingSavedCases] = useState<boolean>(false);
   const [isPersonalizedModalOpen, setIsPersonalizedModalOpen] = useState<boolean>(false);
 
+  const [savedCasesError, setSavedCasesError] = useState<string | null>(null);
+  const latestRead = useRef(0);
+
   // Fetch saved cases for current user
   const refreshSavedCases = useCallback(async () => {
-    const targetUid = currentUser?.uid || demoAuth?.uid;
-    if (!targetUid || isGuest) {
+    const uid = currentUser?.uid;
+    const request = ++latestRead.current;
+    setSavedCasesError(null);
+    if (!uid || isGuest) {
       setSavedCases([]);
+      setIsLoadingSavedCases(false);
       return;
     }
     setIsLoadingSavedCases(true);
     try {
-      const cases = await fbGetUserSavedCases(targetUid);
-      setSavedCases(cases);
-    } catch (err) {
-      console.warn('Deferred loading saved cases:', err);
+      const records = await fbGetUserSavedCases(uid);
+      if (request === latestRead.current && auth.currentUser?.uid === uid) setSavedCases(records);
+    } catch {
+      if (request === latestRead.current && auth.currentUser?.uid === uid) {
+        setSavedCasesError('Cloud cases could not be loaded. Check your connection and retry.');
+      }
     } finally {
-      setIsLoadingSavedCases(false);
+      if (request === latestRead.current) setIsLoadingSavedCases(false);
     }
-  }, [currentUser?.uid, demoAuth?.uid, isGuest]);
+  }, [currentUser?.uid, isGuest]);
 
   useEffect(() => {
-    if (currentUser || demoAuth) {
-      refreshSavedCases();
-    } else {
-      setSavedCases([]);
-    }
-  }, [currentUser, demoAuth, refreshSavedCases]);
-
+    void refreshSavedCases();
+    return () => { latestRead.current++; };
+  }, [refreshSavedCases]);
   const signInUsername = async (identifier: string, pass: string) => {
     const { profile: userProf } = await fbLoginWithUsernameOrEmail(identifier, pass);
     setProfile(userProf);
@@ -297,7 +304,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const saveCaseRecord = async (
     caseRecord: Omit<AnonymousCaseRecord, 'ownerUid' | 'timestamp'>
   ): Promise<string> => {
-    const targetUid = currentUser?.uid || demoAuth?.uid;
+    const targetUid = currentUser?.uid;
     if (!targetUid) {
       throw new Error('Please sign in or create an account to save personalized cases.');
     }
@@ -307,7 +314,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   const deleteSavedCase = async (caseId: string) => {
-    const targetUid = currentUser?.uid || demoAuth?.uid;
+    const targetUid = currentUser?.uid;
     if (!targetUid) return;
     await fbDeleteSimulationCase(caseId, targetUid);
     await refreshSavedCases();
@@ -326,11 +333,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   const signOut = async () => {
-    try {
-      await fbSignOutUser();
-    } catch {
-      // ignore
-    }
+    await fbSignOutUser();
     setCurrentUser(null);
     setProfile(null);
     setDemoAuth(null);
@@ -359,20 +362,16 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   const deleteMyAccount = async () => {
-    const uid = currentUser?.uid || demoAuth?.uid;
-    if (!uid) return;
-    const confirmDelete = window.confirm(
-      'Are you sure you want to permanently delete your account and all associated cases and audit logs? This action is irreversible.'
-    );
-    if (!confirmDelete) return;
-
-    if (currentUser) {
+    if (!currentUser) { setIsAuthModalOpen(true); return; }
+    if (!window.confirm('Permanently delete your sign-in, profile, feedback and private cases? Shared handoffs, audit entries and the deletion marker are retained.')) return;
+    try {
       await deleteUserAccountAndData(currentUser.uid);
+      await signOut();
+      alert('Your account and private records were deleted.');
+    } catch (error) {
+      alert(error instanceof Error ? error.message + ' You can retry deletion.' : 'Deletion did not finish. Please retry.');
     }
-    await signOut();
-    alert('Your account and all associated data have been permanently deleted.');
   };
-
   const openAuthModal = (onSuccessCallback?: () => void) => {
     if (onSuccessCallback) {
       setPendingAction(() => onSuccessCallback);
@@ -404,7 +403,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const userRole: UserRole =
     profile?.role ||
     demoAuth?.role ||
-    (currentUser?.email?.toLowerCase() === 'sivasyam05@gmail.com' ? 'admin' : 'user');
+    (currentUser?.emailVerified && currentUser.email?.toLowerCase() === 'sivasyam05@gmail.com' ? 'admin' : 'user');
 
   const isAuthenticated = !!currentUser || !!demoAuth;
 
@@ -422,7 +421,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         ? 'Master Administrator'
         : userRole === 'reviewer'
         ? 'Clinical Reviewer'
-        : 'PharmD, BCPS'),
+        : 'Credentials unspecified'),
     role: userRole,
     email:
       currentUser?.email ||
@@ -432,7 +431,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       profile?.institution ||
       (userRole === 'admin'
         ? 'Department of Clinical Pharmacotherapy'
-        : 'Clinical Practice Group'),
+        : 'Institution unspecified'),
     isGuest,
     disclaimerAccepted:
       profile?.disclaimerAccepted ||
@@ -470,6 +469,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         requireAuthForAction,
         savedCases,
         isLoadingSavedCases,
+        savedCasesError,
         refreshSavedCases,
         saveCaseRecord,
         deleteSavedCase,

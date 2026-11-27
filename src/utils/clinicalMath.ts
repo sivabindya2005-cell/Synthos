@@ -423,7 +423,8 @@ export function calculateDeterministicPK(params: {
   const crcl = cgResult.crcl;
 
   // 2. Fetch drug monograph
-  const drugEntry = versionedDrugsData.drugs.find((d) => d.id === drugId) || versionedDrugsData.drugs[0];
+  const drugEntry = versionedDrugsData.drugs.find((d) => d.id === drugId);
+  if (!drugEntry) throw new Error('No pharmacokinetic model is available for ' + drugId);
   const route = routeOverride || drugEntry.standardRoute;
 
   // 3. Select appropriate model
