@@ -46,7 +46,7 @@ export const PersonalizedCasesModal: React.FC<PersonalizedCasesModalProps> = ({
   const handleRestoreCase = (c: AnonymousCaseRecord) => {
     if (onLoadCaseIntoTwin) {
       onLoadCaseIntoTwin(c);
-      setSuccessNote(`Loaded ${c.anonymousCaseId} into interactive Digital Twin Workstation!`);
+      setSuccessNote(`Loaded ${c.anonymousCaseId} from your saved runs.`);
       setTimeout(() => {
         setSuccessNote(null);
         closePersonalizedModal();
@@ -317,7 +317,7 @@ export const PersonalizedCasesModal: React.FC<PersonalizedCasesModalProps> = ({
                                   : 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300'
                               }`}
                             >
-                              {isCeilingBreach ? 'Ceiling Breached' : 'Optimal Titration'}
+                              {!c.engineVersion?.startsWith('synthos-twin/') ? 'Legacy result' : isCeilingBreach ? 'Above model ceiling' : 'Within model ceiling'}
                             </span>
 
                             {/* Load into Workstation */}
@@ -329,7 +329,7 @@ export const PersonalizedCasesModal: React.FC<PersonalizedCasesModalProps> = ({
                                 title="Restore this patient into the Digital Twin Simulator"
                               >
                                 <span className="material-symbols-outlined text-[14px]">tune</span>
-                                <span>Load Twin</span>
+                                <span>Open saved run</span>
                               </button>
                             )}
 

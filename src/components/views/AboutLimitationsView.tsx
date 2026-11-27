@@ -3,49 +3,17 @@ import { SynthosLogo } from '../common/SynthosLogo';
 import { useClinicianAuth } from '../../context/AuthContext';
 
 export const AboutLimitationsView: React.FC = () => {
-  const { clinician, currentUser, isAuthenticated } = useClinicianAuth();
-  const [dataActionMsg, setDataActionMsg] = useState<string | null>(null);
-  const [isDeleting, setIsDeleting] = useState<boolean>(false);
-
-  // Export User Data (DPDP Act 2023 / Right to Access)
-  const handleExportMyData = () => {
-    const userData = {
-      user: {
-        uid: currentUser?.uid || 'guest-session',
-        email: currentUser?.email || 'de-identified@guest.local',
-        name: clinician?.name || 'Authorized Clinician',
-        role: clinician?.role || 'user',
-        credentials: clinician?.credentials || 'PharmD, BCPS',
-        institution: clinician?.institution || 'Academic Medical Center'
-      },
-      exportTimestamp: new Date().toISOString(),
-      governanceFramework: 'India Digital Personal Data Protection Act 2023 & HIPAA Safe Harbor',
-      dataStored: 'De-identified simulation telemetry and deterministic parameter adjustments only.'
-    };
-
-    const blob = new Blob([JSON.stringify(userData, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `SYNTHOS_UserData_${Date.now()}.json`;
-    a.click();
-    URL.revokeObjectURL(url);
-    setDataActionMsg('User account data exported successfully in JSON format.');
+  const { clinician, currentUser, isAuthenticated, exportMyData, deleteMyAccount } = useClinicianAuth();
+  const [dataActionMsg, setDataActionMsg] = useState('');
+  const [isDeleting, setIsDeleting] = useState(false);
+  const handleExportMyData = async () => {
+    try { await exportMyData(); setDataActionMsg('Account export prepared.'); }
+    catch { setDataActionMsg('Could not export your data. Please retry.'); }
   };
-
-  // Delete My Account & All Stored Data (DPDP Act 2023 / Right to Erasure)
-  const handleDeleteMyData = () => {
-    if (!window.confirm('Are you sure you want to permanently delete your account and erase all associated simulation records? This action cannot be undone.')) {
-      return;
-    }
+  const handleDeleteMyData = async () => {
     setIsDeleting(true);
-    setTimeout(() => {
-      setIsDeleting(false);
-      setDataActionMsg('Account and all associated session data have been permanently erased per DPDP Act 2023 principles.');
-    }, 1200);
-  };
-
-  return (
+    try { await deleteMyAccount(); } finally { setIsDeleting(false); }
+  };  return (
     <div className="space-y-6 max-w-5xl mx-auto pb-16 transition-colors">
       {/* Brand & Philosophy Header */}
       <div className="bg-[#2A2640] text-white rounded-2xl p-8 border border-[#3D3759] shadow-sm flex flex-col md:flex-row items-center justify-between gap-6">
@@ -129,13 +97,13 @@ export const AboutLimitationsView: React.FC = () => {
               <span>Data Governance &amp; Privacy (India DPDP Act 2023 &amp; HIPAA)</span>
             </h3>
             <p className="text-xs text-[#6B6688] dark:text-[#A8A3C5]">
-              Full compliance with digital data protection principles: consent, purpose limitation, and absolute right to erasure.
+              Deleting your account removes its private cases, profile and feedback. Shared handoffs, the audit trail and a deletion marker are retained.
             </p>
           </div>
 
           <div className="flex items-center gap-2">
             <button
-              onClick={handleExportMyData}
+              onClick={handleExportMyData} disabled={!currentUser}
               className="px-3.5 py-1.5 rounded-full bg-[#BDE0FE]/40 hover:bg-[#BDE0FE]/60 border border-[#BDE0FE] text-xs font-semibold text-[#1e3a8a] transition-colors flex items-center gap-1 cursor-pointer"
             >
               <span className="material-symbols-outlined text-[15px]">download</span>
@@ -143,7 +111,7 @@ export const AboutLimitationsView: React.FC = () => {
             </button>
             <button
               onClick={handleDeleteMyData}
-              disabled={isDeleting}
+              disabled={isDeleting || !currentUser}
               className="px-3.5 py-1.5 rounded-full bg-[#F4A6B8]/30 hover:bg-[#F4A6B8]/50 border border-[#F4A6B8] text-xs font-semibold text-[#701124] transition-colors flex items-center gap-1 cursor-pointer"
             >
               <span className="material-symbols-outlined text-[15px]">delete_forever</span>

@@ -14,6 +14,8 @@ import { KeyboardShortcutsModal } from './components/modals/KeyboardShortcutsMod
 import { SessionHistoryDrawer } from './components/modals/SessionHistoryDrawer';
 
 import { PublicHomeView } from './components/views/PublicHomeView';
+import { SavedRunView } from './components/views/SavedRunView';
+import { CareHandoffView } from './components/views/CareHandoffView';
 import { DigitalTwinSimulationView } from './components/views/DigitalTwinSimulationView';
 import { PathwayExplorerView } from './components/views/PathwayExplorerView';
 import { DrugIntelligenceView } from './components/views/DrugIntelligenceView';
@@ -235,83 +237,18 @@ function AppContent() {
     });
   };
 
-  const handleLoadSavedCaseIntoTwin = (savedCase: AnonymousCaseRecord) => {
-    const baseline = PATIENT_CASES['DEMO-PT-0241'];
-    const customCaseId = savedCase.anonymousCaseId || `SAVED-${Date.now().toString().slice(-4)}`;
-    const restoredCase: PatientCase = {
-      ...baseline,
-      id: customCaseId,
-      nameAlias: `Patient Twin (${savedCase.anonymousCaseId})`,
-      summary: `Personalized digital twin loaded from cloud vault. ${savedCase.demographicDecade} ${savedCase.biologicalSex}.`,
-      biometrics: {
-        ...baseline.biometrics,
-        age: savedCase.inputs.age,
-        sex: (savedCase.biologicalSex as any) === 'Female' ? 'Female' : 'Male',
-        weightKg: savedCase.inputs.weightKg,
-        heightCm: savedCase.inputs.heightCm || 175,
-        bmi: Math.round((savedCase.inputs.weightKg / Math.pow((savedCase.inputs.heightCm || 175) / 100, 2)) * 10) / 10
-      },
-      organStatus: {
-        ...baseline.organStatus,
-        renal: {
-          ...baseline.organStatus.renal,
-          scr: savedCase.inputs.scr,
-          egfr: savedCase.outputs.egfr,
-          crcl: savedCase.outputs.crcl,
-          status: savedCase.outputs.egfr < 30 ? 'compromised' : savedCase.outputs.egfr < 60 ? 'caution' : 'normal',
-          stage: savedCase.outputs.egfr < 15 ? 'Stage 5' : savedCase.outputs.egfr < 30 ? 'Stage 4' : savedCase.outputs.egfr < 60 ? 'Stage 3' : 'Stage 1-2'
-        },
-        hepatic: {
-          ...baseline.organStatus.hepatic,
-          cypStatus: savedCase.inputs.cypGenotype || baseline.organStatus.hepatic.cypStatus
-        },
-        cardiovascular: {
-          ...baseline.organStatus.cardiovascular,
-          potassium: savedCase.inputs.potassium || baseline.organStatus.cardiovascular.potassium
-        }
-      }
-    };
-
-    setPatientRegistry((prev) => ({
-      ...prev,
-      [customCaseId]: restoredCase
-    }));
-    setActivePatientId(customCaseId);
-    setCurrentTab('digital-twin');
+  const [savedRun, setSavedRun] = useState<AnonymousCaseRecord | null>(null);
+  const saveRef = React.useRef<((note?: string) => Promise<void>) | null>(null);
+  const registerSave = React.useCallback((save: typeof saveRef.current) => { saveRef.current = save; }, []);
+  const handleSaveCurrentActiveTwin = async (note?: string) => {
+    if (!saveRef.current) throw new Error('Open a simulation before saving.');
+    await saveRef.current(note);
   };
-
-  const handleSaveCurrentActiveTwin = async (title?: string) => {
-    const anonCaseId = `CASE-${Math.floor(1000 + Math.random() * 9000)}`;
-    const firstMed = activePatient.medications[0];
-    await saveCaseRecord({
-      anonymousCaseId: anonCaseId,
-      demographicDecade: `${Math.floor(activePatient.biometrics.age / 10) * 10}-${Math.floor(activePatient.biometrics.age / 10) * 10 + 9} Y`,
-      biologicalSex: activePatient.biometrics.sex,
-      inputs: {
-        age: activePatient.biometrics.age,
-        weightKg: activePatient.biometrics.weightKg,
-        heightCm: activePatient.biometrics.heightCm,
-        scr: activePatient.organStatus.renal.scr,
-        potassium: activePatient.organStatus.cardiovascular.potassium || 4.2,
-        cypGenotype: activePatient.organStatus.hepatic.cypStatus,
-        selectedDrug: firstMed?.name || 'Enoxaparin',
-        doseMg: parseFloat(firstMed?.dose || '40') || 40,
-        intervalHours: 12
-      },
-      outputs: {
-        egfr: activePatient.organStatus.renal.egfr,
-        crcl: activePatient.organStatus.renal.crcl,
-        simulatedHalfLife: 7.2,
-        halfLifeChangeFactor: 1.0,
-        predictedPeakCss: 1.2,
-        upperSafetyCeiling: 2.0,
-        safetyCeilingExceeded: false,
-        primarySafetyFinding: 'Personalized clinical regimen snapshot'
-      },
-      clinicianNotes: title || `Patient ${activePatient.id} snapshot`
-    });
+  const handleLoadSavedCaseIntoTwin = (record: AnonymousCaseRecord) => {
+    setSavedRun(record);
+    setCurrentTab('saved-run');
   };
-
+  useEffect(() => { setSavedRun(null); }, [clinician?.uid]);
   // Dedicated full-bleed Public Homepage
   if (currentTab === 'home') {
     return (
@@ -345,7 +282,7 @@ function AppContent() {
         {/* Personalized Cases & Workspace Modal */}
         <PersonalizedCasesModal
           onLoadCaseIntoTwin={handleLoadSavedCaseIntoTwin}
-          onSaveCurrentTwin={handleSaveCurrentActiveTwin}
+          onSaveCurrentTwin={['twin','patient-twin','digital-twin','resume-run'].includes(currentTab) ? handleSaveCurrentActiveTwin : undefined}
           activePatientName={activePatient.nameAlias || activePatient.id}
         />
 
@@ -389,6 +326,7 @@ function AppContent() {
 
         {/* Dynamic View Canvas */}
         <main id="workspace-content" tabIndex={-1} className="flex-1 pt-20 pb-14 w-full px-4 sm:px-6 bg-[#FAF7F2] dark:bg-[#0D1926] overflow-y-auto transition-colors">
+          {currentTab === 'care-handoff' && <CareHandoffView key={clinician?.uid || "guest"} />}
           {currentTab === 'guided-wizard' && (
             <React.Suspense fallback={<p role="status">Opening guided case…</p>}>
               <GuidedSimulationWizard
@@ -398,8 +336,13 @@ function AppContent() {
             </React.Suspense>
           )}
 
-          {(currentTab === 'twin' || currentTab === 'digital-twin' || currentTab === 'patient-twin') && (
+          {currentTab === 'saved-run' && <SavedRunView record={savedRun} openCases={openPersonalizedModal} resume={() => setCurrentTab('resume-run')} />}
+          {currentTab === 'resume-run' && !savedRun && <SavedRunView record={null} openCases={openPersonalizedModal} resume={() => {}} />}
+          {(currentTab === 'resume-run' && savedRun || currentTab === 'twin' || currentTab === 'digital-twin' || currentTab === 'patient-twin') && (
             <DigitalTwinSimulationView
+              key={currentTab === 'resume-run' ? savedRun?.id : activePatient.id}
+              restored={currentTab === 'resume-run' ? savedRun : null}
+              onSaveReady={registerSave}
               patient={activePatient}
               onOpenRenalMath={() => setIsRenalMathOpen(true)}
               onOpenProvenance={(id) => setActiveProvenanceId(id)}
@@ -629,7 +572,7 @@ function AppContent() {
       <ClinicianAuthModal />
       <PersonalizedCasesModal
         onLoadCaseIntoTwin={handleLoadSavedCaseIntoTwin}
-        onSaveCurrentTwin={handleSaveCurrentActiveTwin}
+        onSaveCurrentTwin={['twin','patient-twin','digital-twin','resume-run'].includes(currentTab) ? handleSaveCurrentActiveTwin : undefined}
         activePatientName={activePatient.nameAlias || activePatient.id}
       />
       <DisclaimerModal />

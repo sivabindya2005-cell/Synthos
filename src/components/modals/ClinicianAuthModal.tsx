@@ -35,7 +35,7 @@ export const ClinicianAuthModal: React.FC = () => {
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [newEmail, setNewEmail] = useState('');
-  const [newCredentials, setNewCredentials] = useState('Clinical Pharmacist');
+  const [newCredentials, setNewCredentials] = useState('');
   const [newInstitution, setNewInstitution] = useState('');
 
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -123,8 +123,8 @@ export const ClinicianAuthModal: React.FC = () => {
         await signUpUsername(cleanUser, newPassword, {
           email: newEmail.trim() || undefined,
           displayName: newDisplayName.trim() || `@${cleanUser}`,
-          credentials: newCredentials.trim() || 'Clinical Pharmacist',
-          institution: newInstitution.trim() || 'Clinical Practice Group'
+          credentials: newCredentials.trim(),
+          institution: newInstitution.trim()
         });
         setSuccessMessage(`Account created successfully for @${cleanUser}! Personalized features unlocked.`);
         setTimeout(() => {
@@ -522,7 +522,7 @@ export const ClinicianAuthModal: React.FC = () => {
                       onChange={(e) => setNewCredentials(e.target.value)}
                       className="w-full px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs text-slate-900 dark:text-white outline-none focus:border-[#15803D]"
                     >
-                      <option value="Clinical Pharmacist">Clinical Pharmacist (PharmD)</option>
+                      <option value="">Choose a role (optional)</option><option value="Clinical Pharmacist">Clinical Pharmacist (PharmD)</option>
                       <option value="Nephrologist">Nephrologist (MD/DO)</option>
                       <option value="Critical Care Specialist">Critical Care / ICU</option>
                       <option value="Internal Medicine Physician">Internal Medicine</option>

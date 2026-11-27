@@ -46,7 +46,7 @@ export const PublicHomeView: React.FC<PublicHomeViewProps> = ({
             {isAuthenticated && clinician && (
               <button className="start-link" onClick={openPersonalizedModal}>My cases ({savedCases.length})</button>
             )}
-            <button className="start-link" onClick={() => (onOpenAuth || openAuthModal)()}>
+            <a className="start-link" href="?view=care-handoff">Care handoff</a><button className="start-link" onClick={() => (onOpenAuth || openAuthModal)()}>
               {isAuthenticated && clinician ? 'My account' : 'Clinician sign in'}
             </button>
           </div>

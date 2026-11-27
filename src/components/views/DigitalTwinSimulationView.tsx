@@ -4,25 +4,28 @@ import {
   calculateCockcroftGault,
   calculateCKDEPI2021,
   calculateIBW,
-  generatePKPoints,
-  pointsToSvgPath,
+  generatePKConcentrationCurve,
   calculateDeterministicPK,
   validateClinicalInputs
 } from '../../utils/clinicalMath';
 import { saveAnonymizedSimulationRecord } from '../../utils/simulationStorage';
-import { saveSimulationCase } from '../../firebase';
+import type { AnonymousCaseRecord } from '../../firebase';
+import { evaluateTwin, snapshotOf } from '../../utils/twinSnapshot';
+
 import { useClinicianAuth } from '../../context/AuthContext';
 import { ClinicalDisclaimerBanner } from '../common/ClinicalDisclaimerBanner';
 
 interface DigitalTwinSimulationViewProps {
   patient: PatientCase;
+  restored?: AnonymousCaseRecord | null;
+  onSaveReady: (save: ((note?: string) => Promise<void>) | null) => void;
   onOpenRenalMath: () => void;
   onOpenProvenance: (id: string) => void;
   onOpenSessionHistory?: () => void;
 }
 
 export const DigitalTwinSimulationView: React.FC<DigitalTwinSimulationViewProps> = ({
-  patient,
+  patient, restored, onSaveReady,
   onOpenRenalMath,
   onOpenProvenance,
   onOpenSessionHistory
@@ -38,8 +41,9 @@ export const DigitalTwinSimulationView: React.FC<DigitalTwinSimulationViewProps>
     selectedDrug: 'metformin',
     doseMg: 1000,
     intervalHours: 12,
-    pgxVariant: 'CYP2C9 *1/*1'
-  }), [patient]);
+    pgxVariant: 'CYP2C9 *1/*1',
+    ...(restored ? { ...restored.inputs, pgxVariant: restored.inputs.cypGenotype, sex: restored.biologicalSex as 'Female' | 'Male' } : {})
+  }), [patient, restored]);
 
   // Active modified simulation state
   const [age, setAge] = useState<number>(baselineState.age);
@@ -76,64 +80,33 @@ export const DigitalTwinSimulationView: React.FC<DigitalTwinSimulationViewProps>
   const baselineCg = calculateCockcroftGault(baselineState.age, baselineState.weightKg, baselineState.heightCm, baselineState.scr, baselineState.sex, true);
   const baselineEgfr = calculateCKDEPI2021(baselineState.age, baselineState.scr, baselineState.sex).egfr;
 
-  // Pharmacokinetic modeling
-  const simulatedHalfLife = useMemo(() => {
-    if (selectedDrug === 'metformin') {
-      // Metformin baseline t1/2 ~ 6.2h, inversely scaled with eGFR
-      return Number((6.2 * (85 / Math.max(15, egfr))).toFixed(1));
-    } else if (selectedDrug === 'warfarin') {
-      return pgxVariant.includes('*3/*3') ? 118 : 36;
-    } else if (selectedDrug === 'lisinopril') {
-      return Number((12.0 * (80 / Math.max(20, egfr))).toFixed(1));
-    }
-    return 12.4;
-  }, [selectedDrug, egfr, pgxVariant]);
+  const run = useMemo(() => evaluateTwin({
+    age, weightKg, heightCm: baselineState.heightCm, scr, potassium,
+    selectedDrug, doseMg, intervalHours, cypGenotype: pgxVariant
+  }, baselineState.sex), [age, weightKg, baselineState, scr, potassium, selectedDrug, doseMg, intervalHours, pgxVariant]);
+  const deterministicPK = run.pk;
+  const simulatedHalfLife = deterministicPK.halfLifeHours;
+  const baselineRun = useMemo(() => evaluateTwin({ ...baselineState, cypGenotype: baselineState.pgxVariant }, baselineState.sex), [baselineState]);
+  const baselineHalfLife = baselineRun.pk.halfLifeHours;
 
-  const baselineHalfLife = useMemo(() => {
-    return Number((6.2 * (85 / Math.max(15, baselineEgfr))).toFixed(1));
-  }, [baselineEgfr]);
-
-  // Generate PK Curves
-  const activePoints = useMemo(() => {
-    return generatePKPoints(doseMg, simulatedHalfLife, 80, 36);
-  }, [doseMg, simulatedHalfLife]);
-
-  const baselinePoints = useMemo(() => {
-    return generatePKPoints(baselineState.doseMg, baselineHalfLife, 80, 36);
-  }, [baselineState.doseMg, baselineHalfLife]);
-
-  const activePath = pointsToSvgPath(activePoints);
-  const baselinePath = pointsToSvgPath(baselinePoints);
-
-  // Maximum peak in simulated 36h period
-  const activePeak = activePoints.reduce((max: number, p: { concentration: number }) => (p.concentration > max ? p.concentration : max), 0);
-  const baselinePeak = baselinePoints.reduce((max: number, p: { concentration: number }) => (p.concentration > max ? p.concentration : max), 0);
-
-  // Safety evaluations
-  const isMetforminLacticAcidosisZone = selectedDrug === 'metformin' && (egfr < 30 || (egfr < 45 && doseMg * (24 / intervalHours) > 1000));
-  const isHyperkalemiaRisk = potassium >= 5.0 && selectedDrug === 'lisinopril';
-  const isWarfarinBleedingRisk = selectedDrug === 'warfarin' && pgxVariant.includes('*3/*3') && doseMg >= 2.5;
-
-  // Causation reasoning string
-  const causationExplanation = useMemo(() => {
-    if (selectedDrug === 'metformin') {
-      if (egfr < 30) {
-        return `Filtration reduction (eGFR ${egfr} mL/min, SCr ${scr} mg/dL) slows renal tubular elimination: half-life is extended to ${simulatedHalfLife}h. Peak plasma concentration reaches ${activePeak.toFixed(2)} mcg/mL, triggering an absolute FDA contraindication due to high lactic acidosis risk.`;
-      } else if (egfr < 45) {
-        if (doseMg * (24 / intervalHours) > 1000) {
-          return `Renal clearance threshold exceeded: Patient's eGFR of ${egfr} mL/min cannot clear ${doseMg * (24 / intervalHours)} mg/day. Half-life is prolonged to ${simulatedHalfLife}h, yielding an elevated peak of ${activePeak.toFixed(2)} mcg/mL (+${Math.round(((activePeak - 1.8) / 1.8) * 100)}% vs reference). KDIGO 2023 mandates dose reduction to ≤1000 mg/day.`;
-        }
-        return `Appropriately adjusted dose: At ${doseMg * (24 / intervalHours)} mg/day in eGFR ${egfr} mL/min, steady-state peak remains at ${activePeak.toFixed(2)} mcg/mL within safe bounds. Recheck renal labs in 30 days.`;
-      }
-      return `Normal clearance range: eGFR of ${egfr} mL/min provides adequate renal elimination (t1/2 ${simulatedHalfLife}h, peak ${activePeak.toFixed(2)} mcg/mL).`;
-    } else if (selectedDrug === 'warfarin') {
-      if (pgxVariant.includes('*3/*3')) {
-        return `Pharmacogenomic enzyme deficiency: CYP2C9 *3/*3 reduces S-warfarin clearance by ~85%. At ${doseMg} mg/day, extreme hepatic accumulation occurs (t1/2 ${simulatedHalfLife}h), driving INR to supratherapeutic risk levels. CPIC recommends dose reduction to 1.0–1.5 mg/day or switching to a DOAC.`;
-      }
-      return `Wild-type CYP2C9 *1/*1 metabolism: standard clearance of S-warfarin expected.`;
-    }
-    return `Hemodynamic alteration: Lisinopril reduces intraglomerular pressure. Borderline serum potassium (${potassium} mEq/L) requires 14-day BMP surveillance.`;
-  }, [selectedDrug, egfr, scr, simulatedHalfLife, activePeak, doseMg, intervalHours, pgxVariant, potassium]);
+  const curve = (pk: typeof deterministicPK) => generatePKConcentrationCurve(
+    pk.doseMg * pk.bioavailabilityF, pk.vdLiters, pk.keHourInv, pk.intervalHours,
+    pk.route, pk.absorptionRateKa, pk.infusionTimeHours, 36 / pk.intervalHours
+  );
+  const activePoints = useMemo(() => curve(deterministicPK), [deterministicPK]);
+  const baselinePoints = useMemo(() => curve(baselineRun.pk), [baselineRun]);
+  const maxY = Math.max(deterministicPK.upperSafetyCeiling, ...activePoints.map(p=>p.concentration),
+    ...(isCompareMode ? baselinePoints.map(p=>p.concentration) : []), 1) * 1.15;
+  const y = (value: number) => 114 - value / maxY * 104;
+  const path = (points: typeof activePoints) => points.map((p,i) =>
+    (i ? 'L' : 'M') + (p.timeHours / 36 * 680).toFixed(2) + ',' + y(p.concentration).toFixed(2)
+  ).join(' ');
+  const activePath = path(activePoints);
+  const baselinePath = path(baselinePoints);
+  const activePeak = run.outputs.predictedPeakCss;
+  const baselinePeak = baselineRun.outputs.predictedPeakCss;
+  const isMetforminLacticAcidosisZone = run.outputs.safetyCeilingExceeded;
+  const causationExplanation = run.outputs.primarySafetyFinding;
 
   const handleResetScenario = () => {
     setAge(baselineState.age);
@@ -148,7 +121,7 @@ export const DigitalTwinSimulationView: React.FC<DigitalTwinSimulationViewProps>
   };
 
   // Clinician authentication & profile
-  const { clinician, currentUser, isGuest, requireAuthForAction, refreshSavedCases, openPersonalizedModal } = useClinicianAuth();
+  const { currentUser, isGuest, openAuthModal, saveCaseRecord } = useClinicianAuth();
   const [logNotification, setLogNotification] = useState<string | null>(null);
 
   // Deterministic PK & Validation
@@ -163,21 +136,6 @@ export const DigitalTwinSimulationView: React.FC<DigitalTwinSimulationViewProps>
       intervalHours
     });
   }, [age, weightKg, baselineState.heightCm, scr, potassium, doseMg, intervalHours]);
-
-  const deterministicPK = useMemo(() => {
-    return calculateDeterministicPK({
-      drugId: selectedDrug,
-      doseMg,
-      intervalHours,
-      weightKg,
-      heightCm: baselineState.heightCm,
-      age,
-      sex: baselineState.sex,
-      scr,
-      potassium,
-      pgxVariant
-    });
-  }, [selectedDrug, doseMg, intervalHours, weightKg, baselineState.heightCm, age, baselineState.sex, scr, potassium, pgxVariant]);
 
   // AI plain-language explanation state
   const [aiExplanation, setAiExplanation] = useState<string | null>(null);
@@ -235,56 +193,24 @@ export const DigitalTwinSimulationView: React.FC<DigitalTwinSimulationViewProps>
     }
   };
 
-  // Save case to Firestore
+  const saveRun = React.useCallback(async (note?: string) => {
+    if (!currentUser) throw new Error('Sign in to save a case.');
+    if (!inputValidation.isValid) throw new Error('Correct the highlighted inputs before saving.');
+    await saveCaseRecord(snapshotOf(run, note || lastChangedParam));
+  }, [currentUser, inputValidation.isValid, saveCaseRecord, run, lastChangedParam]);
+  React.useLayoutEffect(() => {
+    onSaveReady(saveRun);
+    return () => onSaveReady(null);
+  }, [saveRun, onSaveReady]);
   const handleSaveToFirestore = async () => {
-    if (isGuest || !clinician) {
-      requireAuthForAction(() => {});
-      return;
-    }
-
+    if (!currentUser) { openAuthModal(); return; }
     setIsSavingToCloud(true);
     try {
-      const targetUid = currentUser?.uid || clinician?.uid || 'guest-clinician';
-      const anonCaseId = `CASE-${Math.floor(1000 + Math.random() * 9000)}`;
-      await saveSimulationCase(targetUid, {
-        anonymousCaseId: anonCaseId,
-        demographicDecade: `${Math.floor(age / 10) * 10}-${Math.floor(age / 10) * 10 + 9} Y`,
-        biologicalSex: baselineState.sex,
-        inputs: {
-          age,
-          weightKg,
-          heightCm: baselineState.heightCm,
-          scr,
-          potassium,
-          cypGenotype: pgxVariant,
-          selectedDrug,
-          doseMg,
-          intervalHours
-        },
-        outputs: {
-          egfr,
-          crcl: cgResult.crcl,
-          simulatedHalfLife: deterministicPK.halfLifeHours,
-          halfLifeChangeFactor: deterministicPK.halfLifeChangeFactor,
-          predictedPeakCss: deterministicPK.peakSteadyStateCss,
-          upperSafetyCeiling: deterministicPK.upperSafetyCeiling,
-          safetyCeilingExceeded: deterministicPK.safetyCeilingExceeded,
-          primarySafetyFinding: deterministicPK.safetyFinding || causationExplanation,
-          guidelineViolationCode: deterministicPK.guidelineCode
-        },
-          clinicianNotes: lastChangedParam || 'User simulation study'
-        });
-
-        await refreshSavedCases();
-        setLogNotification(`Case ${anonCaseId} saved to your personalized cloud cases! View in "My Cases".`);
-        setTimeout(() => setLogNotification(null), 4000);
-      } catch (err) {
-      console.error('Failed to save simulation case to Firestore:', err);
-      setLogNotification('Error saving case to cloud. Saved locally instead.');
-      setTimeout(() => setLogNotification(null), 4000);
-    } finally {
-      setIsSavingToCloud(false);
-    }
+      await saveRun();
+      setLogNotification('Simulation saved to My cases.');
+    } catch (error) {
+      setLogNotification(error instanceof Error ? error.message : 'Could not save this simulation.');
+    } finally { setIsSavingToCloud(false); }
   };
 
   // Export CSV
@@ -330,17 +256,13 @@ export const DigitalTwinSimulationView: React.FC<DigitalTwinSimulationViewProps>
 
   const recordCurrentSimulationTelemetry = (rationaleText?: string) => {
     try {
-      const isMetformin = selectedDrug === 'metformin';
-      const isWarfarin = selectedDrug === 'warfarin';
-      const drugGenericName = isMetformin ? 'Metformin Hydrochloride' : isWarfarin ? 'Warfarin Sodium' : 'Lisinopril';
-      const brandName = isMetformin ? 'Glucophage' : isWarfarin ? 'Coumadin' : 'Prinivil';
-      const baselineHalfLifeNum = Number(baselineHalfLife) || 6.2;
-      const simHalfLifeNum = Number(simulatedHalfLife) || 12.0;
-
-      const activeCeiling = isMetformin ? 2.5 : isWarfarin ? 3.0 : 5.2;
-      const isCeilingExceeded = isMetformin ? isMetforminLacticAcidosisZone : isWarfarin ? isWarfarinBleedingRisk : isHyperkalemiaRisk;
-      const activeSafetyFinding = causationExplanation;
-
+      const drugGenericName = deterministicPK.drugGenericName;
+      const brandName = drugGenericName;
+      const baselineHalfLifeNum = baselineHalfLife;
+      const simHalfLifeNum = simulatedHalfLife;
+      const activeCeiling = run.outputs.upperSafetyCeiling;
+      const isCeilingExceeded = run.outputs.safetyCeilingExceeded;
+      const activeSafetyFinding = run.outputs.primarySafetyFinding;
       saveAnonymizedSimulationRecord({
         demographicDecade: `${Math.floor(age / 10) * 10}-${Math.floor(age / 10) * 10 + 9} Y`,
         biologicalSex: baselineState.sex,
@@ -364,12 +286,12 @@ export const DigitalTwinSimulationView: React.FC<DigitalTwinSimulationViewProps>
         pharmacokineticOutcomes: {
           baselineHalfLife: baselineHalfLifeNum,
           simulatedHalfLife: simHalfLifeNum,
-          halfLifeChangeFactor: Number((simHalfLifeNum / baselineHalfLifeNum).toFixed(2)),
+          halfLifeChangeFactor: run.outputs.halfLifeChangeFactor,
           predictedPeakCss: Number(activePeak.toFixed(2)),
           upperSafetyCeiling: Number(activeCeiling),
           safetyCeilingExceeded: isCeilingExceeded,
           primarySafetyFinding: activeSafetyFinding,
-          guidelineViolationCode: isCeilingExceeded ? (isMetformin ? 'KDIGO-MET-2023' : isWarfarin ? 'CPIC-WAR-2022' : 'KDIGO-LIS-2021') : undefined
+          guidelineViolationCode: deterministicPK.guidelineCode
         },
         clinicianRationale: rationaleText || lastChangedParam || 'Interactive simulation titration trial',
         sourceType: 'interactive-simulator'
@@ -387,17 +309,14 @@ export const DigitalTwinSimulationView: React.FC<DigitalTwinSimulationViewProps>
       setScr(2.6);
       setPotassium(5.5);
       setLastChangedParam('Preset applied: Acute Kidney Injury (AKI) Insult (SCr 2.6, K+ 5.5)');
-      setTimeout(() => recordCurrentSimulationTelemetry('AKI Insult applied: SCr escalated to 2.6 mg/dL, K+ 5.5 mEq/L'), 100);
     } else if (preset === 'dose-reduction') {
       setDoseMg(500);
       setIntervalHours(12);
       setLastChangedParam('Preset applied: KDIGO Guideline Dose Reduction (500mg BID)');
-      setTimeout(() => recordCurrentSimulationTelemetry('KDIGO dose reduction applied: 500mg BID safety protocol'), 100);
     } else if (preset === 'normal') {
       setScr(0.9);
       setPotassium(4.2);
       setLastChangedParam('Preset applied: Normal Renal Clearance (SCr 0.9, K+ 4.2)');
-      setTimeout(() => recordCurrentSimulationTelemetry('Restored normal renal clearance baseline: SCr 0.9 mg/dL'), 100);
     } else {
       handleResetScenario();
     }
@@ -415,7 +334,7 @@ export const DigitalTwinSimulationView: React.FC<DigitalTwinSimulationViewProps>
             <span>{logNotification}</span>
           </div>
           <span className="text-[10px] font-mono text-teal-300 uppercase">
-            {isGuest ? 'Local Session' : 'Firestore Vault Sync'}
+            {!currentUser ? 'Practice session' : 'Signed-in workspace'}
           </span>
         </div>
       )}
@@ -463,7 +382,7 @@ export const DigitalTwinSimulationView: React.FC<DigitalTwinSimulationViewProps>
             onClick={handleSaveToFirestore}
             disabled={isSavingToCloud}
             className="px-3 py-1.5 rounded bg-[#15803D] hover:bg-[#15803D] disabled:opacity-50 text-white text-xs font-semibold flex items-center gap-1.5 cursor-pointer shadow-2xs transition-colors"
-            title={isGuest ? 'Sign in to save cases to Firestore cloud' : 'Save simulation case to Firestore Cloud Vault'}
+            title={!currentUser ? 'Sign in to save cases to Firestore cloud' : 'Save simulation case to Firestore Cloud Vault'}
           >
             <span className="material-symbols-outlined text-[16px]">
               {isSavingToCloud ? 'sync' : 'cloud_upload'}
@@ -567,7 +486,7 @@ export const DigitalTwinSimulationView: React.FC<DigitalTwinSimulationViewProps>
               onClick={() => handlePresetSelect('dose-reduction')}
               className="px-2.5 py-1 rounded bg-[#EEF7EE] dark:bg-[#1e293b] border border-[#CBE4CB] dark:border-[#334155] hover:bg-[#D4ECE6] text-[#15803D] dark:text-teal-300 font-semibold cursor-pointer transition-colors"
             >
-              KDIGO Guideline Taper (500mg BID)
+              Example reduced regimen
             </button>
             <button
               onClick={() => handlePresetSelect('normal')}
@@ -613,7 +532,7 @@ export const DigitalTwinSimulationView: React.FC<DigitalTwinSimulationViewProps>
               Simulation Parameter Controls
             </span>
             <span className="text-[10px] font-mono text-[#15803D] dark:text-teal-300 bg-[#EEF7EE] dark:bg-slate-800 px-2 py-0.5 rounded font-bold border border-[#CBE4CB] dark:border-slate-700">
-              Active Patient: {patient.id}
+              Active case: {restored?.anonymousCaseId || patient.id}
             </span>
           </div>
 
@@ -622,27 +541,10 @@ export const DigitalTwinSimulationView: React.FC<DigitalTwinSimulationViewProps>
             <label className="text-xs font-bold text-[#1E3A8A] dark:text-slate-200 block">
               Pharmacotherapy Regimen
             </label>
-            <select
-              value={selectedDrug}
-              onChange={(e) => {
-                const drug = e.target.value;
-                setSelectedDrug(drug);
-                if (drug === 'metformin') setDoseMg(1000);
-                if (drug === 'empagliflozin') setDoseMg(10);
-                if (drug === 'lisinopril') setDoseMg(20);
-                if (drug === 'warfarin') setDoseMg(5);
-                setLastChangedParam(`Selected drug: ${drug.toUpperCase()}`);
-              }}
-              className="w-full p-2 text-xs rounded border border-[#DDD4C5] dark:border-slate-700 bg-[#FAF7F2] dark:bg-slate-800 text-slate-900 dark:text-slate-100 font-medium outline-none focus:border-[#15803D]"
-            >
-              <option value="metformin">Metformin HCl (Biguanide Antidiabetic - Renal Excretion)</option>
-              <option value="empagliflozin">Empagliflozin (SGLT2 Inhibitor - Cardiorenal Protection)</option>
-              <option value="lisinopril">Lisinopril (ACE Inhibitor - Intraglomerular Hemodynamics)</option>
-              <option value="warfarin">Warfarin Sodium (VKA Anticoagulant - CYP2C9 Genotype)</option>
-            </select>
+            <p className="font-semibold">{deterministicPK.drugGenericName}</p>
           </div>
 
-          {/* Dose and Interval Controls */}
+          <a className="underline" href="?view=guided-wizard">Explore the other modelled drugs in the guided simulation</a>
           <div className="grid grid-cols-2 gap-3 text-xs">
             <div className="p-3 bg-[#FAF7F2] rounded-lg border border-[#E5DDD0] space-y-1">
               <label className="font-semibold text-[#1E3A5F] block">Dose per Administration</label>
@@ -650,9 +552,9 @@ export const DigitalTwinSimulationView: React.FC<DigitalTwinSimulationViewProps>
                 <input
                   type="number"
                   value={doseMg}
-                  step={selectedDrug === 'warfarin' ? 1.25 : 250}
-                  min={selectedDrug === 'warfarin' ? 1 : 250}
-                  max={selectedDrug === 'warfarin' ? 10 : 2500}
+                  step={250}
+                  min={250}
+                  max={2500}
                   onChange={(e) => {
                     const val = Number(e.target.value);
                     setDoseMg(val);
@@ -1030,10 +932,10 @@ export const DigitalTwinSimulationView: React.FC<DigitalTwinSimulationViewProps>
                 <div className="flex items-center justify-between">
                   <div>
                     <h3 className="font-['Plus_Jakarta_Sans'] font-semibold text-sm text-[#1E3A8A] dark:text-slate-100">
-                      Simulated Steady-State Plasma Curve (Css) — 36h Multi-Dose Profile
+                      Illustrative concentration curve over 36 hours
                     </h3>
                     <span className="text-[11px] text-[#4B6584] dark:text-slate-400">
-                      Model: Deterministic 1-Compartment oral absorption with repeated dosing every {intervalHours}h
+                      Model results below use {deterministicPK.modelUsed}.
                     </span>
                   </div>
 
@@ -1068,15 +970,9 @@ export const DigitalTwinSimulationView: React.FC<DigitalTwinSimulationViewProps>
                     </defs>
 
                     {/* Upper Safety Threshold */}
-                    <line stroke="#fecaca" strokeDasharray="4,4" strokeWidth="1.5" x1="0" x2="680" y1="35" y2="35" />
-                    <text className="text-[10px] font-bold" fill="#991b1b" x="8" y="28">
+                    <line stroke="#fecaca" strokeDasharray="4,4" strokeWidth="1.5" x1="0" x2="680" y1={y(deterministicPK.upperSafetyCeiling)} y2={y(deterministicPK.upperSafetyCeiling)} />
+                    <text className="text-[10px] font-bold" fill="#991b1b" x="8" y={y(deterministicPK.upperSafetyCeiling)-3}>
                       Upper Safety Threshold ({deterministicPK.upperSafetyCeiling} mcg/mL)
-                    </text>
-
-                    {/* Target Steady-State Range */}
-                    <line stroke="#cbd5e1" strokeDasharray="2,2" strokeWidth="1" x1="0" x2="680" y1="75" y2="75" />
-                    <text className="text-[10px]" fill="#64748b" x="8" y="70">
-                      Target Therapeutic Window (1.0 - 2.0 mcg/mL)
                     </text>
 
                     {/* Baseline Scenario Curve if Compare Mode */}
@@ -1098,17 +994,10 @@ export const DigitalTwinSimulationView: React.FC<DigitalTwinSimulationViewProps>
                       strokeWidth="2.5"
                     />
 
-                    {/* Peak point indicator */}
-                    <circle
-                      cx={540}
-                      cy={Math.max(10, 110 - (activePeak / 3.2) * 100)}
-                      fill={deterministicPK.safetyCeilingExceeded ? '#DC2626' : '#15803D'}
-                      r="4.5"
-                    />
                   </svg>
 
                   <div className="absolute right-4 top-3 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xs rounded px-2.5 py-1 text-xs border border-[#E5DDD0] dark:border-slate-800 shadow-2xs font-mono">
-                    Predicted Peak: <strong className={deterministicPK.safetyCeilingExceeded ? 'text-[#DC2626] dark:text-rose-400' : 'text-[#15803D] dark:text-teal-300'}>
+                    Steady-state peak: <strong className={deterministicPK.safetyCeilingExceeded ? 'text-[#DC2626] dark:text-rose-400' : 'text-[#15803D] dark:text-teal-300'}>
                       {deterministicPK.peakSteadyStateCss} mcg/mL
                     </strong>
                     {isCompareMode && (
@@ -1120,10 +1009,10 @@ export const DigitalTwinSimulationView: React.FC<DigitalTwinSimulationViewProps>
                 </div>
 
                 <div className="flex items-center justify-between text-[11px] font-mono text-[#4B6584] dark:text-slate-400">
-                  <span>0h (Trough)</span>
-                  <span>12h Interval Dose</span>
-                  <span>24h Steady State</span>
-                  <span>36h Model Projection</span>
+                  <span>0 h</span>
+                  <span>12 h</span>
+                  <span>24 h</span>
+                  <span>36 h</span>
                 </div>
               </div>
 

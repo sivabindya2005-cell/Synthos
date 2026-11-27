@@ -362,20 +362,16 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   const deleteMyAccount = async () => {
-    const uid = currentUser?.uid || demoAuth?.uid;
-    if (!uid) return;
-    const confirmDelete = window.confirm(
-      'Are you sure you want to permanently delete your account and all associated cases and audit logs? This action is irreversible.'
-    );
-    if (!confirmDelete) return;
-
-    if (currentUser) {
+    if (!currentUser) { setIsAuthModalOpen(true); return; }
+    if (!window.confirm('Permanently delete your sign-in, profile, feedback and private cases? Shared handoffs, audit entries and the deletion marker are retained.')) return;
+    try {
       await deleteUserAccountAndData(currentUser.uid);
+      await signOut();
+      alert('Your account and private records were deleted.');
+    } catch (error) {
+      alert(error instanceof Error ? error.message + ' You can retry deletion.' : 'Deletion did not finish. Please retry.');
     }
-    await signOut();
-    alert('Your account and all associated data have been permanently deleted.');
   };
-
   const openAuthModal = (onSuccessCallback?: () => void) => {
     if (onSuccessCallback) {
       setPendingAction(() => onSuccessCallback);
@@ -425,7 +421,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         ? 'Master Administrator'
         : userRole === 'reviewer'
         ? 'Clinical Reviewer'
-        : 'PharmD, BCPS'),
+        : 'Credentials unspecified'),
     role: userRole,
     email:
       currentUser?.email ||
@@ -435,7 +431,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       profile?.institution ||
       (userRole === 'admin'
         ? 'Department of Clinical Pharmacotherapy'
-        : 'Clinical Practice Group'),
+        : 'Institution unspecified'),
     isGuest,
     disclaimerAccepted:
       profile?.disclaimerAccepted ||

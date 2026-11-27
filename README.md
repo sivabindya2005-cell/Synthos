@@ -46,6 +46,15 @@ firebase emulators:exec --only auth,firestore --project demo-synthos "node tests
 ```
 
 To try the emulated sign-in flow in the browser, run the same emulators with `emulators:start` and start the development server with `VITE_FIREBASE_EMULATORS=true` and an explicit `--port`. For production, a project administrator can deploy the checked-in rules and indexes with `firebase deploy --only firestore --project mythic-pottery-w9brs`. Review any CLI prompt about existing indexes before proceeding.
+## Team handoffs and saved results
+
+Open **Care handoff** for a fictional four-role exercise. The pharmacist drafts instructions, the physician reviews them, the nurse records follow-up, and the patient describes their understanding or asks a question. The physician replies to close the handoff. Practice records last for the current view.
+
+In **My assigned cases**, each participant signs in separately. A project administrator assigns the Firebase custom claim `careRole` to staff using the values `pharmacist`, `physician`, or `nurse`. Preserve existing claims when provisioning. Staff refresh their sign-in after a role change. The pharmacist enters each participant’s assignment ID. The nurse receives access after physician approval, and the patient after nursing acknowledgement. The patient uses their ordinary signed-in account.
+
+Opening a saved simulation displays its recorded inputs and outputs. Earlier records carry a legacy label. The digital twin workstation supports metformin; the guided wizard exposes the full catalog of implemented drug models.
+
+Account deletion requires a recent sign-in. A durable request marker prevents new personal records during cleanup. Retrying finishes the remaining steps. Private cases, submitted feedback, the profile and login are deleted. Shared training handoffs, append-only audit entries and the request marker remain. Set an institutional retention policy before using connected workflows in a hospital.
 ## 1. Regulatory Positioning & Product Scope
 - **Educational Decision Support**: SYNTHOS provides educational decision support under 21 U.S.C. § 360j(o)(1)(E). It does not replace individualized clinical judgment and is not a certified medical device.
 - **De-Identified / Safe Harbor**: The platform defaults to synthetic patient cases and enforces a persistent banner: *"Use synthetic or de-identified data only. Do not enter names, phone numbers, addresses or hospital IDs."*

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 const views = new Set([
-  'home', 'guided-wizard', 'overview', 'digital-twin', 'twin', 'patient-twin',
+  'saved-run', 'resume-run', 'care-handoff', 'home', 'guided-wizard', 'overview', 'digital-twin', 'twin', 'patient-twin',
   'drug-explorer', 'drug-intelligence', 'pathways', 'pathway-network',
   'methodology', 'limitations', 'about', 'medications', 'medication-review',
   'interactions', 'interaction-checker', 'genomics', 'genomic-scanner',
